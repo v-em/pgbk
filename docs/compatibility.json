@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "version": "0.2.0",
+  "date": "2026-10-20",
+  "platform": "linux/amd64",
+  "runtime": "Python 3.11.2 (Debian bookworm), host tests Python 3.14",
+  "helm": "3.19.0",
+  "kubernetesMinimum": "1.27.0 (certification pending)",
+  "kubernetesTestedApi": "1.37.0 (arm64 API/Helm/Lease smoke; worker scheduling not certified)",
+  "kind": "0.33.0",
+  "kindImage": "kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5",
+  "walG": {
+    "version": "3.0.9",
+    "sha256": "d6795c663894d836ba20840bffe8970aed81bbe25d3151bd4951f6f9c362def9",
+    "binary": "wal-g-pg-22.04-amd64",
+    "commit": "3e49318"
+  },
+  "postgres": {
+    "14": {
+      "minor": "14.24",
+      "base": "postgres@sha256:5a05f61a534e50e679d27fb45953afec7821f2ffc2aa6c738b94515ca0891ac2",
+      "nativeFeasibility": "passed",
+      "integratedLocal": "10 cases passed"
+    },
+    "15": {
+      "minor": "15.19",
+      "base": "postgres@sha256:d4a8e1f88f475ee3e0137fa89d21ebc59f6c6ab16bf369ee92907607cc3455ae",
+      "nativeFeasibility": "passed",
+      "integratedLocal": "10 cases passed"
+    },
+    "16": {
+      "minor": "16.15",
+      "base": "postgres@sha256:0ea6700a3b4f0ae6ce746519073558aed4d88a79d8d07622a9a644946c7319c4",
+      "nativeFeasibility": "passed",
+      "integratedLocal": "10 cases passed"
+    },
+    "17": {
+      "minor": "17.11",
+      "base": "postgres@sha256:3645570cccdfa447589da9f57dd740faa29b30938e861289a5574b6ca6b03826",
+      "nativeFeasibility": "passed",
+      "integratedLocal": "10 cases passed"
+    },
+    "18": {
+      "minor": "18.6",
+      "base": "postgres@sha256:afc7e2d441324c0388fa80c3d24f733b4194a4eb7f47dd8ee2b08eb1a24a647c",
+      "nativeFeasibility": "passed",
+      "integratedLocal": "10 cases passed"
+    }
+  },
+  "s3": {
+    "local": "Moto 5.1.11, emulated",
+    "yandex": "operator testing requested",
+    "aws": "not-run"
+  },
+  "managedPostgres": "not-run",
+  "bitnami": "not-run",
+  "productionReady": false,
+  "capacityTests": {
+    "postgres": "17.11",
+    "datasetGiB": [
+      1,
+      20
+    ],
+    "backupRestore": [
+      "logical",
+      "physical-full"
+    ],
+    "status": "passed on local emulator",
+    "cpuLimit": 2,
+    "memoryLimitGiB": 4,
+    "productionThroughputCertified": false
+  },
+  "uv": "0.9.5",
+  "historicalEvidence": "Reports dated 2026-10-11 cover 0.1; modes-* reports cover 0.2. Live Yandex remains operator-tested."
+}

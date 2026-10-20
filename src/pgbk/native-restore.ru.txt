@@ -1,0 +1,31 @@
+Формат артефактов pgbk v1
+
+Логические артефакты — custom-архивы PostgreSQL. Восстановите в отдельную заранее
+созданную пустую базу с помощью pg_restore той же major-версии:
+  pg_restore --exit-on-error --no-owner --no-acl --no-tablespaces --dbname=DESTINATION archive.dump
+Передавайте учётные данные через ограниченный password file, никогда через аргументы.
+Globals — необязательный чувствительный SQL; автоматически он не выполняется.
+Фильтрованные архивы могут требовать заранее созданных схем, типов, расширений,
+функций, родителей partitions и FK-целей. Смотрите selection в manifest.json.
+
+Физические артефакты: base.tar, pg_wal.tar, OID.tar для tablespaces и backup_manifest.
+До распаковки проверьте SHA-256 и размер по manifest.json. Используйте доверенный
+tar-reader, отклоняющий traversal и неразрешённые ссылки; явно сопоставьте каждый
+tablespace с отдельным пустым каталогом и пересоздайте ссылки pg_tblspc/OID.
+Распакуйте WAL в PGDATA/pg_wal, положите backup_manifest в PGDATA. Установите режим
+0700 и правильного непривилегированного владельца. Запустите pg_verifybackup той же
+major-версии до изменения recovery-файлов. Замените исходные postgresql.conf,
+postgresql.auto.conf, pg_hba.conf и pg_ident.conf настройками назначения; удалите
+standby.signal, recovery.signal и recovery.conf. До запуска отключите исходные
+archive/restore commands, primary_conninfo, primary_slot_name и репликацию.
+Запускайте совместимую сборку PostgreSQL с нужными расширениями в изоляции.
+Результат физического восстановления — подготовленный каталог; production-развёртывание
+выполняет оператор отдельным действием.
+
+Это артефакты проекта, передаваемые через WAL-G st put/get. Они не являются нативным
+репозиторием WAL-G backup-push; wal-g backup-fetch не восстанавливает этот формат.
+
+Directory-артефакт (postgres-directory-tar, pgbk >=0.2): проверьте хеш tar,
+безопасно распакуйте обычные файлы в новый пустой каталог и передайте этот
+каталог pg_restore вместо archive.dump. Файлы уже сжаты выбранным кодеком.
+Облако и Kubernetes не нужны. restore_download.py поддерживает оба формата.

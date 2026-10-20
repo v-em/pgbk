@@ -1,0 +1,24 @@
+{{- if .Values.networkPolicy.enabled }}
+{{- $root := . -}}
+{{- $namespaces := dict .Release.Namespace true -}}
+{{- range $name, $profile := .Values.profiles }}
+{{- if and $profile.verification $profile.verification.enabled }}{{- $_ := set $namespaces $profile.verification.namespace true }}{{- end }}
+{{- if and $profile.restore $profile.restore.enabled }}{{- $_ := set $namespaces $profile.restore.namespace true }}{{- end }}
+{{- end }}
+{{- range $namespace, $_ := $namespaces }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $root.Release.Name }}-worker
+  namespace: {{ $namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      pgbk.io/installation: {{ $root.Values.installationId }}
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress:
+    {{- toYaml $root.Values.networkPolicy.egress | nindent 4 }}
+{{- end }}
+{{- end }}

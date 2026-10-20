@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+build/
+dist/
+*.log
+.DS_Store
+
+*.local.yaml
+*.local.yml
+.env*
+secrets/
+*.pem
+*.key
+*.p12

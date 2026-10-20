@@ -1,0 +1,13 @@
+# Configure existing endpoints and Secrets; no source or bucket is provisioned.
+installationId: example-cluster
+images: {}
+targets: {}
+storage: {}
+profiles: {}
+networkPolicy:
+  enabled: false
+  egress: []
+rbac:
+  create: false
+coordination:
+  createLeases: false

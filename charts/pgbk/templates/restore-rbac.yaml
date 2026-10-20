@@ -1,0 +1,69 @@
+{{- if (dig "create" false (.Values.rbac | default dict)) }}
+{{- $root := . -}}
+{{- $coord := .Values.coordinationNamespace | default .Release.Namespace -}}
+{{- range $name, $profile := .Values.profiles }}
+{{- if and $profile.restore $profile.restore.enabled }}
+{{- $sa := printf "%s-%s-restore" $root.Release.Name $name -}}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $sa }}-coordination
+  namespace: {{ $coord }}
+rules:
+  - apiGroups: [coordination.k8s.io]
+    resources: [leases]
+    resourceNames: [{{ include "pgbk.repositoryLease" (dict "root" $root "profile" $profile "name" $name) }}]
+    verbs: [get, update]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $sa }}-coordination
+  namespace: {{ $coord }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" "restore") }}
+    namespace: {{ $profile.restore.namespace }}
+roleRef:
+  kind: Role
+  name: {{ $sa }}-coordination
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $sa }}-destination
+  namespace: {{ $profile.restore.namespace }}
+rules:
+  - apiGroups: [""]
+    resources: [pods]
+    verbs: [list]
+  {{- $claims := $profile.restore.allowedDestinationClaims | default list }}
+  {{- if eq $profile.restore.scratch.type "existingClaim" }}
+  {{- $claims = append $claims $profile.restore.scratch.claimName }}
+  {{- end }}
+  {{- if $claims }}
+  - apiGroups: [""]
+    resources: [persistentvolumeclaims]
+    resourceNames: {{ $claims | uniq | toJson }}
+    verbs: [get]
+  {{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $sa }}-destination
+  namespace: {{ $profile.restore.namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" "restore") }}
+    namespace: {{ $profile.restore.namespace }}
+roleRef:
+  kind: Role
+  name: {{ $sa }}-destination
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,159 @@
+{{- $root := . -}}
+{{- range $name, $profile := .Values.profiles }}
+{{- if gt (len (printf "%s-%s-restore-physical" $root.Release.Name $name)) 52 }}{{- fail "Release and profile names must fit the Kubernetes 52-character CronJob name limit" }}{{- end }}
+{{- $target := index $root.Values.targets $profile.target -}}
+{{- $storage := index $root.Values.storage $profile.storage -}}
+{{- $image := required "Configure a worker image by digest for every selected major" (index $root.Values.images (toString $target.serverMajor)) -}}
+{{- $operations := dict "backup" (dict "enabled" false) "retention" (dict "enabled" true "cron" "0 4 * * *") "preflight" (dict "enabled" false) "download" (dict "enabled" false) -}}
+{{- if $profile.schedule }}{{- $_ := set $operations "backup" $profile.schedule }}{{- end }}
+{{- if and $profile.retention $profile.retention.schedule }}{{- $_ := set $operations "retention" $profile.retention.schedule }}{{- end }}
+{{- if and $profile.verification $profile.verification.enabled }}{{- $_ := set $operations "verify" $profile.verification.schedule }}{{- end }}
+{{- if and $profile.restore $profile.restore.enabled }}
+{{- $_ := set $operations (ternary "restore-logical" "restore-physical" (eq $profile.kind "logical")) (dict "enabled" false) }}
+{{- end }}
+{{- range $operation, $schedule := $operations }}
+{{- $verify := eq $operation "verify" -}}
+{{- $restore := hasPrefix "restore-" $operation -}}
+{{- $namespace := $root.Release.Namespace -}}
+{{- $scratch := $profile.scratch -}}
+{{- $resources := $profile.execution.resources -}}
+{{- $deadline := $profile.execution.activeDeadlineSeconds | default 21600 -}}
+{{- $jobImage := $image -}}
+{{- $sa := printf "%s-%s" $root.Release.Name $name -}}
+{{- $refs := dict $storage.credentialsSecretRef true -}}
+{{- if $storage.tls }}{{- if $storage.tls.caSecretRef }}{{- $_ := set $refs $storage.tls.caSecretRef true }}{{- end }}{{- end }}
+{{- if $verify }}
+{{- $namespace = $profile.verification.namespace -}}
+{{- $scratch = $profile.verification.scratch -}}
+{{- $resources = $profile.verification.resources -}}
+{{- $deadline = $profile.verification.timeoutSeconds -}}
+{{- $jobImage = $profile.verification.image -}}
+{{- $sa = printf "%s-verify" $sa -}}
+{{- $_ := set $refs $profile.verification.clientCredentialsSecretRef true -}}
+{{- $_ := set $refs $profile.verification.credentialsSecretRef true -}}
+{{- else if $restore }}
+{{- $namespace = $profile.restore.namespace -}}
+{{- $scratch = $profile.restore.scratch -}}
+{{- $resources = $profile.restore.resources -}}
+{{- $deadline = $profile.restore.timeoutSeconds -}}
+{{- $sa = printf "%s-restore" $sa -}}
+{{- range $ref := $profile.restore.credentialsSecretRefs }}{{- $_ := set $refs $ref true }}{{- end }}
+{{- else if or (eq $operation "backup") (eq $operation "preflight") }}
+{{- $_ := set $refs $target.credentialsSecretRef true -}}
+{{- if $target.tls }}
+{{- range $key := list "caSecretRef" "clientSecretRef" }}{{- if index $target.tls $key }}{{- $_ := set $refs (index $target.tls $key) true }}{{- end }}{{- end }}
+{{- end }}
+{{- end }}
+{{- if or (eq $operation "download") (eq $operation "retention") }}{{- $sa = printf "%s-repository" $sa }}{{- end }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ printf "%s-%s-%s" $root.Release.Name $name $operation }}
+  namespace: {{ $namespace }}
+  labels:
+    pgbk.io/installation: {{ $root.Values.installationId }}
+    pgbk.io/profile: {{ $name }}
+spec:
+  schedule: {{ $schedule.cron | default "0 2 * * *" | quote }}
+  timeZone: {{ $schedule.timeZone | default "UTC" | quote }}
+  suspend: {{ not $schedule.enabled }}
+  startingDeadlineSeconds: {{ $schedule.startingDeadlineSeconds | default 3600 }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    metadata:
+      labels:
+        pgbk.io/installation: {{ $root.Values.installationId }}
+        pgbk.io/profile: {{ $name }}
+    spec:
+      activeDeadlineSeconds: {{ $deadline }}
+      backoffLimit: 0
+      ttlSecondsAfterFinished: {{ if $verify }}{{ if hasKey $profile.verification "failureDebugTtlSeconds" }}{{ $profile.verification.failureDebugTtlSeconds }}{{ else }}86400{{ end }}{{ else }}{{ if hasKey $profile.execution "ttlSecondsAfterFinished" }}{{ $profile.execution.ttlSecondsAfterFinished }}{{ else }}86400{{ end }}{{ end }}
+      template:
+        metadata:
+          annotations:
+            pgbk.io/trigger: {{ ternary "verification" "schedule" $verify | quote }}
+          labels:
+            pgbk.io/installation: {{ $root.Values.installationId }}
+            pgbk.io/profile: {{ $name }}
+            pgbk.io/operation: {{ $operation }}
+        spec:
+          serviceAccountName: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" (ternary "restore" (ternary "verify" (ternary "repository" "backup" (or (eq $operation "download") (eq $operation "retention"))) $verify) $restore)) }}
+          restartPolicy: Never
+          terminationGracePeriodSeconds: 45
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 999
+            runAsGroup: 999
+            fsGroup: 999
+            seccompProfile:
+              type: RuntimeDefault
+          nodeSelector:
+            {{- $selectors := mergeOverwrite (dict "kubernetes.io/arch" "amd64" "kubernetes.io/os" "linux") ($profile.execution.nodeSelector | default dict) }}
+            {{- toYaml $selectors | nindent 12 }}
+          containers:
+            - name: worker
+              image: {{ $jobImage | quote }}
+              imagePullPolicy: IfNotPresent
+              command: [pgbk]
+              args: [--config, /config/config.json, --namespace, {{ $namespace | quote }}, --scratch, /scratch, --timeout, {{ $deadline | quote }}, --output, json, worker, {{ $operation }}, --profile, {{ $name | quote }}]
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: [ALL]
+              resources:
+                {{- toYaml $resources | nindent 16 }}
+              env:
+                - name: HOME
+                  value: /scratch
+                - name: TMPDIR
+                  value: /scratch
+                - name: PGBK_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+                - name: PGBK_JOB_UID
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.labels['batch.kubernetes.io/controller-uid']
+                - name: PGBK_JOB_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.labels['batch.kubernetes.io/job-name']
+                - name: PGBK_POD_UID
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.uid
+                - name: PGBK_WORKER_IMAGE
+                  value: {{ $jobImage | quote }}
+                - name: PGBK_TRIGGER
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.annotations['pgbk.io/trigger']
+              volumeMounts:
+                - name: config
+                  mountPath: /config
+                  readOnly: true
+                - name: scratch
+                  mountPath: /scratch
+                {{- range $ref, $_ := $refs }}
+                - name: secret-{{ $ref }}
+                  mountPath: /secrets/{{ $ref }}
+                  readOnly: true
+                {{- end }}
+          volumes:
+            - name: config
+              configMap:
+                name: {{ include "pgbk.configName" $root }}
+            {{- include "pgbk.scratchVolume" $scratch | nindent 12 }}
+            {{- range $ref, $_ := $refs }}
+            - name: secret-{{ $ref }}
+              secret:
+                secretName: {{ $ref }}
+                defaultMode: 0440
+            {{- end }}
+{{- end }}
+{{- end }}

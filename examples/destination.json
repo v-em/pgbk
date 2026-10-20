@@ -1,0 +1,11 @@
+{
+  "host": "isolated-restore.database.svc.cluster.local",
+  "port": 5432,
+  "serverMajor": 17,
+  "database": "restored_application",
+  "credentialsSecretRef": "restore-postgres",
+  "tls": {"mode": "verify-full", "caSecretRef": "restore-ca"},
+  "acknowledgeIsolated": true,
+  "destinationPolicy": "empty",
+  "preserveOwnership": false
+}

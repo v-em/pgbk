@@ -1,0 +1,40 @@
+# Merge after two-sources.yaml; keeps the same profile identity and changes its mode.
+profiles:
+  kubernetes-pvc:
+    serviceAccounts:
+      create: false
+      backup: existing-backup-worker
+      repository: existing-repository-worker
+    target: kubernetes
+    kind: logical
+    storage: archive
+    logical:
+      databases:
+      - kubernetes_app
+      format: custom
+      jobs: 1
+      compression:
+        method: gzip
+        level: 6
+      transfer:
+        mode: direct
+        partSizeMiB: 16
+      globals: disabled
+    schedule:
+      enabled: false
+    execution:
+      resources:
+        requests:
+          cpu: 500m
+          memory: 512Mi
+        limits:
+          cpu: '2'
+          memory: 2Gi
+    scratch:
+      type: emptyDir
+      size: 256Mi
+    retention:
+      maxAgeDays: 30
+      minSuccessfulBackups: 3
+    verification:
+      enabled: false

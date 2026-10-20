@@ -1,0 +1,26 @@
+{{- $root := . -}}
+{{- $created := dict -}}
+{{- range $name, $profile := .Values.profiles }}
+{{- $target := index $root.Values.targets $profile.target | default dict -}}
+{{- $storage := index $root.Values.storage $profile.storage | default dict -}}
+{{- if or (not $target) (not $storage) }}{{ fail "Profile must reference configured target and storage" }}{{ end }}
+{{- if and (eq $profile.kind "physical-full") (or (not $target.expectedSystemIdentifier) (ne ($target.physicalEndpoint | default "") "direct-primary")) }}{{ fail "Physical target requires expectedSystemIdentifier and physicalEndpoint: direct-primary" }}{{ end }}
+{{- $source := include "pgbk.sourceLease" $target.concurrencyKey -}}
+{{- $repository := include "pgbk.repositoryLease" (dict "root" $root "profile" $profile "name" $name) -}}
+{{- range $lease := list $source $repository }}
+{{- if and (ne (dig "createLeases" false ($root.Values.coordination | default dict)) false) (not (hasKey $created $lease)) }}
+{{- $_ := set $created $lease true }}
+---
+apiVersion: coordination.k8s.io/v1
+kind: Lease
+metadata:
+  name: {{ $lease }}
+  namespace: {{ $root.Values.coordinationNamespace | default $root.Release.Namespace }}
+  annotations:
+    helm.sh/resource-policy: keep
+  labels:
+    pgbk.io/installation: {{ $root.Values.installationId }}
+spec: {}
+{{- end }}
+{{- end }}
+{{- end }}

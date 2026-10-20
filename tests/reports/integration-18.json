@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "postgresMajor": 18,
+  "cases": [
+    {
+      "case": "blocking-libpq-query-deadline-cancellation",
+      "status": "passed"
+    },
+    {
+      "case": "multi-database-restricted-backup-s3",
+      "status": "passed"
+    },
+    {
+      "case": "native-logical-restore",
+      "status": "passed"
+    },
+    {
+      "case": "snapshot-query-exact-pattern-partition-exclusion",
+      "status": "passed"
+    },
+    {
+      "case": "all-mode-exact-exclusion",
+      "status": "passed"
+    },
+    {
+      "case": "empty-selection-and-raw-row-overflow-fail-closed",
+      "status": "passed"
+    },
+    {
+      "case": "restricted-rls-fails-without-marker",
+      "status": "passed"
+    },
+    {
+      "case": "s3-physical-offline-restore",
+      "status": "passed"
+    },
+    {
+      "case": "product-logical-offline-restore-empty-and-source-guards",
+      "status": "passed"
+    },
+    {
+      "case": "logical-and-physical-automated-offline-drills",
+      "status": "passed"
+    }
+  ],
+  "tools": {
+    "pg_basebackup": "pg_basebackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+    "pg_verifybackup": "pg_verifybackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+    "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+  },
+  "fixture": "10000-items-two-databases-partitions-tablespace",
+  "runIds": {
+    "logical": "run-local-b1bf150027054a5784e81509d9fdc40f",
+    "filtered": "run-local-350b3180150f413f90e0d3d94cb5051c",
+    "physical": "run-local-a29140ff8dc74f839a339f148ef9b164"
+  },
+  "physicalBytes": 77812402,
+  "elapsedSeconds": 32.27568630600035,
+  "kubernetes": "stubbed; test separately",
+  "s3": "Moto emulator",
+  "catalogPrefix": "integration/v1/test-0d76b6371dca/fixture/logical/",
+  "workerImage": "pgbk-worker:18-test",
+  "imageConfigId": "sha256:6fed4dca25620e9ce6ab1b58a4fbed1044e93ec8ce8e2e1ba86ede6dcb97bb7a",
+  "registryDigests": [
+    "pgbk-worker@sha256:6fed4dca25620e9ce6ab1b58a4fbed1044e93ec8ce8e2e1ba86ede6dcb97bb7a"
+  ]
+}

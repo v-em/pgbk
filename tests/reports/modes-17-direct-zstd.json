@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "postgresMajor": 17,
+  "logicalMode": "direct",
+  "compression": {
+    "method": "zstd",
+    "level": 3
+  },
+  "cases": [
+    {
+      "case": "blocking-libpq-query-deadline-cancellation",
+      "status": "passed"
+    },
+    {
+      "case": "multi-database-restricted-backup-s3",
+      "status": "passed"
+    },
+    {
+      "case": "real-multipart-direct-complete",
+      "status": "passed"
+    },
+    {
+      "case": "native-logical-restore",
+      "status": "passed"
+    },
+    {
+      "case": "snapshot-query-exact-pattern-partition-exclusion",
+      "status": "passed"
+    },
+    {
+      "case": "all-mode-exact-exclusion",
+      "status": "passed"
+    },
+    {
+      "case": "empty-selection-and-raw-row-overflow-fail-closed",
+      "status": "passed"
+    },
+    {
+      "case": "restricted-rls-fails-without-marker",
+      "status": "passed"
+    },
+    {
+      "case": "s3-physical-offline-restore",
+      "status": "passed"
+    },
+    {
+      "case": "product-logical-offline-restore-empty-and-source-guards",
+      "status": "passed"
+    },
+    {
+      "case": "logical-and-physical-automated-offline-drills",
+      "status": "passed"
+    }
+  ],
+  "tools": {
+    "pg_basebackup": "pg_basebackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+    "pg_verifybackup": "pg_verifybackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+    "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+  },
+  "fixture": "10000-items-two-databases-partitions-tablespace",
+  "runIds": {
+    "logical": "run-local-02d18788eea14fa5a62eae20f5f8651f",
+    "filtered": "run-local-aefdf53f5d80429c9958149574120123",
+    "physical": "run-local-20360df3b50f47288aad3a180d0b5229"
+  },
+  "physicalBytes": 131728508,
+  "elapsedSeconds": 33.26794401500001,
+  "kubernetes": "stubbed; test separately",
+  "s3": "Moto emulator",
+  "catalogPrefix": "integration/v1/test-a19cbe7bde3b/fixture/logical/",
+  "pgbkVersion": "0.2.0",
+  "workerImage": "pgbk-worker:17-test",
+  "imageConfigId": "sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8",
+  "registryDigests": [
+    "pgbk-worker@sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8"
+  ]
+}

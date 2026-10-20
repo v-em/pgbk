@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "postgresMajor": 14,
+  "cases": [
+    {
+      "case": "blocking-libpq-query-deadline-cancellation",
+      "status": "passed"
+    },
+    {
+      "case": "multi-database-restricted-backup-s3",
+      "status": "passed"
+    },
+    {
+      "case": "native-logical-restore",
+      "status": "passed"
+    },
+    {
+      "case": "snapshot-query-exact-pattern-partition-exclusion",
+      "status": "passed"
+    },
+    {
+      "case": "all-mode-exact-exclusion",
+      "status": "passed"
+    },
+    {
+      "case": "empty-selection-and-raw-row-overflow-fail-closed",
+      "status": "passed"
+    },
+    {
+      "case": "restricted-rls-fails-without-marker",
+      "status": "passed"
+    },
+    {
+      "case": "s3-physical-offline-restore",
+      "status": "passed"
+    },
+    {
+      "case": "product-logical-offline-restore-empty-and-source-guards",
+      "status": "passed"
+    },
+    {
+      "case": "logical-and-physical-automated-offline-drills",
+      "status": "passed"
+    }
+  ],
+  "tools": {
+    "pg_basebackup": "pg_basebackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+    "pg_verifybackup": "pg_verifybackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+    "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+  },
+  "fixture": "10000-items-two-databases-partitions-tablespace",
+  "runIds": {
+    "logical": "run-local-303c682898d64d1f9384b8385119ccc1",
+    "filtered": "run-local-6170eefb793243158257a12f58e04b79",
+    "physical": "run-local-e3e364d38fe2475c84e79f24c74d44a6"
+  },
+  "physicalBytes": 83582168,
+  "elapsedSeconds": 41.54641801800062,
+  "kubernetes": "stubbed; test separately",
+  "s3": "Moto emulator",
+  "catalogPrefix": "integration/v1/test-d448edc123ff/fixture/logical/",
+  "workerImage": "pgbk-worker:14-test",
+  "imageConfigId": "sha256:9f4d5fb61959c5c119d39316d292286047d80cb400a325f93d511a2c6efc8507",
+  "registryDigests": [
+    "pgbk-worker@sha256:9f4d5fb61959c5c119d39316d292286047d80cb400a325f93d511a2c6efc8507"
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "postgresMajor": 15,
+  "status": "passed",
+  "evidence": "M0_CORE_PASS PostgreSQL=pg_dump (PostgreSQL) 15.19 (Debian 15.19-1.pgdg12+2) WAL_G=wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL bytes=8388611",
+  "cases": [
+    "native-restricted-logical-restore",
+    "physical-offline-no-archive-restore",
+    "raw-wal-g-8388611-byte-roundtrip",
+    "missing-object-fails"
+  ],
+  "s3": "Moto emulator",
+  "scope": "M0 core subset, not full M0 TLS/licensing/provider gate"
+}

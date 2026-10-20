@@ -1,0 +1,352 @@
+pgbk 0.1.0 — third-party component inventory
+Original code: Apache-2.0; see LICENSE and NOTICE.
+PostgreSQL: PostgreSQL License; WAL-G: Apache-2.0; Python: PSF license.
+OS/Python/embedded Go components have separate licenses listed below.
+Keep distributed copyright/license files and corresponding source obligations.
+Source locations: Debian https://sources.debian.org/ ; PostgreSQL https://www.postgresql.org/ftp/source/ ;
+WAL-G https://github.com/wal-g/wal-g/tree/v3.0.9 ; Python https://www.python.org/downloads/source/ ;
+Python dependency sdists: https://pypi.org/ ; Go modules: source URLs/purls in the SBOM.
+This is an automated development inventory, not final license certification.
+
+adduser 3.134 — GPL-2.0-only, GPL-2.0-or-later
+aiohappyeyeballs 2.7.1 — PSF-2.0
+aiohttp 3.14.4 — Apache-2.0 AND MIT
+aiohttp-retry 2.9.1 — MIT
+aiosignal 1.4.0 — Apache 2.0
+annotated-types 0.8.0 — MIT
+apt 2.6.1 — BSD-3-Clause, GPL-2.0-only, GPL-2.0-or-later, Expat
+attrs 26.1.0 — MIT
+base-files 12.4+deb12u15 — sha256:fd7e4aae7e7b05f217bcf2d02322825c360e66c52c4c2f1b28d784d6297a1c23
+base-passwd 3.6.1 — GPL-2.0-only, public-domain
+bash 5.2.15-2+b13 — BSD-4-Clause-UC, GFDL-1.3-only, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, Latex2e, GFDL-NIV-1.3, MIT-like, permissive
+boto3 1.43.110 — Apache-2.0
+botocore 1.43.110 — Apache-2.0
+bsdutils 1:2.38.1-5+deb12u3 — BSD-3-Clause, BSD-4-Clause, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, MIT, BSLA, LGPL, public-domain
+ca-certificates 20250419~deb12u1 — GPL-2.0-only, GPL-2.0-or-later, MPL-2.0
+cel.dev/expr v0.25.2 — Apache-2.0
+certifi 2026.7.22 — MPL-2.0
+charset-normalizer 3.5.2 — MIT
+cli UNKNOWN — scanner unresolved
+cli-32 UNKNOWN — scanner unresolved
+cli-64 UNKNOWN — scanner unresolved
+cli-arm64 UNKNOWN — scanner unresolved
+cloud.google.com/go v0.123.0 — Apache-2.0, BSD-3-Clause
+cloud.google.com/go/auth v0.23.0 — Apache-2.0
+cloud.google.com/go/auth/oauth2adapt v0.2.8 — Apache-2.0
+cloud.google.com/go/compute/metadata v0.9.0 — Apache-2.0
+cloud.google.com/go/iam v1.11.0 — Apache-2.0
+cloud.google.com/go/monitoring v1.29.0 — Apache-2.0
+cloud.google.com/go/storage v1.64.0 — Apache-2.0
+coreutils 9.1-1 — BSD-4-Clause-UC, FSFULLR, GFDL-1.3-only, GPL-3.0-only, GPL-3.0-or-later, ISC, GFDL-NIV-1.3
+dash 0.5.12-2 — BSD-3-Clause, GPL-2.0-only, GPL-2.0-or-later, public-domain
+debconf 1.5.82 — BSD-2-Clause
+debian-archive-keyring 2023.3+deb12u2 — sha256:b32aecaae84643700a33bc9ee83fa9b36938d35aa7b61b5042092eca77ddb732
+debianutils 5.7-0.5~deb12u1 — GPL-2.0-only, GPL-2.0-or-later, SMAIL-GPL, public-domain
+diffutils 1:3.8-4 — FSFAP, FSFULLR, GFDL-1.3-only, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, X11, GFDL-NIV-1.3, public-domain
+dirmngr 2.2.40-1.1+deb12u2 — BSD-3-Clause, CC0-1.0, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, Expat, RFC-Reference, TinySCHEME, permissive
+dpkg 1.21.23 — BSD-2-Clause, GPL-2.0-only, GPL-2.0-or-later, public-domain-s-s-d
+durationpy 0.11 — MIT
+e2fsprogs 1.47.0-2+b2 — Apache-2.0, BSD-3-Clause, GPL-2.0-only, GPL-2.0-or-later, ISC, Kazlib, LGPL-2.0-only, Latex2e, GPL
+findutils 4.9.0-4 — BSD-3-Clause, FSFAP, FSFULLR, GFDL-1.3-only, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, ISC, LGPL-2.0-only, LGPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, X11, GFDL-NIV-1.3+, GPL, public-domain
+frozenlist 1.8.0 — Apache-2.0
+gcc-12-base 12.2.0-14+deb12u1 — sha256:da8191658b3452ce9caf31638ba61dab31a38c619fa39df119812e050f592fd3
+github.com/Azure/azure-sdk-for-go/sdk/azcore v1.23.0 — MIT
+github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.14.0 — MIT
+github.com/Azure/azure-sdk-for-go/sdk/internal v1.12.0 — MIT
+github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.8.0 — MIT
+github.com/AzureAD/microsoft-authentication-library-for-go v1.7.2 — MIT
+github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.33.0 — Apache-2.0
+github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.57.0 — Apache-2.0
+github.com/GoogleCloudPlatform/opentelemetry-operations-go/internal/resourcemapping v0.57.0 — Apache-2.0
+github.com/ProtonMail/go-crypto v1.4.1 — BSD-3-Clause
+github.com/RoaringBitmap/roaring/v2 v2.24.0 — Apache-2.0, Apache-2.0, BSD-3-Clause
+github.com/alibabacloud-go/debug v1.0.1 — Apache-2.0
+github.com/aliyun/alibabacloud-oss-go-sdk-v2 v1.5.3 — Apache-2.0
+github.com/aliyun/credentials-go v1.4.12 — Apache-2.0
+github.com/aws/aws-sdk-go v1.55.8 — Apache-2.0, BSD-3-Clause, sha256:a6e830174d62dafad3a718384772ea1f4c0e27989f050932dc442a5e3ddad080
+github.com/beorn7/perks v1.0.1 — MIT
+github.com/bits-and-blooms/bitset v1.24.4 — BSD-3-Clause
+github.com/cactus/go-statsd-client/v5 v5.1.0 — MIT
+github.com/cespare/xxhash/v2 v2.3.0 — MIT
+github.com/cloudflare/circl v1.6.3 — BSD-3-Clause, BSD-3-Clause
+github.com/cncf/xds/go v0.0.0-20260202195803-dba9d589def2 — Apache-2.0
+github.com/cyberdelia/lzo v1.0.0 — MIT
+github.com/envoyproxy/go-control-plane/envoy v1.37.0 — Apache-2.0
+github.com/envoyproxy/protoc-gen-validate v1.3.3 — Apache-2.0
+github.com/felixge/fgprof v0.9.5 — MIT
+github.com/felixge/httpsnoop v1.0.4 — MIT
+github.com/fsnotify/fsnotify v1.9.0 — BSD-3-Clause
+github.com/ghodss/yaml v1.0.0 — BSD-3-Clause, MIT
+github.com/go-jose/go-jose/v4 v4.1.4 — Apache-2.0, BSD-3-Clause
+github.com/go-logr/logr v1.4.3 — Apache-2.0
+github.com/go-logr/stdr v1.2.2 — Apache-2.0
+github.com/go-viper/mapstructure/v2 v2.4.0 — MIT
+github.com/golang-jwt/jwt/v4 v4.5.2 — MIT
+github.com/golang-jwt/jwt/v5 v5.3.1 — MIT
+github.com/golang/protobuf v1.5.4 — BSD-3-Clause
+github.com/google/brotli/go/cbrotli v1.1.0 — MIT
+github.com/google/pprof v0.0.0-20240227163752-401108e1b7e7 — Apache-2.0, BSD-3-Clause
+github.com/google/s2a-go v0.1.9 — Apache-2.0
+github.com/google/uuid v1.6.0 — BSD-3-Clause
+github.com/googleapis/enterprise-certificate-proxy v0.3.20 — Apache-2.0
+github.com/googleapis/gax-go/v2 v2.23.0 — BSD-3-Clause
+github.com/hashicorp/go-cleanhttp v0.5.2 — MPL-2.0
+github.com/hashicorp/go-retryablehttp v0.7.7 — MPL-2.0
+github.com/jackc/pgio v1.0.0 — MIT
+github.com/jackc/pglogrepl v0.0.0-20260401131349-e37c41485510 — MIT
+github.com/jackc/pgpassfile v1.0.0 — MIT
+github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 — MIT
+github.com/jackc/pgx/v5 v5.10.0 — MIT, sha256:4b9071daf5f9975eb936c370200709bb7433862c5d4a32d21db65620133f4a8e
+github.com/jedib0t/go-pretty/v6 v6.8.2 — MIT
+github.com/jmespath/go-jmespath v0.4.0 — Apache-2.0
+github.com/klauspost/compress v1.19.2 — Apache-2.0, Apache-2.0, BSD-3-Clause, BSD-3-Clause, BSD-3-Clause, BSD-3-Clause, BSD-3-Clause, MIT, MIT, MIT, MIT, MIT
+github.com/kr/fs v0.1.0 — BSD-3-Clause
+github.com/kylelemons/godebug v1.1.0 — Apache-2.0
+github.com/mattn/go-runewidth v0.0.16 — MIT
+github.com/minio/sio v0.5.1 — Apache-2.0
+github.com/moby/sys/user v0.1.0 — Apache-2.0
+github.com/mschoch/smat v0.2.0 — Apache-2.0
+github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 — BSD-3-Clause
+github.com/ncw/directio v1.0.5 — MIT
+github.com/ncw/swift/v2 v2.0.5 — MIT
+github.com/pelletier/go-toml/v2 v2.2.4 — MIT
+github.com/pierrec/lz4/v4 v4.1.28 — BSD-3-Clause
+github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c — BSD-2-Clause
+github.com/pkg/errors v0.9.1 — BSD-2-Clause
+github.com/pkg/profile v1.7.0 — BSD-2-Clause
+github.com/pkg/sftp v1.13.10 — BSD-2-Clause
+github.com/prometheus/client_golang v1.23.2 — Apache-2.0, BSD-3-Clause, sha256:8548bfb2bc1913396df38c548a6ec60b8dbcac3b0800485a40569c8bdd184471
+github.com/prometheus/client_model v0.6.2 — Apache-2.0, sha256:6c79faa15168885fb88a316ae0df18f486deafddefdc16826cdc56dfbd421e24
+github.com/prometheus/common v0.66.1 — Apache-2.0, sha256:600244c8052c8c1d307043fafacbc83b429c171dd8e08f5a537c0a54014585ee
+github.com/prometheus/procfs v0.16.1 — Apache-2.0, sha256:497fcdb9fae55924c12f55f05cbe83a096662e5c591d79b74e4a8f23bab5ffee
+github.com/rivo/uniseg v0.4.7 — MIT
+github.com/sagikazarmark/locafero v0.11.0 — MIT
+github.com/sourcegraph/conc v0.3.1-0.20240121214520-5f936abd7ae8 — MIT
+github.com/spf13/afero v1.15.0 — Apache-2.0
+github.com/spf13/cast v1.10.0 — MIT
+github.com/spf13/cobra v1.10.2 — Apache-2.0
+github.com/spf13/pflag v1.0.10 — BSD-3-Clause
+github.com/spf13/viper v1.21.0 — MIT
+github.com/spiffe/go-spiffe/v2 v2.7.0 — Apache-2.0
+github.com/stretchr/testify v1.12.0 — BSD-3-Clause, ISC, MIT
+github.com/subosito/gotenv v1.6.0 — MIT
+github.com/tianon/gosu v1.19.0 — scanner unresolved
+github.com/ulikunitz/xz v0.5.16 — BSD-3-Clause, BSD-3-Clause
+github.com/wal-g/tracelog v0.1.1 — Apache-2.0
+github.com/wal-g/wal-g v0.0.0-20260820091616-3e493188db28+dirty — Apache-2.0, Apache-2.0
+github.com/yandex-cloud/go-genproto v0.100.0 — MIT, sha256:9779bd58ff783ccd90f7228c14b1b4893210c24d15027013452764671a46e3ed, sha256:aa9617b6d87d4241b007999d8708175b537b659e8a4ce096d75a22b73011bf72, sha256:af0e12d58b9a28436b37e7f2bc84f50f8aed35dbfe40355eb6d9b063b908978d, sha256:c6d24a90d5d0261b72d0c0dce787e3392a156a8cbbe4f8459e70afcf17792d45
+github.com/yandex-cloud/go-sdk/services/kms v0.0.82 — MIT
+github.com/yandex-cloud/go-sdk/v2 v2.144.0 — MIT
+gnupg 2.2.40-1.1+deb12u2 — BSD-3-Clause, CC0-1.0, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, Expat, RFC-Reference, TinySCHEME, permissive
+gnupg-l10n 2.2.40-1.1+deb12u2 — BSD-3-Clause, CC0-1.0, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, Expat, RFC-Reference, TinySCHEME, permissive
+gnupg-utils 2.2.40-1.1+deb12u2 — BSD-3-Clause, CC0-1.0, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, Expat, RFC-Reference, TinySCHEME, permissive
+go.opentelemetry.io/auto/sdk v1.2.1 — Apache-2.0
+go.opentelemetry.io/contrib/detectors/gcp v1.44.0 — Apache-2.0, BSD-3-Clause
+go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.68.0 — Apache-2.0, BSD-3-Clause
+go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.67.0 — Apache-2.0, BSD-3-Clause
+go.opentelemetry.io/otel v1.44.0 — Apache-2.0, BSD-3-Clause
+go.opentelemetry.io/otel/metric v1.44.0 — Apache-2.0, BSD-3-Clause
+go.opentelemetry.io/otel/sdk v1.44.0 — Apache-2.0, BSD-3-Clause
+go.opentelemetry.io/otel/sdk/metric v1.44.0 — Apache-2.0, BSD-3-Clause
+go.opentelemetry.io/otel/trace v1.44.0 — Apache-2.0, BSD-3-Clause
+go.uber.org/mock v0.6.0 — Apache-2.0
+go.uber.org/multierr v1.11.0 — MIT
+go.uber.org/zap v1.28.0 — MIT
+go.yaml.in/yaml/v2 v2.4.2 — Apache-2.0, Apache-2.0, MIT
+go.yaml.in/yaml/v3 v3.0.4 — Apache-2.0, Apache-2.0, MIT
+golang.org/x/crypto v0.55.0 — BSD-3-Clause
+golang.org/x/net v0.58.0 — BSD-3-Clause
+golang.org/x/oauth2 v0.36.0 — BSD-3-Clause
+golang.org/x/sync v0.22.0 — BSD-3-Clause
+golang.org/x/sys v0.1.0 — BSD-3-Clause
+golang.org/x/sys v0.47.0 — BSD-3-Clause
+golang.org/x/text v0.41.0 — BSD-3-Clause
+golang.org/x/time v0.15.0 — BSD-3-Clause
+golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da — BSD-3-Clause
+google.golang.org/api v0.293.0 — BSD-3-Clause, BSD-3-Clause
+google.golang.org/genproto v0.0.0-20260519071638-aa98bba5eb94 — Apache-2.0
+google.golang.org/genproto/googleapis/api v0.0.0-20260630182238-925bb5da69e7 — Apache-2.0
+google.golang.org/genproto/googleapis/rpc v0.0.0-20260807164820-c8921c73eeea — Apache-2.0
+google.golang.org/grpc v1.83.0 — Apache-2.0, Apache-2.0
+google.golang.org/protobuf v1.36.11 — BSD-3-Clause
+gopkg.in/ini.v1 v1.67.3 — Apache-2.0
+gopkg.in/yaml.v2 v2.4.0 — Apache-2.0, Apache-2.0, MIT
+gopkg.in/yaml.v3 v3.0.1 — Apache-2.0, Apache-2.0, MIT
+gpg 2.2.40-1.1+deb12u2 — BSD-3-Clause, CC0-1.0, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, Expat, RFC-Reference, TinySCHEME, permissive
+gpg-agent 2.2.40-1.1+deb12u2 — BSD-3-Clause, CC0-1.0, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, Expat, RFC-Reference, TinySCHEME, permissive
+gpg-wks-client 2.2.40-1.1+deb12u2 — BSD-3-Clause, CC0-1.0, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, Expat, RFC-Reference, TinySCHEME, permissive
+gpg-wks-server 2.2.40-1.1+deb12u2 — BSD-3-Clause, CC0-1.0, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, Expat, RFC-Reference, TinySCHEME, permissive
+gpgconf 2.2.40-1.1+deb12u2 — BSD-3-Clause, CC0-1.0, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, Expat, RFC-Reference, TinySCHEME, permissive
+gpgsm 2.2.40-1.1+deb12u2 — BSD-3-Clause, CC0-1.0, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, Expat, RFC-Reference, TinySCHEME, permissive
+gpgv 2.2.40-1.1+deb12u2 — BSD-3-Clause, CC0-1.0, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, Expat, RFC-Reference, TinySCHEME, permissive
+grep 3.8-5 — GPL-3.0-only, GPL-3.0-or-later
+gui UNKNOWN — scanner unresolved
+gui-32 UNKNOWN — scanner unresolved
+gui-64 UNKNOWN — scanner unresolved
+gui-arm64 UNKNOWN — scanner unresolved
+gzip 1.12-1 — GPL-3.0-only, GPL-3.0-or-later, FSF-manpages, GFDL-1.3+-no-invariant, GFDL-3
+hostname 3.23+nmu1 — GPL-2.0-only
+idna 3.20 — BSD-3-Clause
+init-system-helpers 1.65.2+deb12u1 — BSD-3-Clause, GPL-2.0-only, GPL-2.0-or-later
+jmespath 1.1.0 — MIT
+jsonschema 4.26.0 — MIT
+jsonschema-specifications 2025.9.1 — MIT
+kubernetes 37.0.0 — Apache-2.0
+less 590-2.1~deb12u2 — GPL-3.0-only, GPL-3.0-or-later, Spencer-86, X11, Less, public-domain
+libacl1 2.3.1-3 — GPL-2.0-only, GPL-2.0-or-later, LGPL-2.0-or-later, LGPL-2.1-only
+libapt-pkg6.0 2.6.1 — BSD-3-Clause, GPL-2.0-only, GPL-2.0-or-later, Expat
+libassuan0 2.5.5-5 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, GAP, GAP~FSF
+libattr1 1:2.5.1-4 — GPL-2.0-only, GPL-2.0-or-later, LGPL-2.0-or-later, LGPL-2.1-only
+libaudit-common 1:3.0.9-1 — GPL-1.0-only, GPL-2.0-only, LGPL-2.1-only
+libaudit1 1:3.0.9-1 — GPL-1.0-only, GPL-2.0-only, LGPL-2.1-only
+libblkid1 2.38.1-5+deb12u3 — BSD-3-Clause, BSD-4-Clause, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, MIT, BSLA, LGPL, public-domain
+libbsd0 0.11.7-2 — BSD-2-Clause, BSD-3-Clause, Beerware, ISC, libutil-David-Nugent, BSD-2-clause-author, BSD-2-clause-verbatim, BSD-3-clause-John-Birrell, BSD-3-clause-Regents, BSD-3-clause-author, BSD-4-clause-Niels-Provos, Expat, ISC-Original, public-domain
+libbz2-1.0 1.0.8-5+b1 — GPL-2.0-only, BSD-variant
+libc-bin 2.36-9+deb12u14 — sha256:40c7e1f2118531f038ca22999bd976901254e1bc5cd1b0f0211bdd064c599987
+libc-l10n 2.36-9+deb12u14 — sha256:40c7e1f2118531f038ca22999bd976901254e1bc5cd1b0f0211bdd064c599987
+libc6 2.36-9+deb12u14 — sha256:40c7e1f2118531f038ca22999bd976901254e1bc5cd1b0f0211bdd064c599987
+libcap-ng0 0.8.3-1+b3 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, LGPL-2.1-only, LGPL-2.1-or-later
+libcap2 1:2.66-4+deb12u3+b1 — BSD-3-Clause, GPL-2.0-only, GPL-2.0-or-later
+libcom-err2 1.47.0-2+b2 — Apache-2.0, BSD-3-Clause, GPL-2.0-only, GPL-2.0-or-later, ISC, Kazlib, LGPL-2.0-only, Latex2e, GPL
+libcrypt1 1:4.4.33-2 — sha256:5a5e7ca0e9f3f9679977e3a3e9ede45ad92885a3297ea78e766979f9866c5a16
+libdb5.3 5.3.28+dfsg2-1 — BSD-3-Clause, GPL-3.0-only, MS-PL, Sleepycat, X11, Zlib, Artistic, BSD-3-clause-fjord, GPL, MIT-old, TCL-like
+libdebconfclient0 0.270 — BSD-2-Clause, GPL-2.0-only, GPL-2.0-or-later
+libedit2 3.1-20221030-2 — BSD-3-Clause
+libexpat1 2.5.0-1+deb12u4 — MIT
+libext2fs2 1.47.0-2+b2 — Apache-2.0, BSD-3-Clause, GPL-2.0-only, GPL-2.0-or-later, ISC, Kazlib, LGPL-2.0-only, Latex2e, GPL
+libffi8 3.4.4-1 — GPL-2.0-or-later, GPL-3.0-or-later, MPL-1.1, X11, Expat, GPL, public-domain
+libgcc-s1 12.2.0-14+deb12u1 — sha256:da8191658b3452ce9caf31638ba61dab31a38c619fa39df119812e050f592fd3
+libgcrypt20 1.10.1-3+deb12u1 — sha256:95db2f9da663f2bfe2aabe9c72fce9d6c9ae767b912f397d7823f50bd55a1a7d
+libgdbm-compat4 1.23-3 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, GFDL-NIV-1.3+
+libgdbm6 1.23-3 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, GFDL-NIV-1.3+
+libgmp10 2:6.2.1+dfsg1-1.1 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-3.0-only, LGPL-3.0-or-later
+libgnutls30 3.7.9-2+deb12u7 — sha256:bb7e5c24b3e27bbba5671dd710d159a0066833bda4caa1d55d8027ffed539337
+libgpg-error0 1.46-1 — BSD-3-Clause, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, g10-permissive
+libgssapi-krb5-2 1.20.1-2+deb12u5 — sha256:936728f4181718f42951b881c1e8f1386bf6b2723c4fbc533c374d6f42c71816
+libhogweed6 3.8.1-2 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, LGPL-3.0-or-later, Expat, GAP, GPL, LGPL, public-domain
+libicu72 72.1-3+deb12u1 — GPL-3.0-only, MIT
+libidn2-0 2.3.3-1+b1 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-3.0-only, LGPL-3.0-or-later, Unicode
+libjson-perl 4.10000-1 — GPL-1.0-only, GPL-1.0-or-later, Artistic
+libk5crypto3 1.20.1-2+deb12u5 — sha256:936728f4181718f42951b881c1e8f1386bf6b2723c4fbc533c374d6f42c71816
+libkeyutils1 1.6.3-2 — GPL-2.0-only, GPL-2.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later
+libkrb5-3 1.20.1-2+deb12u5 — sha256:936728f4181718f42951b881c1e8f1386bf6b2723c4fbc533c374d6f42c71816
+libkrb5support0 1.20.1-2+deb12u5 — sha256:936728f4181718f42951b881c1e8f1386bf6b2723c4fbc533c374d6f42c71816
+libksba8 1.6.3-2 — sha256:b84c864ba35df1f3160ad00a4e4ee32e8a95783c3d3604301b2909163ff198cf
+libldap-2.5-0 2.5.13+dfsg-5 — BSD-3-Clause, Beerware, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, BSD-3-clause-California, BSD-3-clause-variant, BSD-4-clause-California, Expat, Expat-ISC, Expat-UNM, F5, FSF-unlimited, JCG, MIT-XC, NeoSoft-permissive, OpenLDAP-2.8, UMich, public-domain
+libllvm19 1:19.1.7-3~deb12u1 — Apache-2.0, BSD-3-Clause, MIT, APACHE-2-LLVM-EXCEPTIONS, Python, solar-public-domain
+liblz4-1 1.9.4-1 — BSD-2-Clause, GPL-2.0-only, GPL-2.0-or-later
+liblzma5 5.4.1-1+deb12u2 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, LGPL-2.0-only, LGPL-2.1-only, LGPL-2.1-or-later, Autoconf, PD, PD-debian, config-h, noderivs, permissive-fsf, permissive-nowarranty, probably-PD
+libmd0 1.0.4-2 — BSD-2-Clause, BSD-3-Clause, Beerware, ISC, BSD-3-clause-Aaron-D-Gifford, public-domain-md4, public-domain-md5, public-domain-sha1
+libmount1 2.38.1-5+deb12u3 — BSD-3-Clause, BSD-4-Clause, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, MIT, BSLA, LGPL, public-domain
+libncursesw6 6.4-4 — BSD-3-Clause, X11, MIT/X11
+libnettle8 3.8.1-2 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, LGPL-3.0-or-later, Expat, GAP, GPL, LGPL, public-domain
+libnpth0 1.6-3 — LGPL-2.1-only, LGPL-2.1-or-later
+libnsl2 1.3.0-2 — BSD-3-Clause, GPL-2.0-only, GPL-3.0-only, LGPL-2.1-only, LGPL-2.1-or-later, MIT, GPL-2+-autoconf-exception, GPL-2+-libtool-exception, GPL-3+-autoconf-exception, permissive-autoconf-m4, permissive-autoconf-m4-no-warranty, permissive-configure, permissive-fsf, permissive-makefile-in
+libnss-wrapper 1.1.12-1 — BSD-3-clauses
+libp11-kit0 0.24.1-2 — Apache-2.0, BSD-3-Clause, ISC, LGPL-2.1-only, LGPL-2.1-or-later, ISC+IBM, permissive-like-automake-output, same-as-rest-of-p11kit
+libpam-modules 1.5.2-6+deb12u2 — BSD-3-Clause, Beerware, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, BSD-tcp_wrappers, GPL, public-domain
+libpam-modules-bin 1.5.2-6+deb12u2 — BSD-3-Clause, Beerware, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, BSD-tcp_wrappers, GPL, public-domain
+libpam-runtime 1.5.2-6+deb12u2 — BSD-3-Clause, Beerware, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, BSD-tcp_wrappers, GPL, public-domain
+libpam0g 1.5.2-6+deb12u2 — BSD-3-Clause, Beerware, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, BSD-tcp_wrappers, GPL, public-domain
+libpcre2-8-0 10.42-1+deb12u2 — BSD-2-Clause, BSD-3-Clause, X11, BSD-3-clause-Cambridge, public-domain
+libperl5.36 5.36.0-7+deb12u4 — Artistic-2.0, Artistic-dist, BSD-3-Clause, GPL-1.0-only, GPL-1.0-or-later, GPL-2.0-only, GPL-2.0-or-later, LGPL-2.1-only, Zlib, Artistic, BSD-3-clause-GENERIC, BSD-3-clause-with-weird-numbering, BSD-4-clause-POWERDOG, BZIP, DONT-CHANGE-THE-GPL, Expat, GPL-3+-WITH-BISON-EXCEPTION, HSIEH-BSD, HSIEH-DERIVATIVE, REGCOMP, REGCOMP,, RRA-KEEP-THIS-NOTICE, SDBM-PUBLIC-DOMAIN, TEXT-TABS, Unicode
+libpq5 18.6-1.pgdg12+2 — BSD-2-Clause, BSD-3-Clause, GPL-1.0-only, PostgreSQL, TCL, Artistic, Custom-Unicode, Custom-pg_dump, Custom-regex, double-metaphone, nagaysau-ishii
+libpython3-stdlib 3.11.2-1+b1 — sha256:5b274dbb44b28a54b795b9471c07ab045054d6b8a86273cb9feb632b6fd2760d
+libpython3.11-minimal 3.11.2-6+deb12u9 — sha256:f1cbf908e1daa8789b389fdcf17811ed36b675d736b39a103591399861350382
+libpython3.11-stdlib 3.11.2-6+deb12u9 — sha256:f1cbf908e1daa8789b389fdcf17811ed36b675d736b39a103591399861350382
+libreadline8 8.2-1.3 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, GFDL, GFDL-NIV-1.3+, ISC-no-attribution
+libsasl2-2 2.1.28+dfsg-10 — BSD-2-Clause, BSD-3-Clause, BSD-4-Clause, BSD-4-Clause-UC, FSFULLR, GPL-3.0-only, GPL-3.0-or-later, MIT-CMU, OpenSSL, RSA-MD, BSD-2.2-clause, BSD-3-clause-JANET, BSD-3-clause-PADL, BSD-4-clause-KTH, IBM-as-is, MIT-Export, MIT-OpenVision, OpenLDAP, SSLeay
+libsasl2-modules-db 2.1.28+dfsg-10 — BSD-2-Clause, BSD-3-Clause, BSD-4-Clause, BSD-4-Clause-UC, FSFULLR, GPL-3.0-only, GPL-3.0-or-later, MIT-CMU, OpenSSL, RSA-MD, BSD-2.2-clause, BSD-3-clause-JANET, BSD-3-clause-PADL, BSD-4-clause-KTH, IBM-as-is, MIT-Export, MIT-OpenVision, OpenLDAP, SSLeay
+libseccomp2 2.5.4-1+deb12u1 — LGPL-2.1-only
+libselinux1 3.4-1+b6 — sha256:641806738b0c6a3d03168c2649e6b94205198bb66cd557e6bae3a20b71c9bb0b
+libsemanage-common 3.4-1 — sha256:e00e6a86c598f9e24ced0180a70a5f2f2e45e133d93adf2b17ce8a06ce4b1b51
+libsemanage2 3.4-1+b5 — sha256:e00e6a86c598f9e24ced0180a70a5f2f2e45e133d93adf2b17ce8a06ce4b1b51
+libsepol2 3.4-2.1 — GPL-2.0-only, GPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, Zlib
+libsmartcols1 2.38.1-5+deb12u3 — BSD-3-Clause, BSD-4-Clause, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, MIT, BSLA, LGPL, public-domain
+libsqlite3-0 3.40.1-2+deb12u2 — GPL-2.0-only, GPL-2.0-or-later, public-domain
+libss2 1.47.0-2+b2 — Apache-2.0, BSD-3-Clause, GPL-2.0-only, GPL-2.0-or-later, ISC, Kazlib, LGPL-2.0-only, Latex2e, GPL
+libssl3 3.0.22-1~deb12u1 — Apache-2.0, GPL-1.0-only, GPL-1.0-or-later, Artistic
+libstdc++6 12.2.0-14+deb12u1 — sha256:da8191658b3452ce9caf31638ba61dab31a38c619fa39df119812e050f592fd3
+libsystemd0 252.39-1~deb12u2 — CC0-1.0, GPL-2.0-only, GPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, Expat, public-domain
+libtasn1-6 4.19.0-2+deb12u1 — sha256:572ad60ad184d8f52c6dc66d83a61a68f137db560b3452ce00588c9ecf128a65
+libtinfo6 6.4-4 — BSD-3-Clause, X11, MIT/X11
+libtirpc-common 1.3.3+ds-1 — BSD-3-Clause, GPL-2.0-only, LGPL-2.1-only
+libtirpc3 1.3.3+ds-1 — BSD-3-Clause, GPL-2.0-only, LGPL-2.1-only
+libudev1 252.39-1~deb12u2 — CC0-1.0, GPL-2.0-only, GPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, Expat, public-domain
+libunistring2 1.0-2 — GFDL-1.2-only, GFDL-1.2-or-later, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-3.0-only, LGPL-3.0-or-later, MIT, FreeSoftware
+libuuid1 2.38.1-5+deb12u3 — BSD-3-Clause, BSD-4-Clause, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, MIT, BSLA, LGPL, public-domain
+libxml2 2.9.14+dfsg-1.3~deb12u6 — ISC, MIT-1
+libxslt1.1 1.1.35-1+deb12u4 — sha256:4b82c8dd6e55001a5921bea1d6db20be5c51e5976d892e870324026c23f37b6f
+libxxhash0 0.8.1-1 — BSD-2-Clause, GPL-2.0-only
+libz3-4 4.8.12-3.1 — GPL-2.0-only, GPL-2.0-or-later, Expat
+libzstd1 1.5.4+dfsg2-5 — BSD-3-Clause, GPL-2.0-only, Zlib, Expat
+locales 2.36-9+deb12u14 — sha256:40c7e1f2118531f038ca22999bd976901254e1bc5cd1b0f0211bdd064c599987
+login 1:4.13+dfsg1-1+deb12u2 — BSD-3-Clause, GPL-1.0-only, GPL-2.0-only, GPL-2.0-or-later, public-domain
+logsave 1.47.0-2+b2 — Apache-2.0, BSD-3-Clause, GPL-2.0-only, GPL-2.0-or-later, ISC, Kazlib, LGPL-2.0-only, Latex2e, GPL
+mawk 1.3.4.20200120-3.1 — CC-BY-3.0, GPL-2.0-only, X11
+media-types 10.0.0 — ad-hoc
+mount 2.38.1-5+deb12u3 — BSD-3-Clause, BSD-4-Clause, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, MIT, BSLA, LGPL, public-domain
+multidict 6.9.1 — Apache License 2.0
+ncurses-base 6.4-4 — BSD-3-Clause, X11, MIT/X11
+ncurses-bin 6.4-4 — BSD-3-Clause, X11, MIT/X11
+netbase 6.4 — GPL-2.0-only
+oauthlib 4.0.0 — BSD-3-Clause
+openssl 3.0.22-1~deb12u1 — Apache-2.0, GPL-1.0-only, GPL-1.0-or-later, Artistic
+passwd 1:4.13+dfsg1-1+deb12u2 — BSD-3-Clause, GPL-1.0-only, GPL-2.0-only, GPL-2.0-or-later, public-domain
+perl 5.36.0-7+deb12u4 — Artistic-2.0, Artistic-dist, BSD-3-Clause, GPL-1.0-only, GPL-1.0-or-later, GPL-2.0-only, GPL-2.0-or-later, LGPL-2.1-only, Zlib, Artistic, BSD-3-clause-GENERIC, BSD-3-clause-with-weird-numbering, BSD-4-clause-POWERDOG, BZIP, DONT-CHANGE-THE-GPL, Expat, GPL-3+-WITH-BISON-EXCEPTION, HSIEH-BSD, HSIEH-DERIVATIVE, REGCOMP, REGCOMP,, RRA-KEEP-THIS-NOTICE, SDBM-PUBLIC-DOMAIN, TEXT-TABS, Unicode
+perl-base 5.36.0-7+deb12u4 — Artistic-2.0, Artistic-dist, BSD-3-Clause, GPL-1.0-only, GPL-1.0-or-later, GPL-2.0-only, GPL-2.0-or-later, LGPL-2.1-only, Zlib, Artistic, BSD-3-clause-GENERIC, BSD-3-clause-with-weird-numbering, BSD-4-clause-POWERDOG, BZIP, DONT-CHANGE-THE-GPL, Expat, GPL-3+-WITH-BISON-EXCEPTION, HSIEH-BSD, HSIEH-DERIVATIVE, REGCOMP, REGCOMP,, RRA-KEEP-THIS-NOTICE, SDBM-PUBLIC-DOMAIN, TEXT-TABS, Unicode
+perl-modules-5.36 5.36.0-7+deb12u4 — Artistic-2.0, Artistic-dist, BSD-3-Clause, GPL-1.0-only, GPL-1.0-or-later, GPL-2.0-only, GPL-2.0-or-later, LGPL-2.1-only, Zlib, Artistic, BSD-3-clause-GENERIC, BSD-3-clause-with-weird-numbering, BSD-4-clause-POWERDOG, BZIP, DONT-CHANGE-THE-GPL, Expat, GPL-3+-WITH-BISON-EXCEPTION, HSIEH-BSD, HSIEH-DERIVATIVE, REGCOMP, REGCOMP,, RRA-KEEP-THIS-NOTICE, SDBM-PUBLIC-DOMAIN, TEXT-TABS, Unicode
+pgbk 0.1.0 — Apache-2.0
+pgbk 0.1.0 — Apache-2.0
+pglast 8.5 — GPL-3.0-or-later
+pinentry-curses 1.2.1-1 — GPL-2.0-only, GPL-2.0-or-later, LGPL-3.0-only, LGPL-3.0-or-later, X11
+pip 23.0.1 — MIT
+postgresql-17 17.11-1.pgdg12+2 — BSD-2-Clause, BSD-3-Clause, GPL-1.0-only, PostgreSQL, TCL, Artistic, Custom-Unicode, Custom-pg_dump, Custom-regex, double-metaphone, nagaysau-ishii
+postgresql-client-17 17.11-1.pgdg12+2 — BSD-2-Clause, BSD-3-Clause, GPL-1.0-only, PostgreSQL, TCL, Artistic, Custom-Unicode, Custom-pg_dump, Custom-regex, double-metaphone, nagaysau-ishii
+postgresql-client-common 293.pgdg12+1 — GPL-2.0-only, GPL-2.0-or-later
+postgresql-common 293.pgdg12+1 — GPL-2.0-only, GPL-2.0-or-later
+propcache 0.5.4 — Apache-2.0
+psycopg 3.3.6 — LGPL-3.0-only
+psycopg-binary 3.3.6 — LGPL-3.0-only
+pydantic 2.14.0 — MIT
+pydantic-core 2.50.0 — MIT
+python-dateutil 2.9.0.post0 — Dual License
+python3 3.11.2-1+b1 — sha256:5b274dbb44b28a54b795b9471c07ab045054d6b8a86273cb9feb632b6fd2760d
+python3-distutils 3.11.2-3 — sha256:183860dfd4168e0608fb99fe53cef26088ba7275ce38a41e3c737d4217c0ccc1
+python3-lib2to3 3.11.2-3 — sha256:183860dfd4168e0608fb99fe53cef26088ba7275ce38a41e3c737d4217c0ccc1
+python3-minimal 3.11.2-1+b1 — sha256:5b274dbb44b28a54b795b9471c07ab045054d6b8a86273cb9feb632b6fd2760d
+python3-pip-whl 23.0.1+dfsg-1 — Apache-2.0, ISC, LGPL-2.1-only, LGPL-2.1-or-later, MPL-2.0, BSD-2, BSD-3, Expat, Python
+python3-setuptools-whl 66.1.1-1+deb12u2 — Apache-2.0, BSD-3-Clause, MIT
+python3-venv 3.11.2-1+b1 — sha256:5b274dbb44b28a54b795b9471c07ab045054d6b8a86273cb9feb632b6fd2760d
+python3.11 3.11.2-6+deb12u9 — sha256:f1cbf908e1daa8789b389fdcf17811ed36b675d736b39a103591399861350382
+python3.11-minimal 3.11.2-6+deb12u9 — sha256:f1cbf908e1daa8789b389fdcf17811ed36b675d736b39a103591399861350382
+python3.11-venv 3.11.2-6+deb12u9 — sha256:f1cbf908e1daa8789b389fdcf17811ed36b675d736b39a103591399861350382
+pyyaml 6.0.3 — MIT
+readline-common 8.2-1.3 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, GFDL, GFDL-NIV-1.3+, ISC-no-attribution
+referencing 0.37.0 — MIT
+requests 2.34.2 — Apache-2.0
+requests-oauthlib 2.0.0 — ISC
+rpds-py 2026.9.1 — MIT
+s3transfer 0.19.2 — Apache License 2.0
+sed 4.9-1+deb12u1 — BSD-4-Clause-UC, BSL-1.0, GFDL-1.3-only, GPL-3.0-only, GPL-3.0-or-later, ISC, X11, GFDL-NIV-1.3+, pcre
+sensible-utils 0.0.17+nmu1 — GPL-2.0-only, GPL-2.0-or-later, All-permissive, configure, installsh
+setuptools 66.1.1 — MIT
+six 1.17.0 — MIT
+ssl-cert 1.1.2 — BSD-3-Clause
+stdlib go1.24.6 — BSD-3-Clause
+stdlib go1.25.11 — BSD-3-Clause
+sysvinit-utils 3.06-4 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only
+tar 1.34+dfsg-1.2+deb12u1 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-3.0-only, LGPL-3.0-or-later
+typing-extensions 4.16.0 — PSF-2.0
+typing-inspection 0.4.4 — MIT
+tzdata 2026c-0+deb12u1 — public-domain
+ucf 3.0043+nmu1+deb12u1 — GPL-2.0-only
+urllib3 2.8.0 — MIT
+usr-is-merged 37~deb12u1 — GPL-2.0-only, GPL-2.0-or-later
+util-linux 2.38.1-5+deb12u3 — BSD-3-Clause, BSD-4-Clause, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, MIT, BSLA, LGPL, public-domain
+util-linux-extra 2.38.1-5+deb12u3 — BSD-3-Clause, BSD-4-Clause, GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, GPL-3.0-or-later, LGPL-2.0-only, LGPL-2.0-or-later, LGPL-2.1-only, LGPL-2.1-or-later, LGPL-3.0-only, LGPL-3.0-or-later, MIT, BSLA, LGPL, public-domain
+websocket-client 1.9.2 — Apache-2.0
+xz-utils 5.4.1-1+deb12u2 — GPL-2.0-only, GPL-2.0-or-later, GPL-3.0-only, LGPL-2.0-only, LGPL-2.1-only, LGPL-2.1-or-later, Autoconf, PD, PD-debian, config-h, noderivs, permissive-fsf, permissive-nowarranty, probably-PD
+yarl 1.25.1 — Apache-2.0
+zlib1g 1:1.2.13.dfsg-1 — Zlib
+zstd 1.5.4+dfsg2-5 — BSD-3-Clause, GPL-2.0-only, Zlib, Expat

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "postgresMajor": 16,
+  "cases": [
+    {
+      "case": "blocking-libpq-query-deadline-cancellation",
+      "status": "passed"
+    },
+    {
+      "case": "multi-database-restricted-backup-s3",
+      "status": "passed"
+    },
+    {
+      "case": "native-logical-restore",
+      "status": "passed"
+    },
+    {
+      "case": "snapshot-query-exact-pattern-partition-exclusion",
+      "status": "passed"
+    },
+    {
+      "case": "all-mode-exact-exclusion",
+      "status": "passed"
+    },
+    {
+      "case": "empty-selection-and-raw-row-overflow-fail-closed",
+      "status": "passed"
+    },
+    {
+      "case": "restricted-rls-fails-without-marker",
+      "status": "passed"
+    },
+    {
+      "case": "s3-physical-offline-restore",
+      "status": "passed"
+    },
+    {
+      "case": "product-logical-offline-restore-empty-and-source-guards",
+      "status": "passed"
+    },
+    {
+      "case": "logical-and-physical-automated-offline-drills",
+      "status": "passed"
+    }
+  ],
+  "tools": {
+    "pg_basebackup": "pg_basebackup (PostgreSQL) 16.15 (Debian 16.15-1.pgdg12+2)",
+    "pg_verifybackup": "pg_verifybackup (PostgreSQL) 16.15 (Debian 16.15-1.pgdg12+2)",
+    "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+  },
+  "fixture": "10000-items-two-databases-partitions-tablespace",
+  "runIds": {
+    "logical": "run-local-f8d0431da3e240d1b64eff5108ce6c9a",
+    "filtered": "run-local-f200a32e1b1e425687d6cdc81377393e",
+    "physical": "run-local-fca1be2e8a6241b48146422117222e15"
+  },
+  "physicalBytes": 76655301,
+  "elapsedSeconds": 31.985424264999892,
+  "kubernetes": "stubbed; test separately",
+  "s3": "Moto emulator",
+  "catalogPrefix": "integration/v1/test-83aab389ddd0/fixture/logical/",
+  "workerImage": "pgbk-worker:16-test",
+  "imageConfigId": "sha256:6bd89364a5f44baaee8dc5969d976088745bcc28c83cbe0adc1617153f7f0038",
+  "registryDigests": [
+    "pgbk-worker@sha256:6bd89364a5f44baaee8dc5969d976088745bcc28c83cbe0adc1617153f7f0038"
+  ]
+}

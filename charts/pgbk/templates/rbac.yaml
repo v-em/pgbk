@@ -1,0 +1,179 @@
+{{- if (dig "create" false (.Values.rbac | default dict)) }}
+{{- $root := . -}}
+{{- $coord := .Values.coordinationNamespace | default .Release.Namespace -}}
+{{- range $name, $profile := .Values.profiles }}
+{{- $target := index $root.Values.targets $profile.target -}}
+{{- $sa := printf "%s-%s" $root.Release.Name $name -}}
+{{- $repository := include "pgbk.repositoryLease" (dict "root" $root "profile" $profile "name" $name) -}}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $sa }}-repository
+  namespace: {{ $coord }}
+rules:
+  - apiGroups: [coordination.k8s.io]
+    resources: [leases]
+    resourceNames: [{{ $repository }}]
+    verbs: [get, update]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $sa }}-repository
+  namespace: {{ $coord }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" "repository") }}
+    namespace: {{ $root.Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ $sa }}-repository
+  apiGroup: rbac.authorization.k8s.io
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $sa }}-coordination
+  namespace: {{ $coord }}
+rules:
+  - apiGroups: [coordination.k8s.io]
+    resources: [leases]
+    resourceNames: [{{ include "pgbk.sourceLease" $target.concurrencyKey }}, {{ $repository }}]
+    verbs: [get, update]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $sa }}-coordination
+  namespace: {{ $coord }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" "backup") }}
+    namespace: {{ $root.Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ $sa }}-coordination
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $sa }}-job-status
+  namespace: {{ $root.Release.Namespace }}
+rules:
+  - apiGroups: [batch]
+    resources: [jobs]
+    verbs: [get]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $sa }}-job-status
+  namespace: {{ $root.Release.Namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" "backup") }}
+    namespace: {{ $root.Release.Namespace }}
+  - kind: ServiceAccount
+    name: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" "repository") }}
+    namespace: {{ $root.Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ $sa }}-job-status
+  apiGroup: rbac.authorization.k8s.io
+{{- if eq $profile.scratch.type "existingClaim" }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $sa }}-scratch
+  namespace: {{ $root.Release.Namespace }}
+rules:
+  - apiGroups: [""]
+    resources: [persistentvolumeclaims]
+    resourceNames: [{{ $profile.scratch.claimName }}]
+    verbs: [get]
+  - apiGroups: [""]
+    resources: [pods]
+    verbs: [list]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $sa }}-scratch
+  namespace: {{ $root.Release.Namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" "backup") }}
+    namespace: {{ $root.Release.Namespace }}
+  - kind: ServiceAccount
+    name: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" "repository") }}
+    namespace: {{ $root.Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ $sa }}-scratch
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- if and $profile.verification $profile.verification.enabled }}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $sa }}-verify-coordination
+  namespace: {{ $coord }}
+rules:
+  - apiGroups: [coordination.k8s.io]
+    resources: [leases]
+    resourceNames: [{{ $repository }}]
+    verbs: [get, update]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $sa }}-verify-coordination
+  namespace: {{ $coord }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" "verify") }}
+    namespace: {{ $profile.verification.namespace }}
+roleRef:
+  kind: Role
+  name: {{ $sa }}-verify-coordination
+  apiGroup: rbac.authorization.k8s.io
+{{- if eq $profile.verification.scratch.type "existingClaim" }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $sa }}-verify-scratch
+  namespace: {{ $profile.verification.namespace }}
+rules:
+  - apiGroups: [""]
+    resources: [persistentvolumeclaims]
+    resourceNames: [{{ $profile.verification.scratch.claimName }}]
+    verbs: [get]
+  - apiGroups: [""]
+    resources: [pods]
+    verbs: [list]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $sa }}-verify-scratch
+  namespace: {{ $profile.verification.namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" "verify") }}
+    namespace: {{ $profile.verification.namespace }}
+roleRef:
+  kind: Role
+  name: {{ $sa }}-verify-scratch
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

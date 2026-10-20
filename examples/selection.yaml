@@ -1,0 +1,15 @@
+mode: selected
+largeObjects: none
+include:
+  tables:
+    - schema: public
+      table: invoices
+  query: |
+    SELECT schemaname::text AS schema_name,
+           tablename::text AS table_name
+    FROM pg_catalog.pg_tables
+    WHERE schemaname = 'reporting'
+exclude:
+  tables:
+    - schema: reporting
+      table: temporary_totals

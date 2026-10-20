@@ -1,0 +1,1094 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "installationId": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+    },
+    "coordinationNamespace": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+    },
+    "coordination": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "createLeases": {
+          "type": "boolean"
+        }
+      },
+      "required": []
+    },
+    "rbac": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "create": {
+          "type": "boolean"
+        }
+      },
+      "required": []
+    },
+    "images": {
+      "type": "object",
+      "patternProperties": {
+        "^(14|15|16|17|18)$": {
+          "type": "string",
+          "pattern": "^[^\\s@]+@sha256:[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "networkPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "egress": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": []
+    },
+    "storage": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z0-9][a-z0-9-]{0,47}$": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "bucket": {
+              "type": "string",
+              "minLength": 1
+            },
+            "prefix": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]+(/[a-zA-Z0-9_-]+)*$"
+            },
+            "endpoint": {
+              "type": "string",
+              "pattern": "^https?://[^/@]+(:[0-9]+)?/?$"
+            },
+            "region": {
+              "type": "string",
+              "minLength": 1
+            },
+            "addressingStyle": {
+              "enum": [
+                "path",
+                "virtual"
+              ]
+            },
+            "credentialsSecretRef": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+            },
+            "tls": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "verify": {
+                  "const": true
+                },
+                "caSecretRef": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                }
+              },
+              "required": []
+            }
+          },
+          "required": [
+            "bucket",
+            "prefix",
+            "endpoint",
+            "region",
+            "credentialsSecretRef"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "targets": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z0-9][a-z0-9-]{0,47}$": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sourceId": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+            },
+            "concurrencyKey": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+            },
+            "host": {
+              "type": "string",
+              "minLength": 1
+            },
+            "port": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65535
+            },
+            "serverMajor": {
+              "enum": [
+                14,
+                15,
+                16,
+                17,
+                18
+              ]
+            },
+            "maintenanceDatabase": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^[^\\x00\\r\\n]+$"
+            },
+            "credentialsSecretRef": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+            },
+            "expectedSystemIdentifier": {
+              "type": "string",
+              "pattern": "^[0-9]+$"
+            },
+            "physicalEndpoint": {
+              "enum": [
+                "direct-primary"
+              ]
+            },
+            "tls": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "mode": {
+                  "enum": [
+                    "disable",
+                    "allow",
+                    "prefer",
+                    "require",
+                    "verify-ca",
+                    "verify-full"
+                  ]
+                },
+                "caSecretRef": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                },
+                "clientSecretRef": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                }
+              },
+              "required": []
+            }
+          },
+          "required": [
+            "sourceId",
+            "concurrencyKey",
+            "host",
+            "serverMajor",
+            "credentialsSecretRef"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "profiles": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z0-9][a-z0-9-]{0,47}$": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "target": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+            },
+            "kind": {
+              "enum": [
+                "logical",
+                "physical-full"
+              ]
+            },
+            "storage": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+            },
+            "logical": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "databases": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^[^\\x00\\r\\n]+$"
+                  }
+                },
+                "transfer": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "mode": {
+                      "enum": [
+                        "staged",
+                        "direct"
+                      ]
+                    },
+                    "partSizeMiB": {
+                      "type": "integer",
+                      "minimum": 5,
+                      "maximum": 512
+                    }
+                  },
+                  "required": []
+                },
+                "format": {
+                  "enum": [
+                    "custom",
+                    "directory"
+                  ]
+                },
+                "jobs": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 64
+                },
+                "compression": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "method": {
+                      "enum": [
+                        "none",
+                        "gzip",
+                        "lz4",
+                        "zstd"
+                      ]
+                    },
+                    "level": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "method"
+                  ]
+                },
+                "globals": {
+                  "enum": [
+                    "disabled",
+                    "enabled"
+                  ]
+                },
+                "tableSelection": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "queryTimeoutSeconds": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "maxQueryRows": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 100000
+                    },
+                    "byDatabase": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "mode": {
+                            "enum": [
+                              "all",
+                              "selected"
+                            ]
+                          },
+                          "largeObjects": {
+                            "enum": [
+                              "none",
+                              "all"
+                            ]
+                          },
+                          "include": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "tables": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "schema": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "pattern": "^[^\\x00\\r\\n]+$"
+                                    },
+                                    "table": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "pattern": "^[^\\x00\\r\\n]+$"
+                                    }
+                                  },
+                                  "required": [
+                                    "schema",
+                                    "table"
+                                  ]
+                                }
+                              },
+                              "query": {
+                                "type": "string",
+                                "minLength": 1
+                              }
+                            },
+                            "required": []
+                          },
+                          "exclude": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                              "tables": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "additionalProperties": false,
+                                  "properties": {
+                                    "schema": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "pattern": "^[^\\x00\\r\\n]+$"
+                                    },
+                                    "table": {
+                                      "type": "string",
+                                      "minLength": 1,
+                                      "pattern": "^[^\\x00\\r\\n]+$"
+                                    }
+                                  },
+                                  "required": [
+                                    "schema",
+                                    "table"
+                                  ]
+                                }
+                              },
+                              "query": {
+                                "type": "string",
+                                "minLength": 1
+                              }
+                            },
+                            "required": []
+                          }
+                        },
+                        "required": []
+                      }
+                    }
+                  },
+                  "required": [
+                    "byDatabase"
+                  ]
+                }
+              },
+              "required": [
+                "databases"
+              ]
+            },
+            "schedule": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "cron": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "timeZone": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "startingDeadlineSeconds": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "enabled"
+              ],
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "enabled": {
+                        "const": true
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "cron"
+                    ]
+                  }
+                }
+              ]
+            },
+            "execution": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "activeDeadlineSeconds": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "resources": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "requests": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "cpu": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "memory": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "cpu",
+                        "memory"
+                      ]
+                    },
+                    "limits": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "cpu": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "memory": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "cpu",
+                        "memory"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "requests",
+                    "limits"
+                  ]
+                },
+                "ttlSecondsAfterFinished": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "nodeSelector": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "resources"
+              ]
+            },
+            "scratch": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "enum": [
+                    "emptyDir",
+                    "pvc",
+                    "existingClaim"
+                  ]
+                },
+                "size": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "storageClassName": {
+                  "type": "string"
+                },
+                "claimName": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                },
+                "allowedClaims": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                  }
+                },
+                "retainFailed": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "type",
+                "size"
+              ],
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "type": {
+                        "const": "existingClaim"
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "claimName",
+                      "allowedClaims"
+                    ]
+                  }
+                }
+              ]
+            },
+            "retention": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "maxAgeDays": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "minSuccessfulBackups": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "incompleteGraceDays": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "schedule": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "cron": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "timeZone": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "startingDeadlineSeconds": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  },
+                  "required": [
+                    "enabled"
+                  ],
+                  "allOf": [
+                    {
+                      "if": {
+                        "properties": {
+                          "enabled": {
+                            "const": true
+                          }
+                        }
+                      },
+                      "then": {
+                        "required": [
+                          "cron"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              },
+              "required": []
+            },
+            "verification": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "schedule": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "cron": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "timeZone": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "startingDeadlineSeconds": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  },
+                  "required": [
+                    "enabled"
+                  ],
+                  "allOf": [
+                    {
+                      "if": {
+                        "properties": {
+                          "enabled": {
+                            "const": true
+                          }
+                        }
+                      },
+                      "then": {
+                        "required": [
+                          "cron"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "namespace": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                },
+                "image": {
+                  "type": "string",
+                  "pattern": "^[^\\s@]+@sha256:[0-9a-f]{64}$"
+                },
+                "resources": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "requests": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "cpu": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "memory": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "cpu",
+                        "memory"
+                      ]
+                    },
+                    "limits": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "cpu": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "memory": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "cpu",
+                        "memory"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "requests",
+                    "limits"
+                  ]
+                },
+                "scratch": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "emptyDir",
+                        "pvc",
+                        "existingClaim"
+                      ]
+                    },
+                    "size": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "storageClassName": {
+                      "type": "string"
+                    },
+                    "claimName": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                    },
+                    "allowedClaims": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                      }
+                    },
+                    "retainFailed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "size"
+                  ],
+                  "allOf": [
+                    {
+                      "if": {
+                        "properties": {
+                          "type": {
+                            "const": "existingClaim"
+                          }
+                        }
+                      },
+                      "then": {
+                        "required": [
+                          "claimName",
+                          "allowedClaims"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "timeoutSeconds": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "credentialsSecretRef": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                },
+                "failureDebugTtlSeconds": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "clientCredentialsSecretRef": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                },
+                "assertions": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "enabled"
+              ],
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "enabled": {
+                        "const": true
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "schedule",
+                      "namespace",
+                      "image",
+                      "resources",
+                      "scratch",
+                      "timeoutSeconds",
+                      "credentialsSecretRef",
+                      "clientCredentialsSecretRef"
+                    ]
+                  }
+                }
+              ]
+            },
+            "restore": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "namespace": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                },
+                "resources": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "requests": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "cpu": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "memory": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "cpu",
+                        "memory"
+                      ]
+                    },
+                    "limits": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "properties": {
+                        "cpu": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "memory": {
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "cpu",
+                        "memory"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "requests",
+                    "limits"
+                  ]
+                },
+                "scratch": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "type": {
+                      "enum": [
+                        "emptyDir",
+                        "pvc",
+                        "existingClaim"
+                      ]
+                    },
+                    "size": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "storageClassName": {
+                      "type": "string"
+                    },
+                    "claimName": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                    },
+                    "allowedClaims": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                      }
+                    },
+                    "retainFailed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "size"
+                  ],
+                  "allOf": [
+                    {
+                      "if": {
+                        "properties": {
+                          "type": {
+                            "const": "existingClaim"
+                          }
+                        }
+                      },
+                      "then": {
+                        "required": [
+                          "claimName",
+                          "allowedClaims"
+                        ]
+                      }
+                    }
+                  ]
+                },
+                "timeoutSeconds": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "credentialsSecretRefs": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                  }
+                },
+                "allowedDestinationClaims": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                  }
+                }
+              },
+              "required": [
+                "enabled"
+              ],
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "enabled": {
+                        "const": true
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "namespace",
+                      "resources",
+                      "scratch",
+                      "timeoutSeconds",
+                      "credentialsSecretRefs",
+                      "allowedDestinationClaims"
+                    ]
+                  }
+                }
+              ]
+            },
+            "download": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "allowedDestinationClaims": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                  }
+                }
+              },
+              "required": [
+                "allowedDestinationClaims"
+              ]
+            },
+            "serviceAccounts": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "create": {
+                  "type": "boolean"
+                },
+                "backup": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                },
+                "repository": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                },
+                "verify": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                },
+                "restore": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                }
+              },
+              "required": []
+            }
+          },
+          "required": [
+            "target",
+            "kind",
+            "storage",
+            "execution",
+            "scratch"
+          ],
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "const": "logical"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "logical"
+                ]
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "kind": {
+                    "const": "physical-full"
+                  }
+                }
+              },
+              "then": {
+                "not": {
+                  "required": [
+                    "logical"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "installationId",
+    "targets",
+    "storage",
+    "profiles"
+  ],
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "pgbk v1 configuration"
+}

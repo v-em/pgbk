@@ -1,0 +1,8 @@
+pgbk
+Copyright 2026 pgbk contributors
+
+Original project code is licensed under Apache-2.0; see LICENSE.
+Worker images include separately licensed PostgreSQL, WAL-G, Python and dependencies.
+See release SBOMs and THIRD-PARTY-NOTICES.txt for component versions and notices.
+Dependency license/source files remain in installed distributions and OS packages.
+No provider certification is implied by this development distribution.

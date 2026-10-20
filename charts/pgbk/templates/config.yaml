@@ -1,0 +1,25 @@
+{{- $root := . -}}
+{{- $namespaces := dict .Release.Namespace true -}}
+{{- range $name, $profile := .Values.profiles }}
+{{- if and $profile.verification $profile.verification.enabled }}
+{{- $_ := set $namespaces $profile.verification.namespace true }}
+{{- end }}
+{{- if and $profile.restore $profile.restore.enabled }}
+{{- $_ := set $namespaces $profile.restore.namespace true }}
+{{- end }}
+{{- end }}
+{{- range $namespace, $_ := $namespaces }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "pgbk.configName" $root }}
+  namespace: {{ $namespace }}
+  annotations:
+    helm.sh/resource-policy: keep
+  labels:
+    pgbk.io/installation: {{ $root.Values.installationId }}
+immutable: true
+data:
+  config.json: {{ $root.Values | toJson | quote }}
+{{- end }}

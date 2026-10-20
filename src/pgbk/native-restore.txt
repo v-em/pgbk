@@ -1,0 +1,31 @@
+pgbk artifact format v1
+
+Logical artifacts are PostgreSQL custom archives. Restore to a separately provisioned
+empty destination with matching-major pg_restore:
+  pg_restore --exit-on-error --no-owner --no-acl --no-tablespaces --dbname=DESTINATION archive.dump
+Supply credentials through a restricted password file, never command arguments.
+Globals are optional, sensitive SQL and are never executed automatically.
+Filtered archives may require externally provisioned schemas, types, extensions,
+functions, partition parents and FK targets. Consult manifest selection metadata.
+
+Physical artifacts include base.tar, pg_wal.tar, any OID.tar tablespace files and
+backup_manifest. Verify SHA-256/size against manifest.json before extraction.
+Use a trusted tar reader rejecting traversal and unapproved links; explicitly map
+each tablespace into an empty isolated directory and rebuild pg_tblspc/OID links.
+Extract WAL into PGDATA/pg_wal and put backup_manifest in PGDATA. Set PGDATA mode
+0700 and correct non-root ownership. Run matching-major pg_verifybackup before
+changing recovery-related files. Replace source postgresql.conf, postgresql.auto.conf,
+pg_hba.conf and pg_ident.conf with destination-only settings; remove standby.signal,
+recovery.signal and recovery.conf. Disable source archive/restore commands,
+primary_conninfo, primary_slot_name and source replication before startup.
+Start a compatible PostgreSQL build with required extension binaries in isolation.
+The physical output is a prepared directory; production deployment is an operator action.
+
+These are project artifacts uploaded with WAL-G st put/get. They are not a native
+WAL-G backup-push repository; wal-g backup-fetch is not a restore command for them.
+
+Directory artifacts (postgres-directory-tar, pgbk >=0.2): verify the bundle hash,
+extract its flat regular files into a new empty directory with a trusted reader,
+and pass that directory to pg_restore instead of archive.dump. Member files are
+already compressed with the configured codec. No cloud or Kubernetes is required.
+The offline restore_download.py helper handles both custom and directory artifacts.

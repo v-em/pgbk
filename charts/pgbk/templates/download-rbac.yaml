@@ -1,0 +1,36 @@
+{{- if (dig "create" false (.Values.rbac | default dict)) }}
+{{- $root := . -}}
+{{- range $name, $profile := .Values.profiles }}
+{{- if and $profile.download $profile.download.allowedDestinationClaims }}
+{{- $role := printf "%s-%s-download" $root.Release.Name $name -}}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $role }}
+  namespace: {{ $root.Release.Namespace }}
+rules:
+  - apiGroups: [""]
+    resources: [persistentvolumeclaims]
+    resourceNames: {{ $profile.download.allowedDestinationClaims | toJson }}
+    verbs: [get]
+  - apiGroups: [""]
+    resources: [pods]
+    verbs: [list]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $role }}
+  namespace: {{ $root.Release.Namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" "repository") }}
+    namespace: {{ $root.Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ $role }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
+{{- end }}
+{{- end }}

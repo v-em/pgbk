@@ -1,0 +1,61 @@
+installationId: example-cluster
+coordinationNamespace: backups
+rbac: {create: false}
+coordination: {createLeases: false}
+images:
+  "17": registry.example/pgbk-worker-17@sha256:0000000000000000000000000000000000000000000000000000000000000000
+storage:
+  archive:
+    bucket: example-pg-backups
+    prefix: postgres
+    endpoint: https://storage.yandexcloud.net
+    region: ru-central1
+    addressingStyle: path
+    credentialsSecretRef: backup-s3
+    tls:
+      verify: true
+targets:
+  example:
+    sourceId: example-primary
+    concurrencyKey: example-primary
+    host: postgres.database.svc.cluster.local
+    port: 5432
+    serverMajor: 17
+    maintenanceDatabase: postgres
+    credentialsSecretRef: backup-postgres
+    tls:
+      mode: verify-full
+      caSecretRef: postgres-ca
+profiles:
+  example-logical:
+    serviceAccounts:
+      create: false
+      backup: existing-backup-worker
+      repository: existing-repository-worker
+    target: example
+    kind: logical
+    storage: archive
+    download:
+      allowedDestinationClaims: [download-output]
+    logical:
+      databases: [application]
+      globals: disabled
+    schedule:
+      enabled: false
+    execution:
+      resources:
+        requests:
+          cpu: "500m"
+          memory: 512Mi
+        limits:
+          cpu: "2"
+          memory: 2Gi
+    scratch:
+      type: pvc
+      size: 20Gi
+      storageClassName: standard
+    retention:
+      maxAgeDays: 30
+      minSuccessfulBackups: 3
+    verification:
+      enabled: false

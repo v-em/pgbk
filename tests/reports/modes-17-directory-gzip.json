@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "postgresMajor": 17,
+  "logicalMode": "directory",
+  "compression": {
+    "method": "gzip",
+    "level": 3
+  },
+  "cases": [
+    {
+      "case": "blocking-libpq-query-deadline-cancellation",
+      "status": "passed"
+    },
+    {
+      "case": "multi-database-restricted-backup-s3",
+      "status": "passed"
+    },
+    {
+      "case": "native-logical-restore",
+      "status": "passed"
+    },
+    {
+      "case": "snapshot-query-exact-pattern-partition-exclusion",
+      "status": "passed"
+    },
+    {
+      "case": "all-mode-exact-exclusion",
+      "status": "passed"
+    },
+    {
+      "case": "empty-selection-and-raw-row-overflow-fail-closed",
+      "status": "passed"
+    },
+    {
+      "case": "restricted-rls-fails-without-marker",
+      "status": "passed"
+    },
+    {
+      "case": "s3-physical-offline-restore",
+      "status": "passed"
+    },
+    {
+      "case": "product-logical-offline-restore-empty-and-source-guards",
+      "status": "passed"
+    },
+    {
+      "case": "logical-and-physical-automated-offline-drills",
+      "status": "passed"
+    }
+  ],
+  "tools": {
+    "pg_basebackup": "pg_basebackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+    "pg_verifybackup": "pg_verifybackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+    "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+  },
+  "fixture": "10000-items-two-databases-partitions-tablespace",
+  "runIds": {
+    "logical": "run-local-32f75a4676704a768b1bb2dc5f12e4ac",
+    "filtered": "run-local-082ddab2c85c4651bc80a9c93aabf7e1",
+    "physical": "run-local-e1beda2ecc7e4c0d93c89b75ce341257"
+  },
+  "physicalBytes": 76566767,
+  "elapsedSeconds": 30.556542637999883,
+  "kubernetes": "stubbed; test separately",
+  "s3": "Moto emulator",
+  "catalogPrefix": "integration/v1/test-d657cbc99f95/fixture/logical/",
+  "pgbkVersion": "0.2.0",
+  "workerImage": "pgbk-worker:17-test",
+  "imageConfigId": "sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8",
+  "registryDigests": [
+    "pgbk-worker@sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8"
+  ]
+}

@@ -1,0 +1,7 @@
+# Optional administrator bootstrap; the normal example disables these creations.
+rbac: {create: true}
+coordination: {createLeases: true}
+profiles:
+  example-logical:
+    serviceAccounts:
+      create: true

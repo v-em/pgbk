@@ -1,0 +1,7 @@
+apiVersion: v2
+name: pgbk
+description: Network-only PostgreSQL logical and physical backup Jobs
+type: application
+version: 0.2.0
+appVersion: 0.2.0
+kubeVersion: ">=1.27.0-0"

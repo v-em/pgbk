@@ -1,0 +1,3879 @@
+{
+  "schemaVersion": 1,
+  "version": "0.2.0",
+  "generatedAt": "2026-10-20T09:37:25.048292+00:00",
+  "productionReady": false,
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "implementationPaths": [
+        "src/pgbk/cli.py",
+        "charts/pgbk",
+        "images/Dockerfile"
+      ],
+      "acceptanceTests": [
+        "T-005",
+        "T-035"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-002",
+      "implementationPaths": [
+        "src/pgbk/config.py"
+      ],
+      "acceptanceTests": [
+        "T-005",
+        "T-035"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-003",
+      "implementationPaths": [
+        "src/pgbk/config.py"
+      ],
+      "acceptanceTests": [
+        "T-006"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-004",
+      "implementationPaths": [
+        "charts/pgbk",
+        "docs/en",
+        "images/Dockerfile"
+      ],
+      "acceptanceTests": [
+        "T-001",
+        "T-036"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-005",
+      "implementationPaths": [
+        "src/pgbk/postgres.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-002",
+        "T-007",
+        "T-041"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-006",
+      "implementationPaths": [
+        "src/pgbk/postgres.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-003",
+        "T-008",
+        "T-009"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-007",
+      "implementationPaths": [
+        "src/pgbk/postgres.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-002",
+        "T-010",
+        "T-035"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-008",
+      "implementationPaths": [
+        "src/pgbk/postgres.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-003",
+        "T-010"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-009",
+      "implementationPaths": [
+        "src/pgbk/runner.py",
+        "src/pgbk/kube.py",
+        "src/pgbk/cli.py",
+        "charts/pgbk"
+      ],
+      "acceptanceTests": [
+        "T-004",
+        "T-019",
+        "T-026"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-010",
+      "implementationPaths": [
+        "src/pgbk/postgres.py",
+        "src/pgbk/storage.py",
+        "images/Dockerfile"
+      ],
+      "acceptanceTests": [
+        "T-001"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-011",
+      "implementationPaths": [
+        "src/pgbk/postgres.py",
+        "src/pgbk/storage.py",
+        "docs/en",
+        "images/Dockerfile"
+      ],
+      "acceptanceTests": [
+        "T-001"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-012",
+      "implementationPaths": [
+        "src/pgbk/config.py",
+        "src/pgbk/postgres.py",
+        "charts/pgbk",
+        "docs/en",
+        "images/Dockerfile"
+      ],
+      "acceptanceTests": [
+        "T-001",
+        "T-010",
+        "T-027",
+        "T-034"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-013",
+      "implementationPaths": [
+        "src/pgbk/config.py"
+      ],
+      "acceptanceTests": [
+        "T-005",
+        "T-006",
+        "T-021"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-014",
+      "implementationPaths": [
+        "src/pgbk/config.py",
+        "src/pgbk/runner.py",
+        "src/pgbk/process.py",
+        "src/pgbk/storage.py",
+        "src/pgbk/restore.py",
+        "charts/pgbk",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-041",
+        "T-027",
+        "T-028",
+        "T-029"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-015",
+      "implementationPaths": [
+        "src/pgbk/config.py",
+        "src/pgbk/kube.py",
+        "charts/pgbk",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-004",
+        "T-006",
+        "T-025",
+        "T-026"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-016",
+      "implementationPaths": [
+        "src/pgbk/postgres.py",
+        "src/pgbk/selection.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-003",
+        "T-008",
+        "T-009",
+        "T-038"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-017",
+      "implementationPaths": [
+        "src/pgbk/postgres.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-002",
+        "T-011",
+        "T-025"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-018",
+      "implementationPaths": [
+        "src/pgbk/postgres.py",
+        "src/pgbk/runner.py"
+      ],
+      "acceptanceTests": [
+        "T-011",
+        "T-012",
+        "T-044"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-019",
+      "implementationPaths": [
+        "src/pgbk/postgres.py",
+        "src/pgbk/runner.py",
+        "src/pgbk/storage.py",
+        "src/pgbk/catalog.py",
+        "src/pgbk/restore.py"
+      ],
+      "acceptanceTests": [
+        "T-004",
+        "T-013",
+        "T-015",
+        "T-024"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-020",
+      "implementationPaths": [
+        "src/pgbk/config.py",
+        "src/pgbk/kube.py",
+        "src/pgbk/cli.py",
+        "charts/pgbk",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-019",
+        "T-020"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-021",
+      "implementationPaths": [
+        "src/pgbk/runner.py",
+        "src/pgbk/process.py",
+        "src/pgbk/kube.py",
+        "src/pgbk/catalog.py",
+        "charts/pgbk",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-017",
+        "T-021",
+        "T-022"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-022",
+      "implementationPaths": [
+        "src/pgbk/runner.py",
+        "src/pgbk/kube.py",
+        "src/pgbk/catalog.py",
+        "src/pgbk/cli.py"
+      ],
+      "acceptanceTests": [
+        "T-023",
+        "T-033"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-023",
+      "implementationPaths": [
+        "src/pgbk/runner.py",
+        "src/pgbk/process.py",
+        "src/pgbk/kube.py",
+        "src/pgbk/storage.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-022",
+        "T-023",
+        "T-024"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-024",
+      "implementationPaths": [
+        "src/pgbk/runner.py",
+        "src/pgbk/catalog.py"
+      ],
+      "acceptanceTests": [
+        "T-012",
+        "T-013",
+        "T-014",
+        "T-018",
+        "T-044"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-025",
+      "implementationPaths": [
+        "src/pgbk/storage.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-004",
+        "T-024",
+        "T-035"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-026",
+      "implementationPaths": [
+        "src/pgbk/catalog.py"
+      ],
+      "acceptanceTests": [
+        "T-016",
+        "T-017",
+        "T-018"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-027",
+      "implementationPaths": [
+        "src/pgbk/catalog.py",
+        "src/pgbk/restore.py",
+        "src/pgbk/cli.py"
+      ],
+      "acceptanceTests": [
+        "T-015"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-028",
+      "implementationPaths": [
+        "src/pgbk/restore.py",
+        "src/pgbk/cli.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-009",
+        "T-045",
+        "T-030"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-029",
+      "implementationPaths": [
+        "src/pgbk/kube.py",
+        "src/pgbk/restore.py",
+        "src/pgbk/cli.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-011",
+        "T-031"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-030",
+      "implementationPaths": [
+        "src/pgbk/restore.py",
+        "src/pgbk/cli.py",
+        "charts/pgbk",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-045",
+        "T-032",
+        "T-033"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-031",
+      "implementationPaths": [
+        "src/pgbk/cli.py"
+      ],
+      "acceptanceTests": [
+        "T-019",
+        "T-029",
+        "T-036"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-032",
+      "implementationPaths": [
+        "src/pgbk/runner.py",
+        "src/pgbk/catalog.py",
+        "src/pgbk/cli.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-029",
+        "T-033"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-033",
+      "implementationPaths": [
+        "src/pgbk/kube.py",
+        "charts/pgbk"
+      ],
+      "acceptanceTests": [
+        "T-007",
+        "T-026",
+        "T-027",
+        "T-028"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-034",
+      "implementationPaths": [
+        "src/pgbk/config.py",
+        "src/pgbk/process.py",
+        "charts/pgbk",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-025",
+        "T-034"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-035",
+      "implementationPaths": [
+        "docs/en",
+        "images/Dockerfile",
+        ".github/workflows/test.yaml"
+      ],
+      "acceptanceTests": [
+        "T-036"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-036",
+      "implementationPaths": [
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-036"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-037",
+      "implementationPaths": [
+        "docs/en",
+        ".github/workflows/test.yaml"
+      ],
+      "acceptanceTests": [
+        "T-037"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-038",
+      "implementationPaths": [
+        "src/pgbk/config.py",
+        "src/pgbk/selection.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-038",
+        "T-039"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-039",
+      "implementationPaths": [
+        "src/pgbk/config.py",
+        "src/pgbk/selection.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-038",
+        "T-039",
+        "T-040",
+        "T-042",
+        "T-043"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-040",
+      "implementationPaths": [
+        "src/pgbk/selection.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-040",
+        "T-041",
+        "T-042"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-041",
+      "implementationPaths": [
+        "src/pgbk/selection.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-040",
+        "T-043",
+        "T-044"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-042",
+      "implementationPaths": [
+        "src/pgbk/selection.py",
+        "src/pgbk/restore.py",
+        "docs/en"
+      ],
+      "acceptanceTests": [
+        "T-039",
+        "T-045"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    }
+  ],
+  "tests": {
+    "T-001": {
+      "requirements": [
+        "REQ-004",
+        "REQ-010",
+        "REQ-011",
+        "REQ-012"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/m0-14.json",
+        "tests/reports/m0-15.json",
+        "tests/reports/m0-16.json",
+        "tests/reports/m0-17.json",
+        "tests/reports/m0-18.json"
+      ]
+    },
+    "T-002": {
+      "requirements": [
+        "REQ-005",
+        "REQ-007",
+        "REQ-017"
+      ],
+      "fullAcceptanceStatus": "passed",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/m0-14.json",
+        "tests/reports/m0-15.json",
+        "tests/reports/m0-16.json",
+        "tests/reports/m0-17.json",
+        "tests/reports/m0-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json"
+      ]
+    },
+    "T-003": {
+      "requirements": [
+        "REQ-006",
+        "REQ-008",
+        "REQ-016"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/m0-14.json",
+        "tests/reports/m0-15.json",
+        "tests/reports/m0-16.json",
+        "tests/reports/m0-17.json",
+        "tests/reports/m0-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json"
+      ]
+    },
+    "T-004": {
+      "requirements": [
+        "REQ-009",
+        "REQ-015",
+        "REQ-019",
+        "REQ-025"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/m0-14.json",
+        "tests/reports/m0-15.json",
+        "tests/reports/m0-16.json",
+        "tests/reports/m0-17.json",
+        "tests/reports/m0-18.json"
+      ]
+    },
+    "T-005": {
+      "requirements": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-013"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json"
+      ]
+    },
+    "T-006": {
+      "requirements": [
+        "REQ-003",
+        "REQ-013",
+        "REQ-015"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-007": {
+      "requirements": [
+        "REQ-005",
+        "REQ-033"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/kubernetes.json"
+      ]
+    },
+    "T-008": {
+      "requirements": [
+        "REQ-006",
+        "REQ-016"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json"
+      ]
+    },
+    "T-009": {
+      "requirements": [
+        "REQ-006",
+        "REQ-016",
+        "REQ-028"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-010": {
+      "requirements": [
+        "REQ-007",
+        "REQ-008",
+        "REQ-012"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json"
+      ]
+    },
+    "T-011": {
+      "requirements": [
+        "REQ-017",
+        "REQ-018",
+        "REQ-029"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json"
+      ]
+    },
+    "T-012": {
+      "requirements": [
+        "REQ-018",
+        "REQ-024"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-013": {
+      "requirements": [
+        "REQ-019",
+        "REQ-024"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json",
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-014": {
+      "requirements": [
+        "REQ-024"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-015": {
+      "requirements": [
+        "REQ-019",
+        "REQ-027"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json"
+      ]
+    },
+    "T-016": {
+      "requirements": [
+        "REQ-026"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-017": {
+      "requirements": [
+        "REQ-021",
+        "REQ-026"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-018": {
+      "requirements": [
+        "REQ-024",
+        "REQ-026"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-038": {
+      "requirements": [
+        "REQ-016",
+        "REQ-038",
+        "REQ-039"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json",
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-039": {
+      "requirements": [
+        "REQ-038",
+        "REQ-039",
+        "REQ-042"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json",
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-040": {
+      "requirements": [
+        "REQ-039",
+        "REQ-040",
+        "REQ-041"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json",
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-041": {
+      "requirements": [
+        "REQ-005",
+        "REQ-014",
+        "REQ-040"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json",
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-042": {
+      "requirements": [
+        "REQ-039",
+        "REQ-040"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json",
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-043": {
+      "requirements": [
+        "REQ-039",
+        "REQ-041"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json",
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-044": {
+      "requirements": [
+        "REQ-018",
+        "REQ-024",
+        "REQ-041"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-045": {
+      "requirements": [
+        "REQ-028",
+        "REQ-030",
+        "REQ-042"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json"
+      ]
+    },
+    "T-019": {
+      "requirements": [
+        "REQ-009",
+        "REQ-020",
+        "REQ-031"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/kubernetes.json"
+      ]
+    },
+    "T-020": {
+      "requirements": [
+        "REQ-020"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/kubernetes.json"
+      ]
+    },
+    "T-021": {
+      "requirements": [
+        "REQ-013",
+        "REQ-021"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/kubernetes.json",
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-022": {
+      "requirements": [
+        "REQ-021",
+        "REQ-023"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/kubernetes.json",
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-023": {
+      "requirements": [
+        "REQ-022",
+        "REQ-023"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/kubernetes.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json",
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-024": {
+      "requirements": [
+        "REQ-019",
+        "REQ-023",
+        "REQ-025"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-025": {
+      "requirements": [
+        "REQ-015",
+        "REQ-017",
+        "REQ-034"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-026": {
+      "requirements": [
+        "REQ-009",
+        "REQ-015",
+        "REQ-033"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-027": {
+      "requirements": [
+        "REQ-012",
+        "REQ-014",
+        "REQ-033"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/kubernetes.json"
+      ]
+    },
+    "T-028": {
+      "requirements": [
+        "REQ-014",
+        "REQ-033"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/kubernetes.json"
+      ]
+    },
+    "T-029": {
+      "requirements": [
+        "REQ-014",
+        "REQ-031",
+        "REQ-032"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json",
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-030": {
+      "requirements": [
+        "REQ-028"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json"
+      ]
+    },
+    "T-031": {
+      "requirements": [
+        "REQ-029"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/kubernetes.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json",
+        "tests/reports/unit-02.json",
+        "tests/reports/unit.json"
+      ]
+    },
+    "T-032": {
+      "requirements": [
+        "REQ-030"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json"
+      ]
+    },
+    "T-033": {
+      "requirements": [
+        "REQ-022",
+        "REQ-030",
+        "REQ-032"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-034": {
+      "requirements": [
+        "REQ-012",
+        "REQ-034"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/benchmark-1.json",
+        "tests/reports/benchmark-20.json"
+      ]
+    },
+    "T-035": {
+      "requirements": [
+        "REQ-001",
+        "REQ-002",
+        "REQ-007",
+        "REQ-025"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/integration-14.json",
+        "tests/reports/integration-15.json",
+        "tests/reports/integration-16.json",
+        "tests/reports/integration-17.json",
+        "tests/reports/integration-18.json",
+        "tests/reports/modes-14-direct-gzip.json",
+        "tests/reports/modes-14-direct-none.json",
+        "tests/reports/modes-14-directory-gzip.json",
+        "tests/reports/modes-14-directory-none.json",
+        "tests/reports/modes-14-staged-gzip.json",
+        "tests/reports/modes-15-direct-gzip.json",
+        "tests/reports/modes-15-directory-gzip.json",
+        "tests/reports/modes-15-staged-gzip.json",
+        "tests/reports/modes-16-direct-gzip.json",
+        "tests/reports/modes-16-directory-gzip.json",
+        "tests/reports/modes-16-staged-gzip.json",
+        "tests/reports/modes-17-direct-gzip.json",
+        "tests/reports/modes-17-direct-lz4.json",
+        "tests/reports/modes-17-direct-zstd.json",
+        "tests/reports/modes-17-directory-gzip.json",
+        "tests/reports/modes-17-directory-lz4.json",
+        "tests/reports/modes-17-directory-zstd.json",
+        "tests/reports/modes-17-staged-gzip.json",
+        "tests/reports/modes-18-direct-gzip.json",
+        "tests/reports/modes-18-directory-gzip.json",
+        "tests/reports/modes-18-staged-gzip.json"
+      ]
+    },
+    "T-036": {
+      "requirements": [
+        "REQ-004",
+        "REQ-031",
+        "REQ-035",
+        "REQ-036"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/kubernetes.json"
+      ]
+    },
+    "T-037": {
+      "requirements": [
+        "REQ-037"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    }
+  },
+  "evidence": [
+    {
+      "path": "tests/reports/benchmark-1.json",
+      "kind": "benchmark",
+      "summary": {
+        "schemaVersion": 1,
+        "datasetGiB": 1,
+        "rows": 65536,
+        "payloadBytes": 1073741824,
+        "sourceRelationBytes": 1125883904,
+        "cases": [
+          {
+            "kind": "logical",
+            "runId": "run-local-bed892a6f0a0428090405071fd647b49",
+            "backupSeconds": 4.236918210000113,
+            "artifactBytes": 4347166,
+            "tools": {
+              "pg_dump": "pg_dump (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+              "pg_restore": "pg_restore (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+              "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+            },
+            "restoreSeconds": 11.279709755000113,
+            "sourceUnavailable": true,
+            "status": "passed"
+          },
+          {
+            "kind": "physical",
+            "runId": "run-local-68fe9c4241524a99afbbb3eaceed1934",
+            "backupSeconds": 22.148135677000027,
+            "artifactBytes": 1174204251,
+            "tools": {
+              "pg_basebackup": "pg_basebackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+              "pg_verifybackup": "pg_verifybackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+              "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+            },
+            "restoreSeconds": 14.956898715000534,
+            "sourceUnavailable": true,
+            "status": "passed"
+          }
+        ],
+        "observedPeaks": {
+          "scratchBytes": 2347739844,
+          "processRssBytes": 755306496
+        },
+        "samplingSeconds": 2,
+        "controllerPeakRssBytes": 113307648,
+        "nativeChildPeakRssBytes": 430563328,
+        "environment": "Docker Desktop amd64 emulation; S3 Moto host outside container; Kubernetes stubbed",
+        "fixture": "16KiB repeated per-row md5 text, uncompressed PostgreSQL TOAST; logical archive compressible",
+        "memoryLimitBytes": 4294967296,
+        "cpuLimit": 2
+      }
+    },
+    {
+      "path": "tests/reports/benchmark-20.json",
+      "kind": "benchmark",
+      "summary": {
+        "schemaVersion": 1,
+        "datasetGiB": 20,
+        "rows": 1310720,
+        "payloadBytes": 21474836480,
+        "sourceRelationBytes": 22516031488,
+        "cases": [
+          {
+            "kind": "logical",
+            "runId": "run-local-bfe65a04b76441fd8084d66bc1aea669",
+            "backupSeconds": 52.43510019099995,
+            "artifactBytes": 86955896,
+            "tools": {
+              "pg_dump": "pg_dump (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+              "pg_restore": "pg_restore (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+              "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+            },
+            "restoreSeconds": 79.36381449500004,
+            "sourceUnavailable": true,
+            "status": "passed"
+          },
+          {
+            "kind": "physical",
+            "runId": "run-local-953e8f24d5a44f5d8228a1d4b95251ec",
+            "backupSeconds": 460.7038238339992,
+            "artifactBytes": 22564473500,
+            "tools": {
+              "pg_basebackup": "pg_basebackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+              "pg_verifybackup": "pg_verifybackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+              "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+            },
+            "restoreSeconds": 319.19016789499983,
+            "sourceUnavailable": true,
+            "status": "passed"
+          }
+        ],
+        "observedPeaks": {
+          "scratchBytes": 45145048964,
+          "processRssBytes": 1045245952
+        },
+        "samplingSeconds": 2,
+        "controllerPeakRssBytes": 117596160,
+        "nativeChildPeakRssBytes": 510689280,
+        "environment": "Docker Desktop amd64 emulation; S3 Moto host outside container; Kubernetes stubbed",
+        "fixture": "16KiB repeated per-row md5 text, uncompressed PostgreSQL TOAST; logical archive compressible",
+        "memoryLimitBytes": 4294967296,
+        "cpuLimit": 2
+      }
+    },
+    {
+      "path": "tests/reports/integration-14.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 14,
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-303c682898d64d1f9384b8385119ccc1",
+          "filtered": "run-local-6170eefb793243158257a12f58e04b79",
+          "physical": "run-local-e3e364d38fe2475c84e79f24c74d44a6"
+        },
+        "physicalBytes": 83582168,
+        "elapsedSeconds": 41.54641801800062,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-d448edc123ff/fixture/logical/",
+        "workerImage": "pgbk-worker:14-test",
+        "imageConfigId": "sha256:9f4d5fb61959c5c119d39316d292286047d80cb400a325f93d511a2c6efc8507",
+        "registryDigests": [
+          "pgbk-worker@sha256:9f4d5fb61959c5c119d39316d292286047d80cb400a325f93d511a2c6efc8507"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/integration-15.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 15,
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 15.19 (Debian 15.19-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 15.19 (Debian 15.19-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-92df799da21e4f80b1d69777f50a949c",
+          "filtered": "run-local-3fade27e61b44137806427306ccfaf50",
+          "physical": "run-local-de5d105204c94313ac000934f395f9af"
+        },
+        "physicalBytes": 75467575,
+        "elapsedSeconds": 38.783786058998885,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-a606d0eff8c4/fixture/logical/",
+        "workerImage": "pgbk-worker:15-test",
+        "imageConfigId": "sha256:7d222a96371bde58c5c22f72b10486476b4b5ab8ce5cf5856b038a28398e8d20",
+        "registryDigests": [
+          "pgbk-worker@sha256:7d222a96371bde58c5c22f72b10486476b4b5ab8ce5cf5856b038a28398e8d20"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/integration-16.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 16,
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 16.15 (Debian 16.15-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 16.15 (Debian 16.15-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-f8d0431da3e240d1b64eff5108ce6c9a",
+          "filtered": "run-local-f200a32e1b1e425687d6cdc81377393e",
+          "physical": "run-local-fca1be2e8a6241b48146422117222e15"
+        },
+        "physicalBytes": 76655301,
+        "elapsedSeconds": 31.985424264999892,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-83aab389ddd0/fixture/logical/",
+        "workerImage": "pgbk-worker:16-test",
+        "imageConfigId": "sha256:6bd89364a5f44baaee8dc5969d976088745bcc28c83cbe0adc1617153f7f0038",
+        "registryDigests": [
+          "pgbk-worker@sha256:6bd89364a5f44baaee8dc5969d976088745bcc28c83cbe0adc1617153f7f0038"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/integration-17.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 17,
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-2fadf16acb7d4da89bc4968a208a757f",
+          "filtered": "run-local-e12b8ef494d242cebac64cb49cccbd5f",
+          "physical": "run-local-c658f65bbd5d422494e3ae2ab06f2a7c"
+        },
+        "physicalBytes": 76566767,
+        "elapsedSeconds": 33.65429384900017,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-b3b2bfd52aa6/fixture/logical/",
+        "workerImage": "pgbk-worker:17-test",
+        "imageConfigId": "sha256:ad92cea2e4541ae33203213a6803af50ed618d529604a804e48f0ba5e59e6da0",
+        "registryDigests": [
+          "pgbk-worker@sha256:ad92cea2e4541ae33203213a6803af50ed618d529604a804e48f0ba5e59e6da0"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/integration-18.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 18,
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-b1bf150027054a5784e81509d9fdc40f",
+          "filtered": "run-local-350b3180150f413f90e0d3d94cb5051c",
+          "physical": "run-local-a29140ff8dc74f839a339f148ef9b164"
+        },
+        "physicalBytes": 77812402,
+        "elapsedSeconds": 32.27568630600035,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-0d76b6371dca/fixture/logical/",
+        "workerImage": "pgbk-worker:18-test",
+        "imageConfigId": "sha256:6fed4dca25620e9ce6ab1b58a4fbed1044e93ec8ce8e2e1ba86ede6dcb97bb7a",
+        "registryDigests": [
+          "pgbk-worker@sha256:6fed4dca25620e9ce6ab1b58a4fbed1044e93ec8ce8e2e1ba86ede6dcb97bb7a"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/kubernetes.json",
+      "kind": "kubernetes",
+      "summary": {
+        "schemaVersion": 1,
+        "cases": [
+          {
+            "case": "real-lease-conflict-and-release",
+            "status": "passed"
+          },
+          {
+            "case": "chart-and-worker-repository-hash-match",
+            "status": "passed"
+          },
+          {
+            "case": "immutable-template-manual-job-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "chart-role-source-mutation-boundary",
+            "status": "passed"
+          },
+          {
+            "case": "actual-service-account-authorization-boundary",
+            "status": "passed"
+          },
+          {
+            "case": "existing-identities-leases-no-rbac-mutations-install",
+            "status": "passed"
+          }
+        ],
+        "kubernetesVersion": "v1.37.0",
+        "nodeArchitecture": "arm64",
+        "workerJobs": "not-run: amd64 required"
+      }
+    },
+    {
+      "path": "tests/reports/m0-14.json",
+      "kind": "m0",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 14,
+        "status": "passed",
+        "evidence": "M0_CORE_PASS PostgreSQL=pg_dump (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2) WAL_G=wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL bytes=8388611",
+        "cases": [
+          "native-restricted-logical-restore",
+          "physical-offline-no-archive-restore",
+          "raw-wal-g-8388611-byte-roundtrip",
+          "missing-object-fails"
+        ],
+        "s3": "Moto emulator",
+        "scope": "M0 core subset, not full M0 TLS/licensing/provider gate"
+      }
+    },
+    {
+      "path": "tests/reports/m0-15.json",
+      "kind": "m0",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 15,
+        "status": "passed",
+        "evidence": "M0_CORE_PASS PostgreSQL=pg_dump (PostgreSQL) 15.19 (Debian 15.19-1.pgdg12+2) WAL_G=wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL bytes=8388611",
+        "cases": [
+          "native-restricted-logical-restore",
+          "physical-offline-no-archive-restore",
+          "raw-wal-g-8388611-byte-roundtrip",
+          "missing-object-fails"
+        ],
+        "s3": "Moto emulator",
+        "scope": "M0 core subset, not full M0 TLS/licensing/provider gate"
+      }
+    },
+    {
+      "path": "tests/reports/m0-16.json",
+      "kind": "m0",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 16,
+        "status": "passed",
+        "evidence": "M0_CORE_PASS PostgreSQL=pg_dump (PostgreSQL) 16.15 (Debian 16.15-1.pgdg12+2) WAL_G=wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL bytes=8388611",
+        "cases": [
+          "native-restricted-logical-restore",
+          "physical-offline-no-archive-restore",
+          "raw-wal-g-8388611-byte-roundtrip",
+          "missing-object-fails"
+        ],
+        "s3": "Moto emulator",
+        "scope": "M0 core subset, not full M0 TLS/licensing/provider gate"
+      }
+    },
+    {
+      "path": "tests/reports/m0-17.json",
+      "kind": "m0",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 17,
+        "status": "passed",
+        "evidence": "M0_CORE_PASS PostgreSQL=pg_dump (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2) WAL_G=wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL bytes=8388611",
+        "cases": [
+          "native-restricted-logical-restore",
+          "physical-offline-no-archive-restore",
+          "raw-wal-g-8388611-byte-roundtrip",
+          "missing-object-fails"
+        ],
+        "s3": "Moto emulator",
+        "scope": "M0 core subset, not full M0 TLS/licensing/provider gate"
+      }
+    },
+    {
+      "path": "tests/reports/m0-18.json",
+      "kind": "m0",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 18,
+        "status": "passed",
+        "evidence": "M0_CORE_PASS PostgreSQL=pg_dump (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2) WAL_G=wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL bytes=8388611",
+        "cases": [
+          "native-restricted-logical-restore",
+          "physical-offline-no-archive-restore",
+          "raw-wal-g-8388611-byte-roundtrip",
+          "missing-object-fails"
+        ],
+        "s3": "Moto emulator",
+        "scope": "M0 core subset, not full M0 TLS/licensing/provider gate"
+      }
+    },
+    {
+      "path": "tests/reports/modes-14-direct-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 14,
+        "logicalMode": "direct",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "real-multipart-direct-complete",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-b05c5c14c21d4cb6bc533636f855b97a",
+          "filtered": "run-local-e18ca70188d44a32a49b70d32730ec53",
+          "physical": "run-local-fd94ff08622740b6bca7cd6cd21f7454"
+        },
+        "physicalBytes": 138252389,
+        "elapsedSeconds": 34.74966118200018,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-5964df354803/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:14-test",
+        "imageConfigId": "sha256:b3e8221128cf45373b8bf4ce75980cd144d33cbb634069f42f25139e9b14fba2",
+        "registryDigests": [
+          "pgbk-worker@sha256:b3e8221128cf45373b8bf4ce75980cd144d33cbb634069f42f25139e9b14fba2"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-14-direct-none.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 14,
+        "logicalMode": "direct",
+        "compression": {
+          "method": "none"
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "real-multipart-direct-complete",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-fd0eaa53a63647ee8270486b5b186a99",
+          "filtered": "run-local-92bc2f52019c40648bd5e0ab1c11cb50",
+          "physical": "run-local-1916ba1d334c4bfca28dc6974f3508da"
+        },
+        "physicalBytes": 138252389,
+        "elapsedSeconds": 37.680547392000335,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-a209772fcc55/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:14-test",
+        "imageConfigId": "sha256:b3e8221128cf45373b8bf4ce75980cd144d33cbb634069f42f25139e9b14fba2",
+        "registryDigests": [
+          "pgbk-worker@sha256:b3e8221128cf45373b8bf4ce75980cd144d33cbb634069f42f25139e9b14fba2"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-14-directory-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 14,
+        "logicalMode": "directory",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-947c8da9411645e8be5194af314aef6b",
+          "filtered": "run-local-e16db81fe838467898a139b124a186ff",
+          "physical": "run-local-63a656bbe742429db41fe91febc6457a"
+        },
+        "physicalBytes": 83582168,
+        "elapsedSeconds": 31.216095389000202,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-69d66f2a62c4/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:14-test",
+        "imageConfigId": "sha256:b3e8221128cf45373b8bf4ce75980cd144d33cbb634069f42f25139e9b14fba2",
+        "registryDigests": [
+          "pgbk-worker@sha256:b3e8221128cf45373b8bf4ce75980cd144d33cbb634069f42f25139e9b14fba2"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-14-directory-none.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 14,
+        "logicalMode": "directory",
+        "compression": {
+          "method": "none"
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-065ddcc626d14dd48b6be757633bacc7",
+          "filtered": "run-local-ef7443db43e24553b7e31749588eee58",
+          "physical": "run-local-fada7b4520ce472f92f55e2513f8c632"
+        },
+        "physicalBytes": 83582680,
+        "elapsedSeconds": 34.466095683000276,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-feda685010a2/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:14-test",
+        "imageConfigId": "sha256:b3e8221128cf45373b8bf4ce75980cd144d33cbb634069f42f25139e9b14fba2",
+        "registryDigests": [
+          "pgbk-worker@sha256:b3e8221128cf45373b8bf4ce75980cd144d33cbb634069f42f25139e9b14fba2"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-14-staged-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 14,
+        "logicalMode": "staged",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 14.24 (Debian 14.24-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-0c476f1748b64ee0ad021ae686340f67",
+          "filtered": "run-local-38100b7556434869b2892ae2bfa93c1a",
+          "physical": "run-local-0dcce8c1121f41ec9958a649fa413a95"
+        },
+        "physicalBytes": 83582168,
+        "elapsedSeconds": 30.444134556000336,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-39697938eb97/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:14-test",
+        "imageConfigId": "sha256:b3e8221128cf45373b8bf4ce75980cd144d33cbb634069f42f25139e9b14fba2",
+        "registryDigests": [
+          "pgbk-worker@sha256:b3e8221128cf45373b8bf4ce75980cd144d33cbb634069f42f25139e9b14fba2"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-15-direct-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 15,
+        "logicalMode": "direct",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "real-multipart-direct-complete",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 15.19 (Debian 15.19-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 15.19 (Debian 15.19-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-6916a2335e0e42338945e24407789cca",
+          "filtered": "run-local-0d6b54edddf44dd298accfa4d886b555",
+          "physical": "run-local-4cb858d853584ed284b49dc123ced610"
+        },
+        "physicalBytes": 130154180,
+        "elapsedSeconds": 67.00175453099973,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-9c5230c88472/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:15-test",
+        "imageConfigId": "sha256:f63a276844c279fb365342f494358a3e79411b1df6e2eee455961168d60cd0ce",
+        "registryDigests": [
+          "pgbk-worker@sha256:f63a276844c279fb365342f494358a3e79411b1df6e2eee455961168d60cd0ce"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-15-directory-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 15,
+        "logicalMode": "directory",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 15.19 (Debian 15.19-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 15.19 (Debian 15.19-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-fff211b4be08489589a88cfd52ed4acb",
+          "filtered": "run-local-f4ce542de2fd4527aa1721b1d1ab8a93",
+          "physical": "run-local-46be0260e86f434a88f24c64e9421b41"
+        },
+        "physicalBytes": 75467575,
+        "elapsedSeconds": 30.680400681000265,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-abe398de1156/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:15-test",
+        "imageConfigId": "sha256:f63a276844c279fb365342f494358a3e79411b1df6e2eee455961168d60cd0ce",
+        "registryDigests": [
+          "pgbk-worker@sha256:f63a276844c279fb365342f494358a3e79411b1df6e2eee455961168d60cd0ce"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-15-staged-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 15,
+        "logicalMode": "staged",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 15.19 (Debian 15.19-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 15.19 (Debian 15.19-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-b68e1c05768a4794bcbc6102d250c9b9",
+          "filtered": "run-local-f75c0d718d4948208d6ac165b017fd2f",
+          "physical": "run-local-36c14d50435240fe922d8e76ed2f2ee9"
+        },
+        "physicalBytes": 75467575,
+        "elapsedSeconds": 30.546356389000266,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-fd94636e6da8/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:15-test",
+        "imageConfigId": "sha256:f63a276844c279fb365342f494358a3e79411b1df6e2eee455961168d60cd0ce",
+        "registryDigests": [
+          "pgbk-worker@sha256:f63a276844c279fb365342f494358a3e79411b1df6e2eee455961168d60cd0ce"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-16-direct-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 16,
+        "logicalMode": "direct",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "real-multipart-direct-complete",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 16.15 (Debian 16.15-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 16.15 (Debian 16.15-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-5f9d513d66b8457b990d29d2a6eb75a0",
+          "filtered": "run-local-8e0d1c33dd104b5fb4786c876994942e",
+          "physical": "run-local-2a61fccb678f469d8fd87aaa936a35b2"
+        },
+        "physicalBytes": 131833938,
+        "elapsedSeconds": 37.04587143300023,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-2aba1ddb3a39/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:16-test",
+        "imageConfigId": "sha256:f910552f6e3cf56e2cf20561508d45f5c6aaf738d4d576a2262894f47b3f69a3",
+        "registryDigests": [
+          "pgbk-worker@sha256:f910552f6e3cf56e2cf20561508d45f5c6aaf738d4d576a2262894f47b3f69a3"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-16-directory-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 16,
+        "logicalMode": "directory",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 16.15 (Debian 16.15-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 16.15 (Debian 16.15-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-3d363d3df0f9484289948f26b962187a",
+          "filtered": "run-local-ff34f9d359a3450f95517a6d41ee8d3c",
+          "physical": "run-local-f9593d4c239b4300a4c1dfabb44a0e57"
+        },
+        "physicalBytes": 76655301,
+        "elapsedSeconds": 31.73203147300046,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-9e470d733c7f/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:16-test",
+        "imageConfigId": "sha256:f910552f6e3cf56e2cf20561508d45f5c6aaf738d4d576a2262894f47b3f69a3",
+        "registryDigests": [
+          "pgbk-worker@sha256:f910552f6e3cf56e2cf20561508d45f5c6aaf738d4d576a2262894f47b3f69a3"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-16-staged-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 16,
+        "logicalMode": "staged",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 16.15 (Debian 16.15-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 16.15 (Debian 16.15-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-79a3e0d2a83043f6bae41e6143b2c092",
+          "filtered": "run-local-1682350e264a49e087172ab7f32e8894",
+          "physical": "run-local-619827139ed74a9fbc916ed5236a69ea"
+        },
+        "physicalBytes": 76655813,
+        "elapsedSeconds": 31.738298929999928,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-9e53839e955a/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:16-test",
+        "imageConfigId": "sha256:f910552f6e3cf56e2cf20561508d45f5c6aaf738d4d576a2262894f47b3f69a3",
+        "registryDigests": [
+          "pgbk-worker@sha256:f910552f6e3cf56e2cf20561508d45f5c6aaf738d4d576a2262894f47b3f69a3"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-17-direct-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 17,
+        "logicalMode": "direct",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "real-multipart-direct-complete",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-7d4fa2d6a7434a11ba9ce1f651f24e75",
+          "filtered": "run-local-3f3121138b3e489cb9da669ed85490cc",
+          "physical": "run-local-d15ad800024040e89e92728a385e54d4"
+        },
+        "physicalBytes": 131728508,
+        "elapsedSeconds": 35.93965072499941,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-5edda0ca7a3a/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:17-test",
+        "imageConfigId": "sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8",
+        "registryDigests": [
+          "pgbk-worker@sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-17-direct-lz4.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 17,
+        "logicalMode": "direct",
+        "compression": {
+          "method": "lz4"
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "real-multipart-direct-complete",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-6b93b964d2724662b3d9eab94ba1672f",
+          "filtered": "run-local-84fccaf6deb442b6b03d62481806f164",
+          "physical": "run-local-991374522d334902b1434a545806fab3"
+        },
+        "physicalBytes": 131728508,
+        "elapsedSeconds": 36.29889451700001,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-7204764cabf3/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:17-test",
+        "imageConfigId": "sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8",
+        "registryDigests": [
+          "pgbk-worker@sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-17-direct-zstd.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 17,
+        "logicalMode": "direct",
+        "compression": {
+          "method": "zstd",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "real-multipart-direct-complete",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-02d18788eea14fa5a62eae20f5f8651f",
+          "filtered": "run-local-aefdf53f5d80429c9958149574120123",
+          "physical": "run-local-20360df3b50f47288aad3a180d0b5229"
+        },
+        "physicalBytes": 131728508,
+        "elapsedSeconds": 33.26794401500001,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-a19cbe7bde3b/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:17-test",
+        "imageConfigId": "sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8",
+        "registryDigests": [
+          "pgbk-worker@sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-17-directory-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 17,
+        "logicalMode": "directory",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-32f75a4676704a768b1bb2dc5f12e4ac",
+          "filtered": "run-local-082ddab2c85c4651bc80a9c93aabf7e1",
+          "physical": "run-local-e1beda2ecc7e4c0d93c89b75ce341257"
+        },
+        "physicalBytes": 76566767,
+        "elapsedSeconds": 30.556542637999883,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-d657cbc99f95/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:17-test",
+        "imageConfigId": "sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8",
+        "registryDigests": [
+          "pgbk-worker@sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-17-directory-lz4.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 17,
+        "logicalMode": "directory",
+        "compression": {
+          "method": "lz4"
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-43429ee34a0c4afb8211f33ea5a69a71",
+          "filtered": "run-local-e8ea54a41c8249e7935bd872083e47d1",
+          "physical": "run-local-5d0464598113483d99ece1b280df5317"
+        },
+        "physicalBytes": 76566767,
+        "elapsedSeconds": 35.085620973999994,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-9496df580dd1/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:17-test",
+        "imageConfigId": "sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8",
+        "registryDigests": [
+          "pgbk-worker@sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-17-directory-zstd.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 17,
+        "logicalMode": "directory",
+        "compression": {
+          "method": "zstd",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-5ac2be81e0ab4661aa2b19687301447b",
+          "filtered": "run-local-353df169f28542b3aa3f20ea54b5a56e",
+          "physical": "run-local-556eed3e9d7b456ca7960c02dae61c2c"
+        },
+        "physicalBytes": 76566767,
+        "elapsedSeconds": 34.30567380799994,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-60126abbef22/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:17-test",
+        "imageConfigId": "sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8",
+        "registryDigests": [
+          "pgbk-worker@sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-17-staged-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 17,
+        "logicalMode": "staged",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-daad6687031745438e62027b05c753cc",
+          "filtered": "run-local-4fd0bc16cb1b4da4b8e4fd1cb37b62b4",
+          "physical": "run-local-101a20d5656d40a7851a71af2e9d62fb"
+        },
+        "physicalBytes": 76566767,
+        "elapsedSeconds": 30.522504679999656,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-4149558e3ed7/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:17-test",
+        "imageConfigId": "sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8",
+        "registryDigests": [
+          "pgbk-worker@sha256:a2c522f97ba9049ac79e15491d7d74e109d5c63bdaa8c5d24b9f2edc5ed995d8"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-18-direct-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 18,
+        "logicalMode": "direct",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "real-multipart-direct-complete",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-23dde2c9edd841ec83d6cb5955bba42a",
+          "filtered": "run-local-673969c5f1c24d66a8526495190b6af7",
+          "physical": "run-local-4040c6b81c364bedb8f806f7999d2e96"
+        },
+        "physicalBytes": 132990527,
+        "elapsedSeconds": 34.57994193200011,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-e42eeb067391/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:18-test",
+        "imageConfigId": "sha256:2052726a3a1bdb326b0e08eb6b46ca62f7825f5f8320d3796390c4eac1a083b6",
+        "registryDigests": [
+          "pgbk-worker@sha256:2052726a3a1bdb326b0e08eb6b46ca62f7825f5f8320d3796390c4eac1a083b6"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-18-directory-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 18,
+        "logicalMode": "directory",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-507e55d7ec3a4f98a97f1f6ea9d07609",
+          "filtered": "run-local-c22837f58aea4625830d4b0fa04e60a8",
+          "physical": "run-local-47b30e40da264b8eb61eab3856b37132"
+        },
+        "physicalBytes": 77812402,
+        "elapsedSeconds": 31.600698181000553,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-fe555b2ffab3/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:18-test",
+        "imageConfigId": "sha256:2052726a3a1bdb326b0e08eb6b46ca62f7825f5f8320d3796390c4eac1a083b6",
+        "registryDigests": [
+          "pgbk-worker@sha256:2052726a3a1bdb326b0e08eb6b46ca62f7825f5f8320d3796390c4eac1a083b6"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/modes-18-staged-gzip.json",
+      "kind": "integration",
+      "summary": {
+        "schemaVersion": 1,
+        "postgresMajor": 18,
+        "logicalMode": "staged",
+        "compression": {
+          "method": "gzip",
+          "level": 3
+        },
+        "cases": [
+          {
+            "case": "blocking-libpq-query-deadline-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "multi-database-restricted-backup-s3",
+            "status": "passed"
+          },
+          {
+            "case": "native-logical-restore",
+            "status": "passed"
+          },
+          {
+            "case": "snapshot-query-exact-pattern-partition-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "all-mode-exact-exclusion",
+            "status": "passed"
+          },
+          {
+            "case": "empty-selection-and-raw-row-overflow-fail-closed",
+            "status": "passed"
+          },
+          {
+            "case": "restricted-rls-fails-without-marker",
+            "status": "passed"
+          },
+          {
+            "case": "s3-physical-offline-restore",
+            "status": "passed"
+          },
+          {
+            "case": "product-logical-offline-restore-empty-and-source-guards",
+            "status": "passed"
+          },
+          {
+            "case": "logical-and-physical-automated-offline-drills",
+            "status": "passed"
+          }
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "fixture": "10000-items-two-databases-partitions-tablespace",
+        "runIds": {
+          "logical": "run-local-eb58d0c1a1004f97b32588abd39a304a",
+          "filtered": "run-local-17d7eb408ced43a8b69f1f4d43e51c17",
+          "physical": "run-local-99a01f89d407458d8f0930661ecbca6f"
+        },
+        "physicalBytes": 77812402,
+        "elapsedSeconds": 30.323984806000226,
+        "kubernetes": "stubbed; test separately",
+        "s3": "Moto emulator",
+        "catalogPrefix": "integration/v1/test-3255db0c4ead/fixture/logical/",
+        "pgbkVersion": "0.2.0",
+        "workerImage": "pgbk-worker:18-test",
+        "imageConfigId": "sha256:2052726a3a1bdb326b0e08eb6b46ca62f7825f5f8320d3796390c4eac1a083b6",
+        "registryDigests": [
+          "pgbk-worker@sha256:2052726a3a1bdb326b0e08eb6b46ca62f7825f5f8320d3796390c4eac1a083b6"
+        ]
+      }
+    },
+    {
+      "path": "tests/reports/unit-02.json",
+      "kind": "unit",
+      "summary": {
+        "schemaVersion": 1,
+        "pgbkVersion": "0.2.0",
+        "status": "passed",
+        "tests": 75,
+        "failures": 0,
+        "errors": 0,
+        "elapsedSeconds": 0.958
+      }
+    },
+    {
+      "path": "tests/reports/unit.json",
+      "kind": "unit",
+      "summary": {
+        "schemaVersion": 1,
+        "status": "passed",
+        "tests": 60,
+        "failures": 0,
+        "errors": 0,
+        "elapsedSeconds": 1.179
+      }
+    }
+  ],
+  "openGates": [
+    "Yandex live-provider tests are performed by the user",
+    "Live managed and pinned Bitnami certification",
+    "Minimum Kubernetes and amd64 worker/PVC lifecycle tests",
+    "Comprehensive TLS, source mutation audit, failover/concurrent writes/DDL, node-loss and S3 fault injection",
+    "Globals, large objects and external filtered dependency acceptance",
+    "Final license audit and bit-identical build reproducibility",
+    "Any remaining full acceptance procedures in docs/en/test-plan.md"
+  ],
+  "note": "Only precisely completed full procedures are marked passed. Subcase successes do not certify the entire acceptance procedure."
+}

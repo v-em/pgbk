@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "postgresMajor": 17,
+  "cases": [
+    {
+      "case": "blocking-libpq-query-deadline-cancellation",
+      "status": "passed"
+    },
+    {
+      "case": "multi-database-restricted-backup-s3",
+      "status": "passed"
+    },
+    {
+      "case": "native-logical-restore",
+      "status": "passed"
+    },
+    {
+      "case": "snapshot-query-exact-pattern-partition-exclusion",
+      "status": "passed"
+    },
+    {
+      "case": "all-mode-exact-exclusion",
+      "status": "passed"
+    },
+    {
+      "case": "empty-selection-and-raw-row-overflow-fail-closed",
+      "status": "passed"
+    },
+    {
+      "case": "restricted-rls-fails-without-marker",
+      "status": "passed"
+    },
+    {
+      "case": "s3-physical-offline-restore",
+      "status": "passed"
+    },
+    {
+      "case": "product-logical-offline-restore-empty-and-source-guards",
+      "status": "passed"
+    },
+    {
+      "case": "logical-and-physical-automated-offline-drills",
+      "status": "passed"
+    }
+  ],
+  "tools": {
+    "pg_basebackup": "pg_basebackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+    "pg_verifybackup": "pg_verifybackup (PostgreSQL) 17.11 (Debian 17.11-1.pgdg12+2)",
+    "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+  },
+  "fixture": "10000-items-two-databases-partitions-tablespace",
+  "runIds": {
+    "logical": "run-local-2fadf16acb7d4da89bc4968a208a757f",
+    "filtered": "run-local-e12b8ef494d242cebac64cb49cccbd5f",
+    "physical": "run-local-c658f65bbd5d422494e3ae2ab06f2a7c"
+  },
+  "physicalBytes": 76566767,
+  "elapsedSeconds": 33.65429384900017,
+  "kubernetes": "stubbed; test separately",
+  "s3": "Moto emulator",
+  "catalogPrefix": "integration/v1/test-b3b2bfd52aa6/fixture/logical/",
+  "workerImage": "pgbk-worker:17-test",
+  "imageConfigId": "sha256:ad92cea2e4541ae33203213a6803af50ed618d529604a804e48f0ba5e59e6da0",
+  "registryDigests": [
+    "pgbk-worker@sha256:ad92cea2e4541ae33203213a6803af50ed618d529604a804e48f0ba5e59e6da0"
+  ]
+}

@@ -1,0 +1,120 @@
+# Synthetic example: replace endpoints, database names, image digest, StorageClass and Secret references.
+# Both source servers here are PostgreSQL 17. No namespaces, RBAC, accounts or Leases are created.
+installationId: yandex-example
+coordinationNamespace: backups
+rbac:
+  create: false
+coordination:
+  createLeases: false
+images:
+  '17': registry.example/pgbk-worker-17@sha256:0000000000000000000000000000000000000000000000000000000000000000
+storage:
+  archive:
+    bucket: example-pg-backups
+    prefix: postgres
+    endpoint: https://storage.yandexcloud.net
+    region: ru-central1
+    addressingStyle: path
+    credentialsSecretRef: backup-s3
+    tls:
+      verify: true
+targets:
+  managed:
+    sourceId: managed-primary
+    concurrencyKey: managed-primary
+    host: managed-primary.example.invalid
+    port: 6432
+    serverMajor: 17
+    maintenanceDatabase: postgres
+    credentialsSecretRef: managed-postgres
+    tls:
+      mode: verify-full
+      caSecretRef: managed-postgres-ca
+  kubernetes:
+    sourceId: kubernetes-primary
+    concurrencyKey: kubernetes-primary
+    host: postgres.database.svc.cluster.local
+    port: 5432
+    serverMajor: 17
+    maintenanceDatabase: postgres
+    credentialsSecretRef: kubernetes-postgres
+    tls:
+      mode: verify-full
+      caSecretRef: kubernetes-postgres-ca
+profiles:
+  managed-direct:
+    serviceAccounts:
+      create: false
+      backup: existing-backup-worker
+      repository: existing-repository-worker
+    target: managed
+    kind: logical
+    storage: archive
+    logical:
+      databases:
+      - managed_app
+      format: custom
+      jobs: 1
+      compression:
+        method: gzip
+        level: 6
+      transfer:
+        mode: direct
+        partSizeMiB: 16
+      globals: disabled
+    schedule:
+      enabled: false
+    execution:
+      resources:
+        requests:
+          cpu: 500m
+          memory: 512Mi
+        limits:
+          cpu: '2'
+          memory: 2Gi
+    scratch:
+      type: emptyDir
+      size: 256Mi
+    retention:
+      maxAgeDays: 30
+      minSuccessfulBackups: 3
+    verification:
+      enabled: false
+  kubernetes-pvc:
+    serviceAccounts:
+      create: false
+      backup: existing-backup-worker
+      repository: existing-repository-worker
+    target: kubernetes
+    kind: logical
+    storage: archive
+    logical:
+      databases:
+      - kubernetes_app
+      format: directory
+      jobs: 4
+      compression:
+        method: zstd
+        level: 3
+      transfer:
+        mode: staged
+      globals: disabled
+    schedule:
+      enabled: false
+    execution:
+      resources:
+        requests:
+          cpu: 500m
+          memory: 512Mi
+        limits:
+          cpu: '2'
+          memory: 2Gi
+    scratch:
+      type: pvc
+      size: 100Gi
+      storageClassName: REPLACE_WITH_STORAGE_CLASS
+    retention:
+      maxAgeDays: 30
+      minSuccessfulBackups: 3
+    verification:
+      enabled: false

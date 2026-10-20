@@ -1,0 +1,8 @@
+include LICENSE NOTICE THIRD-PARTY-NOTICES.txt requirements.lock uv.lock Makefile README.md README.ru.md
+recursive-include charts *
+recursive-include docs *.md *.json
+recursive-include examples *.yaml *.json
+recursive-include scripts *.py
+recursive-include images Dockerfile *.txt *.md *LICENSE*
+recursive-include tests *.py *.sh *.yaml *.json *.txt
+exclude tests/reports/*.log

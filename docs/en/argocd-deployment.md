@@ -10,7 +10,9 @@ Start with one `logical` profile and leave the backup schedule disabled until va
 
 ## 1. Build and publish the worker
 
-You need Docker with BuildKit, registry access, and the matching PostgreSQL base image from `docs/compatibility.json`. The build script uses `images/Dockerfile`, targets `linux/amd64`, and creates `:17-test` as a local intermediate tag:
+You need Docker or Podman/Buildah with multi-stage build support, registry access, and the matching PostgreSQL base image from `docs/compatibility.json`. The build script uses `images/Dockerfile`, targets `linux/amd64`, and creates `:17-test` as a local intermediate tag:
+
+For Podman, use `python3 scripts/build_images.py --engine podman --major 17 --repository registry.example/pgbk-worker` and run login/tag/push using `podman`. The WAL-G checksum is verified with `sha256sum`; BuildKit extensions are not required. Integration checks still use Docker.
 
 ```sh
 docker login registry.example

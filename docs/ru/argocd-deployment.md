@@ -10,7 +10,9 @@ Helm chart находится в `charts/pgbk`. Он создаёт ConfigMap к
 
 ## 1. Соберите и опубликуйте worker
 
-Нужен Docker с BuildKit, доступ к registry и соответствующий PostgreSQL base image из `docs/compatibility.json`. Сборщик использует `images/Dockerfile`, платформу `linux/amd64` и тег `:17-test` в качестве локального промежуточного тега:
+Нужен Docker или Podman/Buildah с поддержкой многоэтапной сборки, доступ к registry и соответствующий PostgreSQL base image из `docs/compatibility.json`. Сборщик использует `images/Dockerfile`, платформу `linux/amd64` и тег `:17-test` в качестве локального промежуточного тега:
+
+Для Podman используйте `python3 scripts/build_images.py --engine podman --major 17 --repository registry.example/pgbk-worker`, а команды login/tag/push выполняйте через `podman`. Контрольная сумма WAL-G проверяется через `sha256sum`; расширения BuildKit не требуются. Проверки интеграции по-прежнему используют Docker.
 
 ```sh
 docker login registry.example

@@ -28,6 +28,8 @@ docker buildx imagetools inspect registry.example/pgbk-worker:17-0.2.0
 
 ## 2. Подготовьте Kubernetes и доступ Argo CD
 
+Для подробной инструкции по ServiceAccount worker'ов, RBAC, проверкам `kubectl auth can-i` и вычислению точных ключей/имён Lease см. [пошаговое руководство по ServiceAccount и Lease](argocd-leases-rbac.md).
+
 1. Проверьте кластер: chart заявляет Kubernetes `>=1.27`, а исполняемые образы рассчитаны на Linux amd64. CronJob использует `spec.timeZone`.
 2. Создайте namespace релиза, например `backups`, и namespace, которые будут использоваться для restore/verification, если они включены. Argo CD/Helm chart namespace не создаёт.
 3. Создайте именованные coordination Lease в namespace, заданном `coordinationNamespace`. Если несколько установок работают с одним источником или репозиторием, они должны согласованно использовать общий namespace и ключи координации.

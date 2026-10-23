@@ -42,7 +42,7 @@ Secrets must exist in the namespace where the corresponding Job runs. A regular 
 
 | Purpose | Secret keys |
 |---|---|
-| PostgreSQL target | `username`, `password` |
+| PostgreSQL target | `username`, `password` by default; configurable via `credentialsSecretKeys` |
 | S3-compatible storage | `accessKeyId`, `secretAccessKey`; optionally `sessionToken` |
 | PostgreSQL CA, if used | `ca.crt` |
 | Client TLS certificate, if used | `tls.crt`, `tls.key` |

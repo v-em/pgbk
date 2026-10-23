@@ -1,7 +1,20 @@
 import os
+import re
 from pathlib import Path
 
-from .errors import Error
+from .errors import Error, require
+
+
+def pg_credential_keys(target):
+    keys = target.get("credentialsSecretKeys", {})
+    require(isinstance(keys, dict) and not set(keys) - {"username", "password"},
+            "INVALID_CREDENTIAL_KEYS", "PostgreSQL credential keys must map username and password")
+    result = {"username": "username", "password": "password", **keys}
+    require(all(isinstance(key, str) and len(key) <= 253 and
+                re.fullmatch(r"[A-Za-z0-9._-]+", key) and key != "." and not key.startswith("..")
+                for key in result.values()),
+            "INVALID_CREDENTIAL_KEYS", "PostgreSQL credential keys must be valid Secret projection filenames")
+    return result
 
 
 def secret(ref, key, optional=False):
@@ -23,9 +36,10 @@ def secret_path(ref, key):
 
 def pg_params(target, database):
     tls = target["tls"]
+    keys = pg_credential_keys(target)
     params = {"host": target["host"], "port": target["port"], "dbname": database,
-              "user": secret(target["credentialsSecretRef"], "username"),
-              "password": secret(target["credentialsSecretRef"], "password"),
+              "user": secret(target["credentialsSecretRef"], keys["username"]),
+              "password": secret(target["credentialsSecretRef"], keys["password"]),
               "sslmode": tls["mode"], "connect_timeout": 15}
     if tls.get("caSecretRef"):
         params["sslrootcert"] = secret_path(tls["caSecretRef"], "ca.crt")

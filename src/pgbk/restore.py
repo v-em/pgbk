@@ -18,7 +18,7 @@ from psycopg import sql
 
 from .catalog import now
 from .config import canonical, profile, tcp_host
-from .credentials import pg_environment, pg_params, secret
+from .credentials import pg_credential_keys, pg_environment, pg_params, secret
 from .errors import Error, require
 from .postgres import check_tool, extract_physical, sanitize_physical
 from .runner import repository_lease
@@ -62,7 +62,7 @@ def load_destination_json(data):
         value = json.loads(data)
     except (ValueError, TypeError):
         raise Error("INVALID_DESTINATION", "Cannot parse destination JSON", 2) from None
-    permitted = {"host", "port", "serverMajor", "database", "credentialsSecretRef", "tls",
+    permitted = {"host", "port", "serverMajor", "database", "credentialsSecretRef", "credentialsSecretKeys", "tls",
                  "acknowledgeIsolated", "destinationPolicy", "preserveOwnership"}
     require(isinstance(value, dict) and not set(value) - permitted and
             all(value.get(k) for k in ["host", "serverMajor", "database", "credentialsSecretRef"]),
@@ -70,6 +70,7 @@ def load_destination_json(data):
     require(value.get("acknowledgeIsolated") is True, "DESTINATION_ACK_REQUIRED", "Explicit isolated destination acknowledgement is required", 3)
     require(isinstance(value["credentialsSecretRef"], str) and re.fullmatch(r"[a-z0-9][a-z0-9-]{0,47}", value["credentialsSecretRef"]),
             "INVALID_DESTINATION", "Destination Secret reference is invalid")
+    value["credentialsSecretKeys"] = pg_credential_keys(value)
     require(tcp_host(value["host"]) and
             isinstance(value["database"], str) and not any(c in value["database"] for c in "\x00\r\n"),
             "INVALID_DESTINATION", "Destination must use a TCP host and literal database name")

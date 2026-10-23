@@ -11,7 +11,8 @@
 | `targets.<id>.sourceId / concurrencyKey` | Стабильный идентификатор источника / общий ключ сериализации. Для псевдонимов нужен одинаковый ключ. |
 | `targets.<id>.host / port` | TCP-адрес; порт по умолчанию 5432. |
 | `targets.<id>.serverMajor / maintenanceDatabase` | 14–18; служебная база по умолчанию postgres. |
-| `targets.<id>.credentialsSecretRef` | Существующий Secret с username/password. |
+| `targets.<id>.credentialsSecretRef` | Существующий Secret PostgreSQL. |
+| `targets.<id>.credentialsSecretKeys` | Необязательное соответствие ключей username/password внутри Secret; пропущенные поля используют username/password по умолчанию. |
 | `targets.<id>.tls.mode` | По умолчанию verify-full; явно доступны disable/allow/prefer/require/verify-ca. |
 | `targets.<id>.tls.caSecretRef / clientSecretRef` | Необязательные Secret с CA и клиентским сертификатом. |
 | `targets.<id>.physicalEndpoint / expectedSystemIdentifier` | Для physical-full обязательны direct-primary и подтверждённый числовой идентификатор системы. |
@@ -35,6 +36,28 @@
 | `profiles.<id>.restore` | Включаемые явно Job: enabled, namespace, resources, scratch, timeoutSeconds, credentialsSecretRefs и allowedDestinationClaims. По умолчанию выключены. |
 | `profiles.<id>.serviceAccounts` | create по умолчанию false. При create: false задайте backup/repository и verify/restore для включённых операций — имена существующих аккаунтов в namespace операции. |
 | `networkPolicy.enabled / egress` | Необязательная политика с запретом входящих и явно заданными исходящими соединениями. По умолчанию выключена; разрешите DNS, API Kubernetes, S3 и нужные адреса назначения. |
+
+## Общий Secret PostgreSQL
+
+Несколько targets могут использовать один Secret с разными именами ключей:
+
+```yaml
+targets:
+  managed:
+    credentialsSecretRef: database-credentials
+    credentialsSecretKeys:
+      username: managed-username
+      password: managed-password
+  kubernetes:
+    credentialsSecretRef: database-credentials
+    credentialsSecretKeys:
+      username: kubernetes-username
+      password: kubernetes-password
+```
+
+Если весь объект `credentialsSecretKeys` или отдельное поле пропущены, используются стандартные ключи `username` или `password`. Отсутствие явно указанного ключа завершает операцию ошибкой; переключения на другую пару credentials нет. Ключи должны быть допустимыми именами файлов проекции Secret: буквы, цифры, точки, подчёркивания и дефисы, до 253 символов; имя `.` и префикс `..` запрещены.
+
+См. [overlay двух источников](../../examples/yandex/shared-db-credentials-override.yaml), применяемый поверх [two-sources.yaml](../../examples/yandex/two-sources.yaml), и [шаблон Secret](../../examples/shared-db-credentials-secret.yaml). Values содержат только имена ключей, настоящие credentials остаются в Secret. Каждый Job монтирует Secret целиком и может прочитать все пары credentials в нём. Secret должен существовать в namespace Job. JSON назначения PostgreSQL для восстановления также принимает `credentialsSecretKeys` с теми же defaults; для restore Job добавьте Secret в `restore.credentialsSecretRefs`. Названия ключей S3 и verification не меняются.
 
 ## Включение и исключение таблиц
 

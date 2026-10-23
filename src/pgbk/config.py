@@ -11,6 +11,7 @@ import yaml
 from kubernetes.utils.quantity import parse_quantity
 
 from .errors import Error, require
+from .credentials import pg_credential_keys
 
 
 class StrictLoader(yaml.SafeLoader):
@@ -73,6 +74,7 @@ def normalize(raw):
                 "INVALID_ENDPOINT", "Source must be a TCP hostname")
         t.setdefault("port", 5432)
         t.setdefault("maintenanceDatabase", "postgres")
+        t["credentialsSecretKeys"] = pg_credential_keys(t)
         t.setdefault("tls", {})["mode"] = t.get("tls", {}).get("mode", "verify-full")
     aliases = {}
     for t in c["targets"].values():

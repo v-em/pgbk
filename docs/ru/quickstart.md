@@ -12,7 +12,7 @@ cp examples/values.yaml values.local.yaml
 uv run --frozen pgbk --config values.local.yaml config validate
 ```
 
-Замените все примеры endpoint, баз, бакетов, storage class и нулевой image digest. Чарт не создаёт источник PostgreSQL, бакет или учётные данные. Администратор заранее предоставляет доступ и существующие Secrets в namespace релиза. PostgreSQL Secret содержит `username` и `password`; S3 Secret — `accessKeyId`, `secretAccessKey` и необязательный `sessionToken`. CA Secret содержит `ca.crt`; клиентский TLS Secret — `tls.crt` и `tls.key`. Предоставляйте файлы через обычное управление секретами; не помещайте пароли в values или аргументы команд.
+Замените все примеры endpoint, баз, бакетов, storage class и нулевой image digest. Чарт не создаёт источник PostgreSQL, бакет или учётные данные. Администратор заранее предоставляет доступ и существующие Secrets в namespace релиза. PostgreSQL Secret содержит `username` и `password` по умолчанию; targets могут переопределить каждый ключ через `credentialsSecretKeys`; S3 Secret — `accessKeyId`, `secretAccessKey` и необязательный `sessionToken`. CA Secret содержит `ca.crt`; клиентский TLS Secret — `tls.crt` и `tls.key`. Предоставляйте файлы через обычное управление секретами; не помещайте пароли в values или аргументы команд.
 
 Соберите отдельный worker для каждой настроенной major-версии PostgreSQL из неизменяемых баз в `docs/compatibility.json`. Опубликуйте в своём registry обычным процессом выпуска, запишите полученный registry digest и задайте его в `images.<major>`. Инструменты устанавливаются при сборке. Репозиторий автоматически не публикует образы.
 

@@ -42,7 +42,7 @@ Secret должны быть созданы в namespace соответству�
 
 | Назначение | Secret keys |
 |---|---|
-| PostgreSQL target | `username`, `password` |
+| PostgreSQL target | `username`, `password` по умолчанию; имена настраиваются через `credentialsSecretKeys` |
 | S3-compatible storage | `accessKeyId`, `secretAccessKey`; `sessionToken` при необходимости |
 | CA PostgreSQL, если используется | `ca.crt` |
 | Клиентский TLS сертификат, если используется | `tls.crt`, `tls.key` |

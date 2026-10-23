@@ -11,7 +11,8 @@ Version: 0.2.0. [Quickstart](quickstart.md). The strict schema is [values.schema
 | `targets.<id>.sourceId / concurrencyKey` | Stable source identity / shared serialization key. Aliases must share the key. |
 | `targets.<id>.host / port` | TCP endpoint; port defaults to 5432. |
 | `targets.<id>.serverMajor / maintenanceDatabase` | 14–18; maintenance database defaults to postgres. |
-| `targets.<id>.credentialsSecretRef` | Existing Secret with username/password. |
+| `targets.<id>.credentialsSecretRef` | Existing PostgreSQL Secret. |
+| `targets.<id>.credentialsSecretKeys` | Optional username/password key mapping within that Secret; each omitted key defaults to username/password. |
 | `targets.<id>.tls.mode` | verify-full default; disable/allow/prefer/require/verify-ca also explicit options. |
 | `targets.<id>.tls.caSecretRef / clientSecretRef` | Optional CA and client certificate Secret projections. |
 | `targets.<id>.physicalEndpoint / expectedSystemIdentifier` | For physical-full: direct-primary and an acknowledged numeric system identifier are required. |
@@ -35,6 +36,28 @@ Version: 0.2.0. [Quickstart](quickstart.md). The strict schema is [values.schema
 | `profiles.<id>.restore` | Opt-in Jobs: enabled, namespace, resources, scratch, timeoutSeconds, credentialsSecretRefs and allowedDestinationClaims. Defaults disabled. |
 | `profiles.<id>.serviceAccounts` | create defaults false. With create: false configure backup/repository and verify/restore for enabled operations using existing names in their operation namespaces. |
 | `networkPolicy.enabled / egress` | Optional deny-ingress/explicit-egress policy. Defaults disabled; allow DNS, Kubernetes API, S3 and necessary destination endpoints. |
+
+## Shared PostgreSQL credentials Secret
+
+Multiple targets can use the same Secret with different key mappings:
+
+```yaml
+targets:
+  managed:
+    credentialsSecretRef: database-credentials
+    credentialsSecretKeys:
+      username: managed-username
+      password: managed-password
+  kubernetes:
+    credentialsSecretRef: database-credentials
+    credentialsSecretKeys:
+      username: kubernetes-username
+      password: kubernetes-password
+```
+
+Omitting the entire `credentialsSecretKeys` object or an individual field preserves the default `username` or `password` key. An explicitly configured missing key fails the operation; it never falls back to another credential pair. Keys must be valid Secret projection filenames (letters, digits, dots, underscores and hyphens, up to 253 characters; no `.` or `..` prefix).
+
+See the [two-source overlay](../../examples/yandex/shared-db-credentials-override.yaml), applied over [two-sources.yaml](../../examples/yandex/two-sources.yaml), and the [Secret template](../../examples/shared-db-credentials-secret.yaml). Values contain only key names; real credentials stay in the Secret. Each Job mounts the entire referenced Secret and can read all credential pairs in it. The Secret must exist in the Job namespace. PostgreSQL restore destination JSON also accepts `credentialsSecretKeys` with the same defaults; allowlist its Secret in `restore.credentialsSecretRefs` for restore Jobs. S3 and verification credential key names are unchanged.
 
 ## Table inclusion and exclusion
 

@@ -30,11 +30,58 @@ For a private registry, configure `imagePullSecrets` using the cluster's standar
 
 1. Check the cluster: the chart declares Kubernetes `>=1.27`, and worker images target Linux amd64. CronJobs use `spec.timeZone`.
 2. Create the release namespace, such as `backups`, and any restore/verification namespaces that will be used. The chart does not create namespaces.
-3. Create the named coordination Leases in the namespace configured by `coordinationNamespace`. Installations sharing a source or repository must coordinate using a common namespace and keys.
+3. Create the named coordination Leases outside Argo CD as described below. Use `coordinationNamespace`, or the release namespace if it is unset. Installations sharing a source or repository must coordinate using a common namespace and keys.
 4. Create operation ServiceAccounts and grant minimum permissions as described in [operations](operations.md#installation-rbac-and-existing-service-accounts). With `rbac.create`, `coordination.createLeases`, and `serviceAccounts.create` disabled, Argo CD will not create these resources. For a single shared namespace, adapt `examples/installer-rbac.yaml` during administrator bootstrap. A regular deployer can use `examples/deployer-rbac.yaml` when all accounts and Leases already exist. Scope examples to actual namespaces and resource names; do not grant Argo CD cluster-wide permissions just to install the chart.
 5. Prepare the existing PostgreSQL and S3 bucket, network/DNS/TLS and bucket policy. For a physical profile, PostgreSQL must allow the required replication/base-backup access.
 
 Check the Argo CD identity's sync permissions in every affected namespace. A standard profile needs permissions to manage ConfigMaps and CronJobs; Helm release state also requires Secret read/create/update in the release namespace. If NetworkPolicy is enabled, add the corresponding permissions. Since creating RBAC/ServiceAccounts/Leases through the chart is administrative bootstrap, do not enable it unless an administrator has granted those rights.
+
+### Leases are excluded from Argo CD synchronization
+
+Argo CD excludes `coordination.k8s.io/Lease` from discovery and sync. Consequently, `coordination: {createLeases: true}` enables chart rendering but does not guarantee that Argo CD creates the Leases. `ExcludedResourceWarning: Resource coordination.k8s.io/Lease ... is excluded in the settings` means Argo CD skips the object. In standard Argo CD, Leases are a built-in exclusion; `resource.inclusions` does not override an exclusion. See [Resource Exclusion/Inclusion](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#resource-exclusioninclusion).
+
+Prepare Leases separately before the first Job. For a published Helm chart, run from the configuration repository root:
+
+```sh
+helm template RELEASE_NAME CHART_NAME \
+  --repo HELM_REPO_URL \
+  --version CHART_VERSION \
+  --namespace backups \
+  -f pgbk.p4d/pgbk-values.yaml \
+  --set coordination.createLeases=true \
+  --show-only templates/leases.yaml \
+  > /tmp/pgbk-leases.yaml
+```
+
+Replace `RELEASE_NAME`, `CHART_NAME`, `HELM_REPO_URL`, `CHART_VERSION`, namespace, and values path. Match the Application's chart version, release name, namespace, and all values/overrides; `--set coordination.createLeases=true` is only for this bootstrap. For a checkout, replace `CHART_NAME --repo HELM_REPO_URL --version CHART_VERSION` with `charts/pgbk` from the same Git revision being deployed.
+
+Inspect the file: it must contain only `kind: Lease`, with the expected `pgbk-source-…` and `pgbk-repository-…` names and coordination namespace. A user authorized to create Leases applies it to the same cluster as the Application destination:
+
+```sh
+kubectl apply -f /tmp/pgbk-leases.yaml
+kubectl get leases.coordination.k8s.io -n backups
+```
+
+If `coordinationNamespace` differs, use that namespace for the check. Workers require pre-existing Leases and never create them. Missing Leases cause `LEASE_UNAVAILABLE`; the same code can also indicate an API read/update failure, such as an RBAC denial. An occupied Lease produces `SOURCE_BUSY`.
+
+Keep `coordination.createLeases: false` in the Argo CD values, commit the change, and sync to remove the excluded manifests. The chart can still create ServiceAccounts and RBAC if the Argo CD destination identity has the required permissions:
+
+```yaml
+coordination:
+  createLeases: false
+rbac:
+  create: true
+profiles:
+  prod-logical:
+    serviceAccounts:
+      create: true
+      backup: pgbk-prod-backup
+      repository: pgbk-prod-repository
+```
+
+This is a fragment of the full values; retain the other profile fields. After preparing Leases and syncing, create a new Job from the CronJob. Manual Jobs inherit the CronJob template's ServiceAccount; existing Jobs do not change when the template is updated.
+
+Leases are reused across runs. Do not delete or clear them before each Job or use bootstrap to reset an occupied Lease. When adding profiles or changing coordination keys, render again to check names and provision missing objects without resetting existing holders. See [operations](operations.md#manual-and-scheduled-operations) for orphaned-holder handling.
 
 ## 3. Create Secrets outside Git
 

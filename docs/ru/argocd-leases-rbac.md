@@ -130,7 +130,9 @@ profiles:
 
 Обычный chart не создаёт ServiceAccount, RBAC и Lease. Argo CD по-прежнему должен иметь права на ресурсы самого приложения, например ConfigMap, CronJob и Helm release Secrets. Для deployer без прав управления RBAC см. `examples/deployer-rbac.yaml`.
 
-Если вы намеренно хотите поручить создание ServiceAccount/RBAC/Lease самому Argo CD, эти объекты можно хранить в Git, но тогда identity, которой Argo CD применяет Application, должна иметь права на них и право выдавать указанные worker-права. Не включайте `rbac.create` или `coordination.createLeases` только ради обхода ограничений: это требует административных полномочий у применяющей identity.
+Если вы намеренно хотите поручить создание ServiceAccount/RBAC самому Argo CD, включите `rbac.create: true` и `profiles.<id>.serviceAccounts.create: true`. Имена `backup` и `repository` при этом могут быть заданы явно: chart создаст аккаунты с этими именами и использует их в Pod и RoleBinding. Destination identity Argo CD должна иметь права на эти объекты и право выдавать указанные worker-права.
+
+Lease подготавливаются отдельно: Argo CD исключает `coordination.k8s.io/Lease` из синхронизации, даже если chart рендерит их при `coordination.createLeases: true`. Для Argo CD оставьте `coordination.createLeases: false`. Порядок отдельного рендеринга только `templates/leases.yaml` и применения к destination-кластеру приведён в [руководстве развёртывания](argocd-deployment.md#lease-исключены-из-синхронизации-argo-cd). Этот порядок совместим как с готовыми аккаунтами, так и с созданием SA/RBAC через chart.
 
 ## 6. Проверьте права worker'а
 
@@ -164,6 +166,8 @@ kubectl describe rolebinding pgbk-backup-lease-access -n backups
 
 ## Если что-то не работает
 
+- `ExcludedResourceWarning` для `coordination.k8s.io/Lease`: Argo CD пропускает Lease из-за исключения ресурсов. Создайте Lease отдельно по [инструкции](argocd-deployment.md#lease-исключены-из-синхронизации-argo-cd), а для Argo CD выключите `coordination.createLeases`.
+- `LEASE_UNAVAILABLE`: проверьте наличие обоих нужных Lease в namespace координации (`coordinationNamespace`, иначе namespace релиза), затем `get`/`update` для фактического ServiceAccount Pod. Worker не создаёт Lease; занятый holder возвращает `SOURCE_BUSY`, а не `LEASE_UNAVAILABLE`.
 - `forbidden` при `kubectl apply`: не хватает прав вашему пользователю либо вы пытаетесь выдать права выше разрешённых.
 - Argo CD показывает `SyncFailed` на ServiceAccount/Role/RoleBinding: этих ресурсов нет в GitOps-манифестах или destination identity не может их применить.
 - Worker получает `leases.coordination.k8s.io is forbidden`: проверьте namespace Lease, имя в `resourceNames`, RoleBinding subject и `spec.serviceAccountName` Pod.

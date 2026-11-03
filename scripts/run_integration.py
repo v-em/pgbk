@@ -3,6 +3,7 @@ import argparse
 import json
 import platform
 import subprocess
+import tomllib
 from pathlib import Path
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -30,6 +31,6 @@ for major in args.major or range(14, 19):
             subprocess.run(command, stdout=output, stderr=log, check=True)
         image_metadata = json.loads(subprocess.check_output(['docker','image','inspect',image]))[0]
         report = json.loads(report_path.read_text())
-        report.update(pgbkVersion='0.2.0', workerImage=image, imageConfigId=image_metadata['Id'], registryDigests=image_metadata.get('RepoDigests', []))
+        report.update(pgbkVersion=tomllib.loads(Path('pyproject.toml').read_text())['project']['version'], workerImage=image, imageConfigId=image_metadata['Id'], registryDigests=image_metadata.get('RepoDigests', []))
         report_path.write_text(json.dumps(report, indent=2) + '\n')
         print(f'PostgreSQL {major} {mode}/{args.compression}: {len(report["cases"])} cases passed', flush=True)

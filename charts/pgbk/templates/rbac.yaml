@@ -2,9 +2,14 @@
 {{- $root := . -}}
 {{- $coord := .Values.coordinationNamespace | default .Release.Namespace -}}
 {{- range $name, $profile := .Values.profiles }}
+{{- $profile = include "pgbk.profile" (dict "root" $root "profile" $profile) | fromYaml -}}
 {{- $target := index $root.Values.targets $profile.target -}}
 {{- $sa := printf "%s-%s" $root.Release.Name $name -}}
 {{- $repository := include "pgbk.repositoryLease" (dict "root" $root "profile" $profile "name" $name) -}}
+{{- $repositoryLeases := list $repository -}}
+{{- if and $profile.verification $profile.verification.enabled }}
+{{- $repositoryLeases = concat $repositoryLeases (include "pgbk.verificationSlots" $profile.verification | fromJsonArray) -}}
+{{- end }}
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -15,7 +20,7 @@ metadata:
 rules:
   - apiGroups: [coordination.k8s.io]
     resources: [leases]
-    resourceNames: [{{ $repository }}]
+    resourceNames: {{ $repositoryLeases | toJson }}
     verbs: [get, update]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -128,7 +133,7 @@ metadata:
 rules:
   - apiGroups: [coordination.k8s.io]
     resources: [leases]
-    resourceNames: [{{ $repository }}]
+    resourceNames: {{ $repositoryLeases | toJson }}
     verbs: [get, update]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -143,6 +148,36 @@ subjects:
 roleRef:
   kind: Role
   name: {{ $sa }}-verify-coordination
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $sa }}-verify-status
+  namespace: {{ $profile.verification.namespace }}
+rules:
+  - apiGroups: [batch]
+    resources: [jobs]
+    verbs: [get]
+  - apiGroups: [""]
+    resources: [pods]
+    verbs: [list]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $sa }}-verify-status
+  namespace: {{ $profile.verification.namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" "verify") }}
+    namespace: {{ $profile.verification.namespace }}
+  - kind: ServiceAccount
+    name: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" "repository") }}
+    namespace: {{ $root.Release.Namespace }}
+roleRef:
+  kind: Role
+  name: {{ $sa }}-verify-status
   apiGroup: rbac.authorization.k8s.io
 {{- if eq $profile.verification.scratch.type "existingClaim" }}
 ---

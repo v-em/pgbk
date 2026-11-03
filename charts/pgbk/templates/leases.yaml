@@ -1,7 +1,9 @@
 {{- $root := . -}}
 {{- $created := dict -}}
 {{- range $name, $profile := .Values.profiles }}
+{{- $profile = include "pgbk.profile" (dict "root" $root "profile" $profile) | fromYaml -}}
 {{- $target := index $root.Values.targets $profile.target | default dict -}}
+{{- if and (eq $profile.kind "physical-full") (or (eq ($target.provider | default "generic") "yandex-managed-postgresql") (hasSuffix ".mdb.yandexcloud.net" (lower $target.host))) }}{{ fail "YANDEX_PHYSICAL_UNSUPPORTED: Yandex Managed PostgreSQL supports logical backups only" }}{{ end }}
 {{- $storage := index $root.Values.storage $profile.storage | default dict -}}
 {{- if or (not $target) (not $storage) }}{{ fail "Profile must reference configured target and storage" }}{{ end }}
 {{- if and (eq $profile.kind "physical-full") (or (not $target.expectedSystemIdentifier) (ne ($target.physicalEndpoint | default "") "direct-primary")) }}{{ fail "Physical target requires expectedSystemIdentifier and physicalEndpoint: direct-primary" }}{{ end }}
@@ -21,6 +23,24 @@ metadata:
   labels:
     pgbk.io/installation: {{ $root.Values.installationId }}
 spec: {}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- if dig "createLeases" false (.Values.coordination | default dict) }}
+{{- range $environment := .Values.verificationEnvironments }}
+{{- range $lease := (include "pgbk.verificationSlots" $environment | fromJsonArray) }}
+{{- if not (hasKey $created $lease) }}
+{{- $_ := set $created $lease true }}
+---
+apiVersion: coordination.k8s.io/v1
+kind: Lease
+metadata:
+  name: {{ $lease }}
+  namespace: {{ $root.Values.coordinationNamespace | default $root.Release.Namespace }}
+  annotations:
+    helm.sh/resource-policy: keep
+spec: {}
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}

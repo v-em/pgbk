@@ -9,7 +9,7 @@ import uuid
 from pathlib import Path
 
 from . import __version__
-from .catalog import Catalog
+from .catalog import Catalog, now
 from .config import canonical, load, profile
 from .errors import Error, require
 from .kube import Kubernetes
@@ -81,21 +81,35 @@ def parser():
         restore_arguments(item, operation)
     verification = commands.add_parser("verify")
     verification.add_argument("--profile", required=True)
-    verification.add_argument("--run-id")
+    verification.add_argument("--run-id", required=True)
+    verification.add_argument("--verification-profile", "--environment", dest="environment", required=True,
+                              help="Explicit named verification environment; the captured name selects its immutable snapshot")
     verification.add_argument("--release", default="pgbk")
+    reconciliation = commands.add_parser("verification").add_subparsers(dest="operation", required=True)
+    item = reconciliation.add_parser("reconcile")
+    item.add_argument("--profile", required=True)
+    item.add_argument("--local", action="store_true")
+    item.add_argument("--release", default="pgbk")
+    recovery = reconciliation.add_parser("recover")
+    recovery.add_argument("--profile", required=True)
+    recovery.add_argument("--run-id", required=True)
+    recovery.add_argument("--attempt-id", required=True)
+    recovery.add_argument("--acknowledge-worker-fenced", action="store_true")
     retention = commands.add_parser("retention").add_subparsers(dest="operation", required=True)
     item = retention.add_parser("run")
     item.add_argument("--profile", required=True)
     item.add_argument("--release", default="pgbk")
     item.add_argument("--local", action="store_true")
     workers = commands.add_parser("worker", help=argparse.SUPPRESS).add_subparsers(dest="operation", required=True)
-    for operation in ["backup", "preflight", "retention", "verify", "download", "restore-logical", "restore-physical"]:
+    for operation in ["backup", "preflight", "retention", "reconcile", "verify", "download", "restore-logical", "restore-physical"]:
         item = workers.add_parser(operation)
         item.add_argument("--profile", required=True)
         if operation.startswith("restore-"):
             restore_arguments(item, operation.removeprefix("restore-"), worker=True)
         if operation == "verify":
-            item.add_argument("--run-id")
+            item.add_argument("--run-id", required=True)
+            item.add_argument("--environment-json")
+            item.add_argument("--attempt-id")
         if operation == "download":
             item.add_argument("--destination-pvc", required=True)
             item.add_argument("--run-id", required=True)
@@ -114,9 +128,11 @@ def execute(args):
     restore_operation = args.operation.removeprefix("restore-") if restore_worker else args.operation if args.command == "restore" else None
     if restore_worker:
         require(p["restore"]["enabled"], "RESTORE_JOBS_DISABLED", "Restore Jobs are disabled", 3)
-    if args.command == "worker" and args.operation == "verify":
-        require(p["verification"]["enabled"], "VERIFICATION_DISABLED", "Verification is disabled", 3)
-    operation_limit = p["restore"]["timeoutSeconds"] if restore_worker else p["verification"]["timeoutSeconds"] if args.command == "worker" and args.operation == "verify" else p["execution"]["activeDeadlineSeconds"]
+    environment = None
+    if args.command == "worker" and args.operation == "verify" and args.environment_json:
+        from .verification import validate_environment
+        environment = validate_environment(args.environment_json)
+    operation_limit = p["restore"]["timeoutSeconds"] if restore_worker else environment["timeoutSeconds"] if environment else p["execution"]["activeDeadlineSeconds"]
     control = Control(min(args.timeout, operation_limit))
     install_signals(control)
     kube = Kubernetes(args.namespace, args.context, config.get("coordinationNamespace"))
@@ -139,12 +155,33 @@ def execute(args):
         return kube.cancel(args.job)
     if args.command == "retention" and not args.local:
         return kube.launch(args.profile, "retention", args.release)
+    if args.command == "verification" and args.operation == "reconcile" and not args.local:
+        return kube.launch(args.profile, "reconcile", args.release)
     if args.command == "verify":
-        verification = p["verification"]
-        require(verification["enabled"], "VERIFICATION_DISABLED", "Verification must be explicitly configured", 3)
-        kube.namespace = verification["namespace"]
-        params = ["--run-id", args.run_id] if args.run_id else None
-        return kube.launch(args.profile, "verify", args.release, params)
+        catalog = Catalog(S3(storage, control), config, args.profile)
+        with repository_lease(kube, catalog, control):
+            manifest = catalog.describe(args.run_id, verify=False, check_objects=False)
+            policy = manifest.get("verificationPolicy", {})
+            if args.environment == policy.get("environmentRef") and policy.get("environment"):
+                environment = policy["environment"]
+            else:
+                require(args.environment in config["verificationEnvironments"], "INVALID_REFERENCE", "Unknown verification environment")
+                environment = config["verificationEnvironments"][args.environment]
+            require(environment, "VERIFICATION_DISABLED", "Copy requires an explicitly selected environment", 3)
+            attempt_id = uuid.uuid4().hex
+            manifest, active = catalog.start_verification(args.run_id, attempt_id, environment,
+                {"jobName": "pgbk-verify-" + attempt_id, "namespace": environment["namespace"], "environmentRef": args.environment})
+            try:
+                result = kube.launch_verification(args.profile, manifest, environment, attempt_id, args.release)
+                active["jobUid"] = result["jobUid"]
+                catalog.s3.put(catalog.root + "verification/" + args.run_id + "/active.json", canonical(active))
+                return {**result, "verificationProfile": args.environment}
+            except Error as e:
+                # A lost create response may have created the Job. Keep the pin until
+                # reconciliation establishes terminal state or an operator fences it.
+                if e.exit_code == 8:
+                    catalog.finish_verification({**active, "status": "failed", "finishedAt": now(), "reasonCode": e.code})
+                raise
     if args.command == "restore" and (args.as_job or getattr(args, "destination_pvc", None)):
         settings = p["restore"]
         require(settings["enabled"], "RESTORE_JOBS_DISABLED", "Restore Jobs require explicit profile configuration", 3)
@@ -196,7 +233,7 @@ def execute(args):
             finally:
                 shutil.rmtree(work)
     if args.command == "worker" and args.operation == "verify":
-        return drill(config, args.profile, catalog, kube, control, scratch_root, args.run_id)
+        return drill(config, args.profile, catalog, kube, control, scratch_root, args.run_id, environment, args.attempt_id)
     with repository_lease(kube, catalog, control) as lease:
         if args.command == "worker" and args.operation == "download":
             require(Path("/destination") in Path(args.destination).parents, "UNSAFE_DESTINATION", "Job destination must be under /destination")
@@ -205,19 +242,19 @@ def execute(args):
         if args.command == "backup":
             if args.operation == "list":
                 result = catalog.list()
-                for manifest in result["backups"]:
-                    manifest["restoreVerification"] = catalog.verification_status(manifest["runId"])
                 result["diagnosticRuns"] = [kube.reconcile(event) for event in result["diagnosticRuns"]]
                 return result
             if args.operation == "describe":
-                result = catalog.describe(args.run_id)
-                result["restoreVerification"] = catalog.verification_status(args.run_id)
-                return result
+                return catalog.view(args.run_id)
             if args.operation == "download":
                 manifest = catalog.download(args.run_id, args.destination, args.database)
                 return {"schemaVersion": 1, "status": "downloaded", "runId": args.run_id,
                         "destination": args.destination, "artifacts": [a for a in manifest["artifacts"]
                           if args.database is None or a.get("database") == args.database]}
+        if args.command == "verification" and args.operation == "recover":
+            return catalog.recover_verification(args.run_id, args.attempt_id, kube, args.acknowledge_worker_fenced)
+        if args.command == "verification" or (args.command == "worker" and args.operation == "reconcile"):
+            return catalog.reconcile_verification(kube=kube)
         if args.command in ["retention", "worker"] and args.operation == "retention" or args.command == "retention":
             report_id = uuid.uuid4().hex
             try:
@@ -263,7 +300,7 @@ def main():
             print(json.dumps(result, ensure_ascii=False, indent=2))
         elif "backups" in result:
             for item in result["backups"]:
-                print(f"{item['runId']}  {item['kind']}  {item['completedAt']}  verification={item['restoreVerification']['status']}")
+                print(f"{item['runId']}  {item['kind']}  {item['completedAt']}  status={item['status']}  compliant={item['profileCompliant']}  verification={item['restoreVerification']['status']}")
             for item in result["invalidRuns"]:
                 print(f"{item['runId']}  unusable  {item['reasonCode']}")
             for item in result["diagnosticRuns"]:

@@ -48,7 +48,9 @@ def retention_candidates(runs, max_age_days, minimum, clock=None, protected=()):
     require(max_age_days > 0 and minimum > 0, "INVALID_RETENTION", "Retention limits must be positive")
     ordered = sorted(runs, key=lambda r: (timestamp(r["completedAt"]), r["runId"]), reverse=True)
     newest = {r["runId"] for r in ordered[:minimum]}
-    return [r for r in ordered if r["runId"] not in newest and r["runId"] not in protected
+    compliant = {r["runId"] for r in [r for r in ordered if r.get("profileCompliant", True)][:minimum]}
+    return [r for r in ordered if r["runId"] not in newest | compliant and r["runId"] not in protected
+            and not r.get("waitingProtected") and not r.get("operationPinned")
             and timestamp(r["completedAt"]) < clock - timedelta(days=max_age_days)]
 
 
@@ -85,7 +87,7 @@ class Catalog:
                 raise
         require(self.s3.get(prefix + "complete.json") == marker, "MARKER_MISMATCH", "Completion publication is unverified", 6)
 
-    def describe(self, run_id, verify=True):
+    def describe(self, run_id, verify=True, check_objects=True):
         prefix = self.run_prefix(run_id)
         require(self.s3.get(prefix + "deletion.json") is None, "BACKUP_DELETING", "Run is being deleted", 6)
         marker_bytes = self.s3.get(prefix + "complete.json")
@@ -100,6 +102,20 @@ class Catalog:
         require(manifest.get("kind") in ["logical", "physical-full"] and
                 marker.get("completedAt") == manifest.get("completedAt"), "CATALOG_INVALID", "Manifest kind or completion time is invalid", 6)
         timestamp(manifest["completedAt"])
+        if "verificationPolicy" in manifest:
+            policy = manifest["verificationPolicy"]
+            require(isinstance(policy, dict) and type(policy.get("enabled")) is bool and type(policy.get("required")) is bool,
+                    "CATALOG_INVALID", "Invalid captured verification policy", 6)
+            if policy["enabled"]:
+                from .verification import validate_environment
+                from .config import digest
+                environment = validate_environment(policy.get("environment"))
+                require(digest(environment) == policy.get("environmentDigest"), "CATALOG_INVALID", "Captured environment digest differs", 6)
+            if policy["required"]:
+                interval = policy.get("dueWithinSeconds")
+                require(policy["enabled"] and type(interval) is int and interval > 0 and
+                        timestamp(policy.get("dueAt")) == timestamp(manifest["completedAt"]) + timedelta(seconds=interval),
+                        "CATALOG_INVALID", "Captured verification deadline is inconsistent", 6)
         require(type(manifest.get("serverMajor")) is int and manifest["serverMajor"] in range(14, 19) and
                 isinstance(manifest.get("source"), dict) and isinstance(manifest.get("tools"), dict) and
                 isinstance(manifest.get("sourceEndpoint"), dict) and
@@ -142,9 +158,10 @@ class Catalog:
             require(type(item.get("size")) is int and item["size"] >= 0 and
                     re.fullmatch(r"[0-9a-f]{64}", item.get("sha256", "")), "CATALOG_INVALID", "Artifact size/hash is invalid", 6)
             key = prefix + "artifacts/" + file_id
-            head = self.s3.call("head_object", Key=key)
-            require(head is not None and head["ContentLength"] == item["size"], "ARTIFACT_SIZE_MISMATCH", "Stored artifact has wrong size", 6)
-            if verify:
+            if check_objects:
+                head = self.s3.call("head_object", Key=key)
+                require(head is not None and head["ContentLength"] == item["size"], "ARTIFACT_SIZE_MISMATCH", "Stored artifact has wrong size", 6)
+            if verify and check_objects:
                 require(self.s3.remote_hash(key) == (item["sha256"], item["size"]),
                         "ARTIFACT_HASH_MISMATCH", "Stored artifact SHA-256 differs", 6)
         if manifest["kind"] == "physical-full":
@@ -152,17 +169,17 @@ class Catalog:
                     "PHYSICAL_SET_INCOMPLETE", "Physical manifest must contain the entire declared artifact set", 6)
         return manifest
 
-    def list(self):
+    def list(self, clock=None):
         result, invalid = [], []
         for key in self.s3.keys(self.root + "runs/"):
             if key.endswith("/complete.json"):
                 run_id = key[len(self.root + "runs/"):].split("/")[0]
                 try:
-                    result.append(self.describe(run_id))
+                    result.append(self.view(run_id, clock=clock))
                 except Error as e:
                     if e.code != "BACKUP_DELETING":
                         invalid.append({"runId": run_id, "reasonCode": e.code})
-        result.sort(key=lambda r: (r["completedAt"], r["runId"]), reverse=True)
+        result.sort(key=lambda r: (timestamp(r["completedAt"]), r["runId"]), reverse=True)
         events = {}
         for key in self.s3.keys(self.root + "events/"):
             event = read_json(self.s3.get(key))
@@ -171,16 +188,105 @@ class Catalog:
                 if run_id not in events or timestamp(event["at"]) > timestamp(events[run_id]["at"]):
                     events[run_id] = event
         complete = {m["runId"] for m in result}
-        return {"schemaVersion": 1, "backups": result, "invalidRuns": invalid,
+        from .verification import coverage
+        return {"schemaVersion": 1, "backups": result, "invalidRuns": invalid, "coverage": coverage(result),
                 "diagnosticRuns": [e for run_id, e in sorted(events.items()) if run_id not in complete and run_id != "cleanup"],
                 "lastCleanup": events.get("cleanup")}
 
     def verification_status(self, run_id):
-        reports = []
+        return self.view(run_id)["restoreVerification"]
+
+    def verification_records(self, run_id):
+        reports, active = [], None
         for key in self.s3.keys(self.root + "verification/" + safe_id(run_id) + "/"):
             report = read_json(self.s3.get(key))
-            reports.append(report)
-        return max(reports, key=lambda r: r["finishedAt"]) if reports else {"status": "not-run"}
+            require(report.get("runId") == run_id, "CATALOG_INVALID", "Verification report scope differs", 6)
+            if key.endswith("/active.json"):
+                active = report
+            elif "finishedAt" in report:
+                require(report.get("status") in ["passed", "failed"], "CATALOG_INVALID", "Invalid verification outcome", 6)
+                safe_id(report.get("verificationId"))
+                timestamp(report["finishedAt"])
+                reports.append(report)
+        return reports, active
+
+    def view(self, run_id, clock=None):
+        from .verification import state
+        manifest = self.describe(run_id)
+        reports, active = self.verification_records(run_id)
+        return {**manifest, **state(manifest, reports, active, clock)}
+
+    def start_verification(self, run_id, attempt_id, environment, job_info=None):
+        # Caller holds the repository lease. The durable pin outlives this critical section.
+        manifest = self.describe(run_id, verify=False, check_objects=False)
+        from .verification import validate_environment
+        environment = validate_environment(environment)
+        reports, active = self.verification_records(run_id)
+        if active:
+            raise Error("VERIFICATION_BUSY", "This copy already has an active verification attempt", 4,
+                        activeAttemptId=active["verificationId"], jobName=active.get("jobName"))
+        require(not any(r["verificationId"] == attempt_id for r in reports), "IMMUTABLE_REPORT", "Attempt identity has already completed", 6)
+        record = {"schemaVersion": 1, "runId": run_id, "verificationId": safe_id(attempt_id),
+                  "sequence": max([r.get("sequence", 0) for r in reports], default=0) + 1,
+                  "startedAt": now(), "status": "running", "environment": environment,
+                  **(job_info or {})}
+        self.s3.put(self.root + "verification/" + run_id + "/active.json", canonical(record))
+        return manifest, record
+
+    def finish_verification(self, report):
+        run_id = safe_id(report["runId"])
+        base = self.root + "verification/" + run_id + "/"
+        active = self.s3.get(base + "active.json")
+        require(active is not None and read_json(active)["verificationId"] == report["verificationId"],
+                "VERIFICATION_PIN_LOST", "Verification ownership differs; preserve resources and operation pin", 5)
+        key = base + safe_id(report["verificationId"]) + ".json"
+        data = canonical(report)
+        previous = self.s3.get(key)
+        require(previous is None or previous == data, "IMMUTABLE_REPORT", "Attempt reports are immutable", 6)
+        self.s3.put(key, data)
+        require(self.s3.get(key) == data, "REPORT_UNVERIFIED", "Verification report persistence is unconfirmed", 5)
+        self.s3.delete(base + "active.json")
+
+    def recover_verification(self, run_id, attempt_id, kube, fenced=False):
+        # Explicit operator fencing is the only recovery path after API/Pod loss.
+        require(fenced, "WORKER_FENCING_REQUIRED", "Confirm termination/fencing of the worker, children and disposable server", 3)
+        _, active = self.verification_records(run_id)
+        require(active is not None and active["verificationId"] == attempt_id,
+                "VERIFICATION_PIN_LOST", "The selected attempt is no longer active", 5)
+        kube.release_verification_slot(active)
+        reports, _ = self.verification_records(run_id)
+        existing = next((r for r in reports if r["verificationId"] == attempt_id), None)
+        if existing:
+            self.s3.delete(self.root + "verification/" + safe_id(run_id) + "/active.json")
+        else:
+            self.finish_verification({**active, "status": "failed", "finishedAt": now(),
+                                      "reasonCode": "VERIFICATION_WORKER_FENCED", "operatorFenced": True})
+        return {"schemaVersion": 1, "status": "recovered", "runId": run_id, "verificationId": attempt_id}
+
+    def reconcile_verification(self, clock=None, kube=None):
+        reconciled = []
+        failed = []
+        for run in self.list(clock=clock)["backups"]:
+            active = run["restoreVerification"]["activeAttempt"]
+            if active and kube:
+                reason = kube.terminal_verification(active)
+                if reason:
+                    kube.release_verification_slot(active)
+                    existing = next((r for r in run["restoreVerification"]["attempts"] if r["verificationId"] == active["verificationId"]), None)
+                    if existing:
+                        # A lost delete response must not counterfeit a failed retry.
+                        self.s3.delete(self.root + "verification/" + run["runId"] + "/active.json")
+                    else:
+                        self.finish_verification({**active, "status": "failed", "finishedAt": now(), "reasonCode": reason})
+                    failed.append(active["verificationId"])
+            if run["verificationOverdue"]:
+                key = self.root + "deadlines/" + run["runId"] + "/overdue.json"
+                if self.s3.get(key) is None:
+                    self.s3.put(key, canonical({"schemaVersion": 1, "runId": run["runId"],
+                                               "dueAt": run["restoreVerification"]["dueAt"],
+                                               "reasonCode": "VERIFICATION_OVERDUE", "reconciledAt": now()}))
+                reconciled.append(run["runId"])
+        return {"schemaVersion": 1, "status": "reconciled", "overdueRunIds": reconciled, "recoveredAttemptIds": failed}
 
     def download(self, run_id, destination, database=None):
         manifest = self.describe(run_id)

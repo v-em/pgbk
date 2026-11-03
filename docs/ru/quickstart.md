@@ -2,7 +2,7 @@
 
 Для GitOps-развертывания через Argo CD см. подробную [инструкцию](argocd-deployment.md).
 
-Версия: 0.2.0. Основная конфигурация не создаёт namespace, ServiceAccount, RBAC и Lease. Администратор заранее подготавливает аккаунты с get/update конкретных координационных Lease и необходимыми правами чтения Job/PVC; см. эксплуатацию. Необязательная подготовка через examples/access-bootstrap.yaml включается отдельно и не входит в обычное развертывание. Сборка для разработки; сертификация выпуска не завершена. См. [совместимость и доказательства](compatibility.md), [конфигурацию](configuration.md) и [эксплуатацию](operations.md). [Спецификация](specification.md) остаётся контрактом приёмки версии 1.
+Версия: 0.3.0. Основная конфигурация не создаёт namespace, ServiceAccount, RBAC и Lease. Администратор заранее подготавливает аккаунты с get/update конкретных координационных Lease и необходимыми правами чтения Job/PVC; см. эксплуатацию. Необязательная подготовка через examples/access-bootstrap.yaml включается отдельно и не входит в обычное развертывание. Сборка для разработки; сертификация выпуска не завершена. См. [совместимость и доказательства](compatibility.md), [конфигурацию](configuration.md) и [эксплуатацию](operations.md). [Спецификация](specification.md) остаётся контрактом приёмки версии 1.
 
 Установите CLI в virtual environment Python 3.11+. Проверенный renderer — Helm 3.19.0. Kubernetes должен поддерживать зоны CronJob (заявленный минимум 1.27; сертификация минимальной версии и Jobs на amd64 ещё предстоит). Начальная архитектура исполнителя — Linux amd64.
 
@@ -27,7 +27,7 @@ kubectl -n backups logs job/example-manual
 
 Согласуйте `coordinationNamespace` с используемым существующим namespace. Псевдонимы и установки, работающие с одним источником/репозиторием, должны использовать общий namespace координации и ключи. Независимые писатели из разных кластеров не поддерживаются. Ручные и плановые Jobs используют один неизменяемый снимок конфигурации и процесс. Приостановленное расписание резервирования допускает ручные Jobs.
 
-Для прямого доступа к S3/PostgreSQL локальный CLI читает проекции Secrets в `PGBK_SECRET_ROOT/<SecretName>/<key>`. Задайте `PGBK_SECRET_ROOT` как приватный каталог с файлами от своего secret manager. `backup run` и `verify` создают Jobs и не требуют локального экспорта этих учётных данных. Скачивание через Job описано в [эксплуатации](operations.md) и оставляет доступ к S3 внутри Kubernetes. Доступ к Kubernetes берётся из выбранного context/KUBECONFIG либо из service account исполнителя.
+Для прямого доступа к S3/PostgreSQL локальный CLI читает проекции Secrets в `PGBK_SECRET_ROOT/<SecretName>/<key>`. Задайте `PGBK_SECRET_ROOT` как приватный каталог с файлами от своего secret manager. `backup run` создаёт Job без локальных S3-учётных данных. `verify` читает зафиксированную политику копии из S3 и требует локальную проекцию учётных данных каталога до создания изолированного Job; см. [ручную проверку](verification.md). Kubernetes credentials берутся из выбранного context/KUBECONFIG или проекции ServiceAccount worker.
 
 ```sh
 pgbk --config values.local.yaml --namespace backups --scratch /tmp/pgbk preflight --profile example-logical

@@ -12,6 +12,7 @@ import yaml
 from kubernetes import client, config
 
 from pgbk.errors import Error
+from pgbk import __version__
 from pgbk.kube import Kubernetes, lease_name
 from pgbk.process import Control
 from pgbk.config import normalize
@@ -107,7 +108,7 @@ def main():
         cases.append({"case": "existing-identities-leases-no-rbac-mutations-install", "status": "passed"})
         nodes = core.list_node().items
         architecture = nodes[0].status.node_info.architecture
-        print(json.dumps({"schemaVersion": 1, "cases": cases, "kubernetesVersion": nodes[0].status.node_info.kubelet_version,
+        print(json.dumps({"schemaVersion": 1, "pgbkVersion": __version__, "cases": cases, "kubernetesVersion": nodes[0].status.node_info.kubelet_version,
                           "nodeArchitecture": architecture, "workerJobs": "not-run: amd64 required" if architecture != "amd64" else "run separately"}))
     finally:
         core.delete_namespace(namespace)

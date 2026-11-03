@@ -1,6 +1,6 @@
 # Operations, prerequisites and recovery
 
-Version: 0.2.0. Start with [quickstart](quickstart.md) and [configuration](configuration.md). Acceptance evidence and untested gates are in [compatibility](compatibility.md).
+Version: 0.3.0. Start with [quickstart](quickstart.md) and [configuration](configuration.md). Acceptance evidence and untested gates are in [compatibility](compatibility.md).
 
 ## Existing source prerequisites
 
@@ -41,7 +41,7 @@ pgbk --config values.local.yaml --namespace backups backup cancel --profile exam
 pgbk --config values.local.yaml --namespace backups retention run --profile example-logical
 ```
 
-Schedules use an explicit IANA timezone, default UTC. Kubernetes scheduling is best effort; daylight-saving gaps/repeated times can skip/repeat runs. startingDeadlineSeconds bounds missed starts; there is no catch-up/exactly-once guarantee. Every attempt has a new random run ID. Source Lease covers manual/scheduled/alias profiles. A repository Lease serializes publication/download/restore/drill/cleanup and pins the entire operation; long operations may make catalog polling return busy. API renewal failure stops tools and blocking SQL; expired holders are never stolen.
+Schedules use an explicit IANA timezone, default UTC. Kubernetes scheduling is best effort; daylight-saving gaps/repeated times can skip/repeat runs. startingDeadlineSeconds bounds missed starts; there is no catch-up/exactly-once guarantee. Every attempt has a new random run ID. Source Lease covers manual/scheduled/alias profiles. A repository Lease serializes publication/download/restore/cleanup and verification pin/report changes; long verification work uses a durable copy pin and shared capacity Lease; long operations may make catalog polling return busy. API renewal failure stops tools and blocking SQL; expired holders are never stolen.
 
 For an orphan Lease, first establish termination of the worker, all children and disposable server, including fencing a partitioned node/process. A deleted Pod/Job API object or expired time is insufficient. Record the incident, read the holder/resourceVersion and clear only that expected holder through a Kubernetes compare-and-swap update. Never blanket-delete Leases during cleanup or a Helm upgrade. Shared sources/repositories require consistent coordination namespace/keys across installations; independent cross-cluster writers are unsupported.
 
@@ -66,7 +66,7 @@ Replace [destination.json](../../examples/destination.json) placeholders with an
 
 For filtered archives, prepare known schemas/types/extensions/FK/parent prerequisites and explicitly choose `destinationPolicy: prerequisites-only`. Selected relations must not already exist. Known prerequisites are checked; incomplete recursive dependency discovery can still cause a clear native restore failure. Drills automatically create selected schemas only; custom dependencies must be present in the compatible image/destination or the drill fails.
 
-Enable the following fragments inside a profile to opt into isolated Jobs. All namespaces/Secrets/images/claims must already exist and placeholders must be replaced. You can enable either restore or verification independently.
+Enable the following fragments inside a profile to opt into isolated Jobs. All namespaces/Secrets/images/claims must already exist and placeholders must be replaced. You can enable restore and verification independently. Define pg18-isolated at the root as shown in [manual verification](verification.md).
 
 ```yaml
 restore:
@@ -81,18 +81,9 @@ restore:
   scratch: {type: pvc, size: 40Gi, storageClassName: standard}
 verification:
   enabled: true
-  namespace: verification
-  image: registry.example/pgbk-worker-17@sha256:0000000000000000000000000000000000000000000000000000000000000000
-  schedule: {enabled: true, cron: "0 5 * * 0", timeZone: UTC}
-  timeoutSeconds: 21600
-  failureDebugTtlSeconds: 86400
-  credentialsSecretRef: verification-server
-  clientCredentialsSecretRef: verification-client
-  resources:
-    requests: {cpu: "500m", memory: 512Mi}
-    limits: {cpu: "2", memory: 2Gi}
-  scratch: {type: pvc, size: 40Gi, storageClassName: standard, retainFailed: true}
-  assertions: ["SELECT NOT pg_is_in_recovery()"]
+  environmentRef: pg18-isolated
+  required: true
+  dueWithinSeconds: 86400
 ```
 
 ```sh
@@ -107,15 +98,13 @@ Physical restore validates artifact hashes, archive paths, compatible major/arch
 ## Verification, retention and monitoring
 
 ```sh
-pgbk --config values.local.yaml --namespace backups verify --profile example-logical --run-id RUN_ID
+pgbk --config values.local.yaml --namespace backups verify --profile example-logical --run-id RUN_ID --verification-profile pg18-isolated
 pgbk --config values.local.yaml --namespace backups --output json backup list --profile example-logical
 ```
 
 The verification Job uses only repository/destination credentials, restores into disposable scratch, starts PostgreSQL on loopback/private socket, scans user tables and reports catalog counts plus optional read-only assertions. Physical verification uses only downloaded data/WAL; source connectivity is unnecessary. Each report records timestamps, image/tool versions, scope checks and passed/failed independently of backup completion. Failure files remain only when retainFailed is configured, until failureDebugTtlSeconds removes the finished Job/Pod; successful files are cleaned immediately. Actual PVC reclamation follows the cluster storage policy.
 
-Retention deletes only runs older than maxAgeDays AND outside the newest minSuccessfulBackups, ordered by completion time. Repository pins protect downloads/restores/drills. Deletion records precede marker withdrawal; partial deletions resume. Old incomplete runs require grace plus a terminal writerStopped event; node-loss orphans remain for fenced operator recovery. Cleanup/verification errors never reclassify successful backup manifests. Helm uninstall leaves remote data, existing Secrets/PVCs, kept configuration snapshots and coordination Leases; remove kept snapshots only after dependent Jobs finish.
-
-Poll durable backup list/describe JSON for newest completedAt, durationSeconds, bytes, diagnosticRuns, lastCleanup and restoreVerification.status/finishedAt. For a daily profile, alert when no usable copy exists or newest completedAt is older than 48 hours; alert independently on latest failed verification or cleanup. Catalog errors/busy are unknown observations, not evidence of freshness. Use an external poller that persists its last observation and distinguishes unknown from healthy. This version re-hashes completed artifacts when listing: account for S3 traffic/time; an event-only Job metric is not adequate freshness monitoring.
+Retention protects both the newest integrity-confirmed and the newest profile-compliant N copies, plus pending required copies before their due time and active operation pins. Copy status, immutable attempts, deadlines, reconciliation, cleanup and separate data-age monitoring are defined in [manual verification](verification.md). Partial deletions resume; incomplete runs still require grace and confirmed writer termination. Helm uninstall preserves remote data, existing Secrets/PVCs, kept ConfigMaps and Leases.
 
 ## Capacity and troubleshooting
 

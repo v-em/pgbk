@@ -1,6 +1,6 @@
 # Configuration reference
 
-Version: 0.2.0. [Quickstart](quickstart.md). The strict schema is [values.schema.json](../../charts/pgbk/values.schema.json); unknown keys, duplicate YAML keys and embedded credentials are rejected. IDs and Secret/namespace references use lowercase letters, digits and hyphens, at most 48 characters. Release/profile combinations must fit the 52-character CronJob name limit. [Full example](../../examples/values.yaml).
+Version: 0.3.0. [Quickstart](quickstart.md). The strict schema is [values.schema.json](../../charts/pgbk/values.schema.json); unknown keys, duplicate YAML keys and embedded credentials are rejected. IDs and Secret/namespace references use lowercase letters, digits and hyphens, at most 48 characters. Release/profile combinations must fit the 52-character CronJob name limit. [Full example](../../examples/values.yaml).
 
 | Key | Meaning |
 |---|---|
@@ -20,6 +20,7 @@ Version: 0.2.0. [Quickstart](quickstart.md). The strict schema is [values.schema
 | `storage.<id>.addressingStyle` | path default; virtual also supported. |
 | `storage.<id>.credentialsSecretRef` | Existing Secret with accessKeyId/secretAccessKey and optional sessionToken. |
 | `storage.<id>.tls.verify / caSecretRef` | verify must be true; optional private CA Secret. HTTP is allowed only for an explicitly configured test endpoint. |
+| `targets.<id>.provider` | generic or yandex-managed-postgresql. Physical mode is rejected for Yandex Managed PostgreSQL, including known provider endpoints; no fallback. |
 | `profiles.<id>.target / storage / kind` | Explicit references and logical or physical-full. |
 | `profiles.<id>.download.allowedDestinationClaims` | Explicit allowlist for download Job claims; defaults empty. Worker rechecks ownership/attachments after mount. |
 | `profiles.<id>.logical.databases / globals` | Unique literal database names; globals defaults to disabled, enabled exports SQL without role passwords. |
@@ -30,9 +31,9 @@ Version: 0.2.0. [Quickstart](quickstart.md). The strict schema is [values.schema
 | `profiles.<id>.execution.nodeSelector` | Optional node labels; linux/amd64 is mandatory. |
 | `profiles.<id>.scratch` | Required type and positive size; details below. |
 | `profiles.<id>.retention` | maxAgeDays: 30, minSuccessfulBackups: 3, incompleteGraceDays: 7. Positive integers. schedule defaults to enabled, 0 4 * * *, UTC. |
-| `profiles.<id>.verification` | enabled defaults to false; enabled requires schedule, namespace, image digest, resources, scratch, timeoutSeconds and both credential references. |
-| `profiles.<id>.verification.credentialsSecretRef / clientCredentialsSecretRef` | Disposable server initdb credentials / restored-server client. Logical drill usernames must match. Physical client role must already exist in the backup. |
-| `profiles.<id>.verification.assertions / failureDebugTtlSeconds` | Optional read-only SELECTs returning one true boolean; Job debug TTL defaults to 86400. Set scratch.retainFailed to retain failure files until Pod removal. |
+| `profiles.<id>.verification` | enabled defaults false; enabled requires environmentRef. required requires dueWithinSeconds > 0; no verification schedule is needed. |
+| `verificationEnvironments.<id>` | Named namespace, serviceAccountName, concurrencyKey, image digest, resources, scratch, timeoutSeconds and both Secret references; see [verification](verification.md). |
+| `verificationEnvironments.<id>.assertions / maxConcurrent / failureDebugTtlSeconds` | Read-only boolean assertions; shared capacity defaults 1; debug Job TTL defaults 86400. Existing claims are never deleted. |
 | `profiles.<id>.restore` | Opt-in Jobs: enabled, namespace, resources, scratch, timeoutSeconds, credentialsSecretRefs and allowedDestinationClaims. Defaults disabled. |
 | `profiles.<id>.serviceAccounts` | create defaults false. With create: false configure backup/repository and verify/restore for enabled operations using existing names in their operation namespaces. |
 | `networkPolicy.enabled / egress` | Optional deny-ingress/explicit-egress policy. Defaults disabled; allow DNS, Kubernetes API, S3 and necessary destination endpoints. |
@@ -105,6 +106,6 @@ profiles:
 
 See [operations](operations.md) for permissions, restore destinations and source prerequisites. Schema validation checks shape and references; endpoint privileges, storage capacity and real restore compatibility require preflight and acceptance tests.
 
-## Logical mode options (0.2.0)
+## Logical mode options (0.3.0)
 
 See [logical modes](logical-modes.md) for `logical.transfer.mode`, `logical.transfer.partSizeMiB`, `logical.format`, `logical.jobs` and `logical.compression.method/level`, defaults, compatibility and the two-source example.

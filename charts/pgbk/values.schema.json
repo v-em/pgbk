@@ -20,6 +20,214 @@
       },
       "required": []
     },
+    "verificationEnvironments": {
+      "type": "object",
+      "patternProperties": {
+        "^[a-z0-9][a-z0-9-]{0,47}$": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "namespace": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+            },
+            "serviceAccountName": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+            },
+            "concurrencyKey": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+            },
+            "maxConcurrent": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 16
+            },
+            "image": {
+              "type": "string",
+              "pattern": "^[^\\s@]+@sha256:[0-9a-f]{64}$"
+            },
+            "resources": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "requests": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "cpu": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "memory": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "cpu",
+                    "memory"
+                  ]
+                },
+                "limits": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "cpu": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "memory": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "cpu",
+                    "memory"
+                  ]
+                }
+              },
+              "required": [
+                "requests",
+                "limits"
+              ]
+            },
+            "scratch": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "type": {
+                  "enum": [
+                    "emptyDir",
+                    "pvc",
+                    "existingClaim"
+                  ]
+                },
+                "size": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "storageClassName": {
+                  "type": "string"
+                },
+                "claimName": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                },
+                "allowedClaims": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                  }
+                },
+                "retainFailed": {
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "type",
+                "size"
+              ],
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "type": {
+                        "const": "existingClaim"
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "claimName",
+                      "allowedClaims"
+                    ]
+                  }
+                }
+              ]
+            },
+            "timeoutSeconds": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "credentialsSecretRef": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+            },
+            "failureDebugTtlSeconds": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "clientCredentialsSecretRef": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+            },
+            "assertions": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "required": [
+            "namespace",
+            "serviceAccountName",
+            "concurrencyKey",
+            "image",
+            "resources",
+            "scratch",
+            "timeoutSeconds",
+            "credentialsSecretRef",
+            "clientCredentialsSecretRef"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "verificationReconciliation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "cron": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timeZone": {
+          "type": "string",
+          "minLength": 1
+        },
+        "startingDeadlineSeconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "enabled"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "enabled": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "cron"
+            ]
+          }
+        }
+      ]
+    },
     "rbac": {
       "type": "object",
       "additionalProperties": false,
@@ -134,6 +342,12 @@
               "type": "string",
               "minLength": 1
             },
+            "provider": {
+              "enum": [
+                "generic",
+                "yandex-managed-postgresql"
+              ]
+            },
             "port": {
               "type": "integer",
               "minimum": 1,
@@ -163,19 +377,14 @@
               "properties": {
                 "username": {
                   "type": "string",
-                  "minLength": 1,
-                  "maxLength": 253,
-                  "pattern": "^(?!\\.$|\\.\\.)[A-Za-z0-9._-]+(?![\\s\\S])",
-                  "default": "username"
+                  "minLength": 1
                 },
                 "password": {
                   "type": "string",
-                  "minLength": 1,
-                  "maxLength": 253,
-                  "pattern": "^(?!\\.$|\\.\\.)[A-Za-z0-9._-]+(?![\\s\\S])",
-                  "default": "password"
+                  "minLength": 1
                 }
-              }
+              },
+              "required": []
             },
             "expectedSystemIdentifier": {
               "type": "string",
@@ -657,6 +866,17 @@
                 "enabled": {
                   "type": "boolean"
                 },
+                "environmentRef": {
+                  "type": "string",
+                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
+                },
+                "required": {
+                  "type": "boolean"
+                },
+                "dueWithinSeconds": {
+                  "type": "integer",
+                  "minimum": 1
+                },
                 "schedule": {
                   "type": "object",
                   "additionalProperties": false,
@@ -696,138 +916,6 @@
                       }
                     }
                   ]
-                },
-                "namespace": {
-                  "type": "string",
-                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
-                },
-                "image": {
-                  "type": "string",
-                  "pattern": "^[^\\s@]+@sha256:[0-9a-f]{64}$"
-                },
-                "resources": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "properties": {
-                    "requests": {
-                      "type": "object",
-                      "additionalProperties": false,
-                      "properties": {
-                        "cpu": {
-                          "type": "string",
-                          "minLength": 1
-                        },
-                        "memory": {
-                          "type": "string",
-                          "minLength": 1
-                        }
-                      },
-                      "required": [
-                        "cpu",
-                        "memory"
-                      ]
-                    },
-                    "limits": {
-                      "type": "object",
-                      "additionalProperties": false,
-                      "properties": {
-                        "cpu": {
-                          "type": "string",
-                          "minLength": 1
-                        },
-                        "memory": {
-                          "type": "string",
-                          "minLength": 1
-                        }
-                      },
-                      "required": [
-                        "cpu",
-                        "memory"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "requests",
-                    "limits"
-                  ]
-                },
-                "scratch": {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "properties": {
-                    "type": {
-                      "enum": [
-                        "emptyDir",
-                        "pvc",
-                        "existingClaim"
-                      ]
-                    },
-                    "size": {
-                      "type": "string",
-                      "minLength": 1
-                    },
-                    "storageClassName": {
-                      "type": "string"
-                    },
-                    "claimName": {
-                      "type": "string",
-                      "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
-                    },
-                    "allowedClaims": {
-                      "type": "array",
-                      "items": {
-                        "type": "string",
-                        "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
-                      }
-                    },
-                    "retainFailed": {
-                      "type": "boolean"
-                    }
-                  },
-                  "required": [
-                    "type",
-                    "size"
-                  ],
-                  "allOf": [
-                    {
-                      "if": {
-                        "properties": {
-                          "type": {
-                            "const": "existingClaim"
-                          }
-                        }
-                      },
-                      "then": {
-                        "required": [
-                          "claimName",
-                          "allowedClaims"
-                        ]
-                      }
-                    }
-                  ]
-                },
-                "timeoutSeconds": {
-                  "type": "integer",
-                  "minimum": 1
-                },
-                "credentialsSecretRef": {
-                  "type": "string",
-                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
-                },
-                "failureDebugTtlSeconds": {
-                  "type": "integer",
-                  "minimum": 0
-                },
-                "clientCredentialsSecretRef": {
-                  "type": "string",
-                  "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
-                },
-                "assertions": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
                 }
               },
               "required": [
@@ -844,15 +932,30 @@
                   },
                   "then": {
                     "required": [
-                      "schedule",
-                      "namespace",
-                      "image",
-                      "resources",
-                      "scratch",
-                      "timeoutSeconds",
-                      "credentialsSecretRef",
-                      "clientCredentialsSecretRef"
+                      "environmentRef"
                     ]
+                  }
+                },
+                {
+                  "if": {
+                    "required": [
+                      "required"
+                    ],
+                    "properties": {
+                      "required": {
+                        "const": true
+                      }
+                    }
+                  },
+                  "then": {
+                    "required": [
+                      "dueWithinSeconds"
+                    ],
+                    "properties": {
+                      "enabled": {
+                        "const": true
+                      }
+                    }
                   }
                 }
               ]

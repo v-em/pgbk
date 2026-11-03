@@ -47,6 +47,10 @@ def check_tool(control, tool, expected):
 
 
 def preflight(target, profile, control, scratch):
+    if profile["kind"] == "physical-full":
+        require(target.get("provider") != "yandex-managed-postgresql" and
+                not target["host"].lower().rstrip(".").endswith(".mdb.yandexcloud.net"),
+                "YANDEX_PHYSICAL_UNSUPPORTED", "Yandex Managed PostgreSQL supports logical backups only", 3)
     test = scratch / ("write-test-" + uuid.uuid4().hex)
     try:
         test.write_bytes(b"pgbk")
@@ -100,6 +104,16 @@ def compression_args(logical, server_major):
     return ["--compress=" + method + (":" + str(level) if level is not None else "")]
 
 
+def archive_inventory(toc):
+    return {name: len(re.findall(expression, toc, re.M)) for name, expression in {
+        "tables": r"^\d+; 1259 \d+ TABLE (?!ATTACH )",
+        "indexes": r"^\d+; 1259 \d+ INDEX ",
+        "sequences": r"^\d+; 1259 \d+ SEQUENCE (?!SET |OWNED BY )",
+        "constraints": r"^\d+; \d+ \d+ (?:FK )?CONSTRAINT ",
+        "schemas": r"^\d+; 2615 \d+ SCHEMA ",
+        "largeObjects": r"^\d+; 2613 \d+ BLOB "}.items()}
+
+
 def logical_backup(target, profile, control, scratch, s3=None, artifact_prefix=None):
     result = []
     logical = profile["logical"]
@@ -108,6 +122,8 @@ def logical_backup(target, profile, control, scratch, s3=None, artifact_prefix=N
     require(not direct or (s3 is not None and artifact_prefix), "STREAM_STORAGE_REQUIRED", "Direct backup requires S3")
     for database in logical["databases"]:
         control.check()
+        from .catalog import now
+        snapshot_at = now()
         work = scratch / uuid.uuid4().hex
         work.mkdir(mode=0o700)
         env = pg_environment(target, database, work)
@@ -143,14 +159,7 @@ def logical_backup(target, profile, control, scratch, s3=None, artifact_prefix=N
                 raise Error("SELECTION_FAILED", "Snapshot, relation lock or selection query failed (SQL redacted)", 3) from None
         else:
             toc = dump([])
-        inventory = {}
-        for name, expression in {
-            "tables": r"^\d+; 1259 \d+ TABLE (?!ATTACH )",
-            "indexes": r"^\d+; 1259 \d+ INDEX ",
-            "sequences": r"^\d+; 1259 \d+ SEQUENCE (?!SET |OWNED BY )",
-            "constraints": r"^\d+; \d+ \d+ (?:FK )?CONSTRAINT "
-        }.items():
-            inventory[name] = len(re.findall(expression, toc, re.M))
+        inventory = archive_inventory(toc)
         if directory:
             with tarfile.open(path, "w") as bundle:
                 for member in sorted(dump_path.iterdir()):
@@ -167,6 +176,7 @@ def logical_backup(target, profile, control, scratch, s3=None, artifact_prefix=N
                  "sha256": streamed[0], "size": streamed[1]} if direct else
                 artifact(path, "postgres-directory-tar" if directory else "postgres-custom"))
         item.update(database=database, scope="filtered-database" if rule else "full-database",
+                    snapshotAt=snapshot_at, snapshotTimeBasis="backup-start-lower-bound",
                     selection=info, archiveInventory=inventory,
                     compression=logical.get("compression", {"method": "gzip", "level": 6}),
                     dumpJobs=logical.get("jobs", 1), transferMode="direct" if direct else "staged")

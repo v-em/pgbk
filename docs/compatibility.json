@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.2.0",
-  "date": "2026-10-20",
+  "version": "0.3.0",
+  "date": "2026-11-03",
   "platform": "linux/amd64",
   "runtime": "Python 3.11.2 (Debian bookworm), host tests Python 3.14",
   "helm": "3.19.0",
@@ -71,5 +71,26 @@
     "productionThroughputCertified": false
   },
   "uv": "0.9.5",
-  "historicalEvidence": "Reports dated 2026-10-11 cover 0.1; modes-* reports cover 0.2. Live Yandex remains operator-tested."
+  "historicalEvidence": "Reports dated 2026-10-11 cover 0.1; modes-* reports cover 0.2. Live Yandex remains operator-tested.",
+  "specification13Local": {
+    "date": "2026-11-03",
+    "postgres": "18.6",
+    "kubernetes": "1.34.1",
+    "minikube": "1.38.1",
+    "s3": "Moto 5.1.11 local emulator",
+    "workerImage": "localhost:5000/pgbk-worker@sha256:35c5e774a8816cbfb6b20049d57a69e247137d7b8ffc36024eff270b248fc108",
+    "sourceSha256": "45b59f7a62bc72bf2cb6c27ac5882c3a9466c8d56c0dcccfb4d6f6aa417f2c29",
+    "nodeArchitecture": "arm64",
+    "workerArchitecture": "amd64 (emulated)",
+    "unitTests": 136,
+    "minikubeSubcases": 14,
+    "report": "tests/reports/spec13-minikube18.json",
+    "cloudTests": "not-run; excluded by request",
+    "fullReleaseCertified": false,
+    "offlineRecoveryReport": "tests/reports/spec13-offline18.json",
+    "executorAfterTests": "stopped",
+    "pgbkVersion": "0.3.0",
+    "chart": "dist/0.3.0/pgbk-0.3.0.tgz",
+    "kubernetesApiSubcases": 6
+  }
 }

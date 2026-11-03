@@ -1,6 +1,6 @@
 # Эксплуатация, требования и восстановление
 
-Версия: 0.2.0. Начните с [быстрого старта](quickstart.md) и [конфигурации](configuration.md). Подтверждения и непроверенные условия приёмки — в [совместимости](compatibility.md).
+Версия: 0.3.0. Начните с [быстрого старта](quickstart.md) и [конфигурации](configuration.md). Подтверждения и непроверенные условия приёмки — в [совместимости](compatibility.md).
 
 ## Требования к существующим источникам
 
@@ -41,7 +41,7 @@ pgbk --config values.local.yaml --namespace backups backup cancel --profile exam
 pgbk --config values.local.yaml --namespace backups retention run --profile example-logical
 ```
 
-Расписания используют явный IANA timezone, по умолчанию UTC. Планирование Kubernetes выполняется без строгих гарантий; переходы летнего времени могут пропускать/повторять запуски. startingDeadlineSeconds ограничивает опоздавший старт; гарантий catch-up/exactly-once нет. Каждая попытка получает случайный новый ID. Source Lease охватывает ручные/плановые запуски и псевдонимы. Repository Lease сериализует публикацию, скачивание, восстановление, проверку и очистку, защищая всю операцию; длительная операция может давать busy при опросе каталога. Потеря обновления API останавливает утилиты и блокирующие SQL; просроченный Lease не перехватывается.
+Расписания используют явный IANA timezone, по умолчанию UTC. Планирование Kubernetes выполняется без строгих гарантий; переходы летнего времени могут пропускать/повторять запуски. startingDeadlineSeconds ограничивает опоздавший старт; гарантий catch-up/exactly-once нет. Каждая попытка получает случайный новый ID. Source Lease охватывает ручные/плановые запуски и псевдонимы. Repository Lease сериализует публикацию, скачивание, восстановление, очистку и изменения pin/отчётов проверки; длительная проверка удерживает устойчивый pin копии и общий capacity Lease; длительная операция может давать busy при опросе каталога. Потеря обновления API останавливает утилиты и блокирующие SQL; просроченный Lease не перехватывается.
 
 Для зависшего Lease сначала подтвердите завершение worker, всех потомков и временного сервера, включая изоляцию потерявшего связь узла/процесса. Удалённого API-объекта Pod/Job или истечения времени недостаточно. Зафиксируйте инцидент, прочитайте holder/resourceVersion и очистите только ожидаемый holder обновлением Kubernetes compare-and-swap. Не удаляйте все Lease при очистке/обновлении Helm. Общие источники/репозитории требуют одинаковых namespace/ключей координации между установками; независимые writer в разных кластерах не поддерживаются.
 
@@ -81,18 +81,9 @@ restore:
   scratch: {type: pvc, size: 40Gi, storageClassName: standard}
 verification:
   enabled: true
-  namespace: verification
-  image: registry.example/pgbk-worker-17@sha256:0000000000000000000000000000000000000000000000000000000000000000
-  schedule: {enabled: true, cron: "0 5 * * 0", timeZone: UTC}
-  timeoutSeconds: 21600
-  failureDebugTtlSeconds: 86400
-  credentialsSecretRef: verification-server
-  clientCredentialsSecretRef: verification-client
-  resources:
-    requests: {cpu: "500m", memory: 512Mi}
-    limits: {cpu: "2", memory: 2Gi}
-  scratch: {type: pvc, size: 40Gi, storageClassName: standard, retainFailed: true}
-  assertions: ["SELECT NOT pg_is_in_recovery()"]
+  environmentRef: pg18-isolated
+  required: true
+  dueWithinSeconds: 86400
 ```
 
 ```sh
@@ -107,15 +98,13 @@ Physical restore проверяет хеши, пути архива, основ�
 ## Проверка, retention и мониторинг
 
 ```sh
-pgbk --config values.local.yaml --namespace backups verify --profile example-logical --run-id RUN_ID
+pgbk --config values.local.yaml --namespace backups verify --profile example-logical --run-id RUN_ID --verification-profile pg18-isolated
 pgbk --config values.local.yaml --namespace backups --output json backup list --profile example-logical
 ```
 
 Verification Job использует только учётные данные репозитория/назначения, восстанавливает в одноразовое scratch, запускает PostgreSQL на loopback/закрытом сокете, читает пользовательские таблицы и отчёт о каталогах с необязательными read-only assertions. Physical-проверка использует только скачанные данные/WAL; подключение к источнику не требуется. Отчёт содержит время, версии образа/утилит, проверки scope и passed/failed независимо от завершения копии. Файлы ошибки остаются только при retainFailed, до удаления завершённого Job/Pod по failureDebugTtlSeconds; успешные файлы очищаются сразу. Освобождение PVC следует политике хранилища кластера.
 
-Retention удаляет копии только старше maxAgeDays И вне новейших minSuccessfulBackups, по времени завершения. Repository pin защищает скачивание/восстановление/drill. Запись удаления предшествует снятию marker; частичное удаление продолжается. Старые незавершённые копии требуют grace и финального события writerStopped; после потери узла они остаются до восстановления оператором с изоляцией. Ошибки очистки/проверки не меняют успешные манифесты. Helm uninstall оставляет удалённые данные, существующие Secret/PVC, сохранённые снимки конфигурации и Lease; удаляйте снимки только после завершения зависимых Job.
-
-Опрашивайте устойчивый JSON backup list/describe: новейший completedAt, durationSeconds, bytes, diagnosticRuns, lastCleanup и restoreVerification.status/finishedAt. Для ежедневного профиля поднимайте тревогу при отсутствии пригодной копии или возрасте completedAt более 48 часов; отдельно — при последней ошибке проверки/очистки. Ошибка каталога/busy — неизвестное наблюдение, а не свежая копия. Внешний poller должен сохранять последнее наблюдение и отличать неизвестность от нормы. Эта версия повторно хеширует завершённые артефакты при listing: учитывайте трафик/время S3; метрика только короткого Job не обеспечивает мониторинг свежести.
+Retention защищает оба набора новейших N целостных и N соответствующих профилю копий, ожидающие обязательной проверки копии до срока и активные operation pin. Статусы, неизменяемые попытки, сроки, reconciliation, очистка и отдельный мониторинг возраста данных описаны в [ручной проверке](verification.md). Частичное удаление продолжается; незавершённые копии по-прежнему требуют grace и подтверждённого завершения writer. Helm uninstall сохраняет удалённые данные, существующие Secret/PVC, сохранённые ConfigMap и Lease.
 
 ## Ёмкость и диагностика
 

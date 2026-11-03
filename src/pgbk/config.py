@@ -69,6 +69,14 @@ def normalize(raw):
     c = copy.deepcopy(raw)
     require(c["profiles"] and c["targets"] and c["storage"], "INVALID_CONFIG", "At least one profile, target and storage is required")
     c.setdefault("images", {})
+    c.setdefault("verificationEnvironments", {})
+    c.setdefault("verificationReconciliation", {"enabled": True, "cron": "*/5 * * * *"})
+    for environment in c["verificationEnvironments"].values():
+        environment.setdefault("maxConcurrent", 1)
+        environment.setdefault("failureDebugTtlSeconds", 86400)
+        from .selection import validate_query
+        for assertion in environment.get("assertions", []):
+            validate_query(assertion)
     for t in c["targets"].values():
         require(tcp_host(t["host"]),
                 "INVALID_ENDPOINT", "Source must be a TCP hostname")
@@ -95,6 +103,9 @@ def normalize(raw):
         require(p["target"] in c["targets"] and p["storage"] in c["storage"], "INVALID_REFERENCE", "Profile has an unknown target or storage")
         t = c["targets"][p["target"]]
         if p["kind"] == "physical-full":
+            require(t.get("provider") != "yandex-managed-postgresql" and
+                    not t["host"].lower().rstrip(".").endswith(".mdb.yandexcloud.net"),
+                    "YANDEX_PHYSICAL_UNSUPPORTED", "Yandex Managed PostgreSQL supports logical backups only", 3)
             require(t.get("physicalEndpoint") == "direct-primary" and t.get("expectedSystemIdentifier"),
                     "PHYSICAL_PREREQUISITE", "Physical targets require direct-primary and expectedSystemIdentifier")
         p.setdefault("schedule", {"enabled": False})
@@ -106,6 +117,14 @@ def normalize(raw):
         retention.setdefault("incompleteGraceDays", 7)
         retention.setdefault("schedule", {"enabled": True, "cron": "0 4 * * *"})
         p.setdefault("verification", {"enabled": False})
+        verification = p["verification"]
+        verification.setdefault("required", False)
+        if verification["enabled"]:
+            ref = verification["environmentRef"]
+            require(ref in c["verificationEnvironments"], "INVALID_REFERENCE", "Unknown verification environment")
+            require(not verification.get("schedule", {}).get("enabled"), "VERIFICATION_AUTOMATION_DEFERRED",
+                    "Scheduled verification is deferred; request a manual check by copy ID", 3)
+            verification.update(copy.deepcopy(c["verificationEnvironments"][ref]))
         p.setdefault("restore", {"enabled": False})
         p.setdefault("download", {"allowedDestinationClaims": []})
         require(c.get("coordinationNamespace") or not (p["restore"]["enabled"] or p["verification"]["enabled"]),
@@ -115,15 +134,12 @@ def normalize(raw):
         if not accounts["create"]:
             required_accounts = ["backup", "repository"]
             if p["verification"]["enabled"]:
-                required_accounts.append("verify")
+                accounts.setdefault("verify", verification["serviceAccountName"])
             if p["restore"]["enabled"]:
                 required_accounts.append("restore")
             require(all(accounts.get(role) for role in required_accounts), "EXISTING_SERVICE_ACCOUNT_REQUIRED",
                     "Configure existing ServiceAccounts for every enabled operation")
-        schedules = [p["schedule"], retention["schedule"]]
-        if p["verification"]["enabled"]:
-            p["verification"].setdefault("failureDebugTtlSeconds", 86400)
-            schedules.append(p["verification"]["schedule"])
+        schedules = [p["schedule"], retention["schedule"], c["verificationReconciliation"]]
         for schedule in schedules:
             schedule.setdefault("cron", "0 2 * * *")
             schedule.setdefault("timeZone", "UTC")

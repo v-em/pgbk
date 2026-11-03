@@ -1,6 +1,7 @@
 {{- $root := . -}}
 {{- $namespaces := dict .Release.Namespace true -}}
 {{- range $name, $profile := .Values.profiles }}
+{{- $profile = include "pgbk.profile" (dict "root" $root "profile" $profile) | fromYaml -}}
 {{- if and $profile.verification $profile.verification.enabled }}
 {{- $_ := set $namespaces $profile.verification.namespace true }}
 {{- end }}

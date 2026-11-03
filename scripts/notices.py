@@ -9,12 +9,13 @@ from pathlib import Path
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--sbom', default='dist/worker-17.sbom.cdx.json')
 parser.add_argument('--syft-json', help='Optional Syft JSON containing full license contents')
+parser.add_argument('--dist', type=Path, default=Path('dist'))
 args = parser.parse_args()
 version = tomllib.loads(Path("pyproject.toml").read_text())["project"]["version"]
 source = Path(args.sbom)
 sbom = json.loads(source.read_text())
 lines = [f'pgbk {version} — third-party component inventory',
-         'Original code: Apache-2.0; see LICENSE and NOTICE.',
+         'Original code: AGPL-3.0-only; see LICENSE and NOTICE.',
          'PostgreSQL: PostgreSQL License; WAL-G: Apache-2.0; Python: PSF license.',
          'OS/Python/embedded Go components have separate licenses listed below.',
          'Keep distributed copyright/license files and corresponding source obligations.',
@@ -23,7 +24,7 @@ lines = [f'pgbk {version} — third-party component inventory',
          'Python dependency sdists: https://pypi.org/ ; Go modules: source URLs/purls in the SBOM.',
          'This is an automated development inventory, not final license certification.', '']
 unknown = []
-texts = Path('dist/license-texts')
+texts = args.dist / 'license-texts'
 texts.mkdir(parents=True, exist_ok=True)
 if args.syft_json:
     for artifact in json.loads(Path(args.syft_json).read_text())['artifacts']:
@@ -49,7 +50,7 @@ for i, component in enumerate(sorted(sbom['components'], key=lambda c: (c['name'
     if not ids:
         unknown.append({'name': component['name'], 'version': component.get('version'), 'purl': component.get('purl')})
 Path('THIRD-PARTY-NOTICES.txt').write_text('\n'.join(lines) + '\n')
-Path('dist/license-audit.json').write_text(json.dumps({'schemaVersion':1,'status':'review-required',
+(args.dist / 'license-audit.json').write_text(json.dumps({'schemaVersion':1,'status':'review-required',
     'retainedLicenseTextFiles':len(list(texts.glob('*.txt'))),
     'unresolvedScannerEntries':unknown,'note':'Includes scanner-detected Windows launcher helpers; inspect retained package/OS copyright files before distribution.'},indent=2)+'\n')
 print(f'Notice inventory written; unresolved entries: {len(unknown)}')

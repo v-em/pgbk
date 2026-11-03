@@ -1,8 +1,9 @@
 {{- if (dig "create" false (.Values.rbac | default dict)) }}
 {{- $root := . -}}
 {{- range $name, $profile := .Values.profiles }}
+{{- $profile = include "pgbk.profile" (dict "root" $root "profile" $profile) | fromYaml -}}
 {{- if and $profile.download $profile.download.allowedDestinationClaims }}
-{{- $role := printf "%s-%s-download" $root.Release.Name $name -}}
+{{- $role := printf "%s-%s-download" $root.Release.Name $name }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role

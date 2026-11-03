@@ -1,13 +1,17 @@
 {{- $root := . -}}
 {{- range $name, $profile := .Values.profiles }}
+{{- $profile = include "pgbk.profile" (dict "root" $root "profile" $profile) | fromYaml -}}
 {{- if gt (len (printf "%s-%s-restore-physical" $root.Release.Name $name)) 52 }}{{- fail "Release and profile names must fit the Kubernetes 52-character CronJob name limit" }}{{- end }}
 {{- $target := index $root.Values.targets $profile.target -}}
 {{- $storage := index $root.Values.storage $profile.storage -}}
 {{- $image := required "Configure a worker image by digest for every selected major" (index $root.Values.images (toString $target.serverMajor)) -}}
 {{- $operations := dict "backup" (dict "enabled" false) "retention" (dict "enabled" true "cron" "0 4 * * *") "preflight" (dict "enabled" false) "download" (dict "enabled" false) -}}
+{{- $_ := set $operations "reconcile" ($root.Values.verificationReconciliation | default (dict "enabled" true "cron" "*/5 * * * *")) }}
 {{- if $profile.schedule }}{{- $_ := set $operations "backup" $profile.schedule }}{{- end }}
 {{- if and $profile.retention $profile.retention.schedule }}{{- $_ := set $operations "retention" $profile.retention.schedule }}{{- end }}
-{{- if and $profile.verification $profile.verification.enabled }}{{- $_ := set $operations "verify" $profile.verification.schedule }}{{- end }}
+{{- if and $profile.verification $profile.verification.enabled }}
+{{- $_ := set $operations "verify" (dict "enabled" false) }}
+{{- end }}
 {{- if and $profile.restore $profile.restore.enabled }}
 {{- $_ := set $operations (ternary "restore-logical" "restore-physical" (eq $profile.kind "logical")) (dict "enabled" false) }}
 {{- end }}
@@ -44,7 +48,7 @@
 {{- range $key := list "caSecretRef" "clientSecretRef" }}{{- if index $target.tls $key }}{{- $_ := set $refs (index $target.tls $key) true }}{{- end }}{{- end }}
 {{- end }}
 {{- end }}
-{{- if or (eq $operation "download") (eq $operation "retention") }}{{- $sa = printf "%s-repository" $sa }}{{- end }}
+{{- if or (eq $operation "download") (has $operation (list "retention" "reconcile")) }}{{- $sa = printf "%s-repository" $sa }}{{- end }}
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -80,7 +84,7 @@ spec:
             pgbk.io/profile: {{ $name }}
             pgbk.io/operation: {{ $operation }}
         spec:
-          serviceAccountName: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" (ternary "restore" (ternary "verify" (ternary "repository" "backup" (or (eq $operation "download") (eq $operation "retention"))) $verify) $restore)) }}
+          serviceAccountName: {{ include "pgbk.account" (dict "root" $root "profile" $profile "name" $name "purpose" (ternary "restore" (ternary "verify" (ternary "repository" "backup" (or (eq $operation "download") (has $operation (list "retention" "reconcile")))) $verify) $restore)) }}
           restartPolicy: Never
           terminationGracePeriodSeconds: 45
           securityContext:
@@ -127,6 +131,8 @@ spec:
                   valueFrom:
                     fieldRef:
                       fieldPath: metadata.uid
+                - name: PGBK_CONFIG_MAP
+                  value: {{ include "pgbk.configName" $root | quote }}
                 - name: PGBK_WORKER_IMAGE
                   value: {{ $jobImage | quote }}
                 - name: PGBK_TRIGGER

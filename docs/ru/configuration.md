@@ -1,6 +1,6 @@
 # Справочник конфигурации
 
-Версия: 0.2.0. [Быстрый старт](quickstart.md). Строгая схема — [values.schema.json](../../charts/pgbk/values.schema.json); неизвестные ключи, повторяющиеся ключи YAML и встроенные учётные данные отклоняются. ID и ссылки на Secret/namespace состоят из строчных латинских букв, цифр и дефисов, максимум 48 символов. Сочетание release/profile должно помещаться в ограничение имени CronJob в 52 символа. [Полный пример](../../examples/values.yaml).
+Версия: 0.3.0. [Быстрый старт](quickstart.md). Строгая схема — [values.schema.json](../../charts/pgbk/values.schema.json); неизвестные ключи, повторяющиеся ключи YAML и встроенные учётные данные отклоняются. ID и ссылки на Secret/namespace состоят из строчных латинских букв, цифр и дефисов, максимум 48 символов. Сочетание release/profile должно помещаться в ограничение имени CronJob в 52 символа. [Полный пример](../../examples/values.yaml).
 
 | Ключ | Значение |
 |---|---|
@@ -20,6 +20,7 @@
 | `storage.<id>.addressingStyle` | По умолчанию path; также доступен virtual. |
 | `storage.<id>.credentialsSecretRef` | Существующий Secret с accessKeyId/secretAccessKey и необязательным sessionToken. |
 | `storage.<id>.tls.verify / caSecretRef` | verify должен быть true; необязательный Secret частного CA. HTTP допустим для явно заданного тестового endpoint. |
+| `targets.<id>.provider` | generic или yandex-managed-postgresql. Physical отклоняется для Yandex Managed PostgreSQL, включая известные endpoint провайдера; fallback отсутствует. |
 | `profiles.<id>.target / storage / kind` | Явные ссылки и вид logical либо physical-full. |
 | `profiles.<id>.download.allowedDestinationClaims` | Явный список PVC для Job скачивания; по умолчанию пустой. Worker повторно проверяет принадлежность/подключения после монтирования. |
 | `profiles.<id>.logical.databases / globals` | Уникальные буквальные имена баз; globals по умолчанию disabled, enabled экспортирует SQL без паролей ролей. |
@@ -30,9 +31,9 @@
 | `profiles.<id>.execution.nodeSelector` | Необязательные метки узлов; обязательна платформа linux/amd64. |
 | `profiles.<id>.scratch` | Обязательные type и положительный size; подробности ниже. |
 | `profiles.<id>.retention` | maxAgeDays: 30, minSuccessfulBackups: 3, incompleteGraceDays: 7. Положительные целые. Расписание по умолчанию включено, 0 4 * * *, UTC. |
-| `profiles.<id>.verification` | enabled по умолчанию false; при включении нужны schedule, namespace, digest image, resources, scratch, timeoutSeconds и обе ссылки на учётные данные. |
-| `profiles.<id>.verification.credentialsSecretRef / clientCredentialsSecretRef` | Учётные данные initdb временного сервера / клиента восстановленного сервера. В logical-проверке имена пользователей должны совпадать. В physical нужная роль уже должна быть в копии. |
-| `profiles.<id>.verification.assertions / failureDebugTtlSeconds` | Необязательные SELECT только для чтения, возвращающие единственный true; TTL отладки Job по умолчанию 86400. scratch.retainFailed сохраняет файлы ошибки до удаления Pod. |
+| `profiles.<id>.verification` | enabled по умолчанию false; enabled требует environmentRef. required требует dueWithinSeconds > 0; расписание verification не нужно. |
+| `verificationEnvironments.<id>` | Именованные namespace, serviceAccountName, concurrencyKey, digest образа, resources, scratch, timeoutSeconds и обе ссылки на Secret; см. [проверки](verification.md). |
+| `verificationEnvironments.<id>.assertions / maxConcurrent / failureDebugTtlSeconds` | Read-only boolean assertions; общая ёмкость по умолчанию 1; debug TTL Job по умолчанию 86400. Существующие claim не удаляются. |
 | `profiles.<id>.restore` | Включаемые явно Job: enabled, namespace, resources, scratch, timeoutSeconds, credentialsSecretRefs и allowedDestinationClaims. По умолчанию выключены. |
 | `profiles.<id>.serviceAccounts` | create по умолчанию false. При create: false задайте backup/repository и verify/restore для включённых операций — имена существующих аккаунтов в namespace операции. |
 | `networkPolicy.enabled / egress` | Необязательная политика с запретом входящих и явно заданными исходящими соединениями. По умолчанию выключена; разрешите DNS, API Kubernetes, S3 и нужные адреса назначения. |
@@ -105,6 +106,6 @@ profiles:
 
 Права, назначения восстановления и требования к источникам описаны в [эксплуатации](operations.md). Валидация схемы проверяет структуру и ссылки; права endpoint, ёмкость хранилища и совместимость восстановления требуют preflight и приёмочных испытаний.
 
-## Настройки logical-режимов (0.2.0)
+## Настройки logical-режимов (0.3.0)
 
 См. [режимы logical backup](logical-modes.md): logical.transfer.mode, logical.transfer.partSizeMiB, logical.format, logical.jobs и logical.compression.method/level, defaults, совместимость и пример двух источников.

@@ -1,7 +1,8 @@
 {
   "schemaVersion": 1,
-  "version": "0.2.0",
-  "generatedAt": "2026-10-20T09:37:25.048292+00:00",
+  "version": "0.3.0",
+  "generatedAt": "2026-11-03T17:57:16.707539+00:00",
+  "specificationVersion": "1.3",
   "productionReady": false,
   "requirements": [
     {
@@ -13,7 +14,8 @@
       ],
       "acceptanceTests": [
         "T-005",
-        "T-035"
+        "T-035",
+        "T-058"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -24,7 +26,8 @@
       ],
       "acceptanceTests": [
         "T-005",
-        "T-035"
+        "T-035",
+        "T-069"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -73,20 +76,23 @@
       "acceptanceTests": [
         "T-003",
         "T-008",
-        "T-009"
+        "T-009",
+        "T-049"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
     {
       "id": "REQ-007",
       "implementationPaths": [
+        "src/pgbk/config.py",
         "src/pgbk/postgres.py",
         "docs/en"
       ],
       "acceptanceTests": [
         "T-002",
         "T-010",
-        "T-035"
+        "T-035",
+        "T-058"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -125,7 +131,8 @@
         "images/Dockerfile"
       ],
       "acceptanceTests": [
-        "T-001"
+        "T-001",
+        "T-058"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -167,7 +174,8 @@
       "acceptanceTests": [
         "T-005",
         "T-006",
-        "T-021"
+        "T-021",
+        "T-062"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -186,7 +194,8 @@
         "T-041",
         "T-027",
         "T-028",
-        "T-029"
+        "T-029",
+        "T-055"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -195,6 +204,7 @@
       "implementationPaths": [
         "src/pgbk/config.py",
         "src/pgbk/kube.py",
+        "src/pgbk/verification.py",
         "charts/pgbk",
         "docs/en"
       ],
@@ -202,7 +212,8 @@
         "T-004",
         "T-006",
         "T-025",
-        "T-026"
+        "T-026",
+        "T-059"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -243,7 +254,9 @@
       "acceptanceTests": [
         "T-011",
         "T-012",
-        "T-044"
+        "T-044",
+        "T-051",
+        "T-053"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -260,6 +273,7 @@
         "T-004",
         "T-013",
         "T-015",
+        "T-051",
         "T-024"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
@@ -292,7 +306,10 @@
       "acceptanceTests": [
         "T-017",
         "T-021",
-        "T-022"
+        "T-022",
+        "T-053",
+        "T-063",
+        "T-066"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -306,7 +323,10 @@
       ],
       "acceptanceTests": [
         "T-023",
-        "T-033"
+        "T-054",
+        "T-056",
+        "T-033",
+        "T-060"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -322,7 +342,9 @@
       "acceptanceTests": [
         "T-022",
         "T-023",
-        "T-024"
+        "T-024",
+        "T-053",
+        "T-056"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -337,7 +359,8 @@
         "T-013",
         "T-014",
         "T-018",
-        "T-044"
+        "T-044",
+        "T-060"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -357,12 +380,16 @@
     {
       "id": "REQ-026",
       "implementationPaths": [
-        "src/pgbk/catalog.py"
+        "src/pgbk/catalog.py",
+        "src/pgbk/verification.py"
       ],
       "acceptanceTests": [
         "T-016",
         "T-017",
-        "T-018"
+        "T-018",
+        "T-064",
+        "T-065",
+        "T-066"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -374,7 +401,8 @@
         "src/pgbk/cli.py"
       ],
       "acceptanceTests": [
-        "T-015"
+        "T-015",
+        "T-068"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -388,7 +416,9 @@
       "acceptanceTests": [
         "T-009",
         "T-045",
-        "T-030"
+        "T-050",
+        "T-030",
+        "T-068"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -402,13 +432,15 @@
       ],
       "acceptanceTests": [
         "T-011",
-        "T-031"
+        "T-031",
+        "T-068"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
     {
       "id": "REQ-030",
       "implementationPaths": [
+        "src/pgbk/verification.py",
         "src/pgbk/restore.py",
         "src/pgbk/cli.py",
         "charts/pgbk",
@@ -416,8 +448,11 @@
       ],
       "acceptanceTests": [
         "T-045",
+        "T-050",
         "T-032",
-        "T-033"
+        "T-033",
+        "T-059",
+        "T-061"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -429,6 +464,7 @@
       "acceptanceTests": [
         "T-019",
         "T-029",
+        "T-052",
         "T-036"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
@@ -438,12 +474,16 @@
       "implementationPaths": [
         "src/pgbk/runner.py",
         "src/pgbk/catalog.py",
+        "src/pgbk/verification.py",
         "src/pgbk/cli.py",
         "docs/en"
       ],
       "acceptanceTests": [
         "T-029",
-        "T-033"
+        "T-054",
+        "T-056",
+        "T-033",
+        "T-067"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -471,7 +511,8 @@
       ],
       "acceptanceTests": [
         "T-025",
-        "T-034"
+        "T-034",
+        "T-067"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -483,7 +524,8 @@
         ".github/workflows/test.yaml"
       ],
       "acceptanceTests": [
-        "T-036"
+        "T-036",
+        "T-069"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -504,7 +546,8 @@
         ".github/workflows/test.yaml"
       ],
       "acceptanceTests": [
-        "T-037"
+        "T-037",
+        "T-069"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -533,7 +576,8 @@
         "T-039",
         "T-040",
         "T-042",
-        "T-043"
+        "T-043",
+        "T-048"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -546,7 +590,8 @@
       "acceptanceTests": [
         "T-040",
         "T-041",
-        "T-042"
+        "T-042",
+        "T-057"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -559,7 +604,8 @@
       "acceptanceTests": [
         "T-040",
         "T-043",
-        "T-044"
+        "T-044",
+        "T-048"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     },
@@ -572,7 +618,183 @@
       ],
       "acceptanceTests": [
         "T-039",
-        "T-045"
+        "T-045",
+        "T-050"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-043",
+      "implementationPaths": [],
+      "implementationStatus": "planned; specification only",
+      "acceptanceTests": [
+        "T-046",
+        "T-047",
+        "T-057"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-044",
+      "implementationPaths": [],
+      "implementationStatus": "planned; specification only",
+      "acceptanceTests": [
+        "T-047",
+        "T-048",
+        "T-049",
+        "T-051",
+        "T-057"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-045",
+      "implementationPaths": [],
+      "implementationStatus": "planned; specification only",
+      "acceptanceTests": [
+        "T-046",
+        "T-050",
+        "T-051"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-046",
+      "implementationPaths": [],
+      "implementationStatus": "planned; specification only",
+      "acceptanceTests": [
+        "T-052",
+        "T-053",
+        "T-055"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-047",
+      "implementationPaths": [],
+      "implementationStatus": "planned; specification only",
+      "acceptanceTests": [
+        "T-052",
+        "T-054",
+        "T-055",
+        "T-056",
+        "T-057"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-048",
+      "implementationPaths": [],
+      "implementationStatus": "planned; specification only",
+      "acceptanceTests": [
+        "T-057"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-049",
+      "implementationPaths": [
+        "src/pgbk/config.py",
+        "src/pgbk/kube.py",
+        "src/pgbk/verification.py",
+        "src/pgbk/restore.py",
+        "src/pgbk/cli.py",
+        "charts/pgbk"
+      ],
+      "acceptanceTests": [
+        "T-059",
+        "T-061",
+        "T-062",
+        "T-066"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-050",
+      "implementationPaths": [
+        "src/pgbk/runner.py",
+        "src/pgbk/catalog.py",
+        "src/pgbk/verification.py"
+      ],
+      "acceptanceTests": [
+        "T-032",
+        "T-060",
+        "T-065",
+        "T-067"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-051",
+      "implementationPaths": [
+        "src/pgbk/config.py",
+        "src/pgbk/runner.py",
+        "src/pgbk/kube.py",
+        "src/pgbk/catalog.py",
+        "src/pgbk/verification.py",
+        "src/pgbk/restore.py"
+      ],
+      "acceptanceTests": [
+        "T-062",
+        "T-063",
+        "T-064"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-052",
+      "implementationPaths": [
+        "src/pgbk/kube.py",
+        "src/pgbk/catalog.py",
+        "src/pgbk/verification.py",
+        "src/pgbk/cli.py",
+        "charts/pgbk"
+      ],
+      "acceptanceTests": [
+        "T-061",
+        "T-063",
+        "T-064"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-053",
+      "implementationPaths": [
+        "src/pgbk/runner.py",
+        "src/pgbk/kube.py",
+        "src/pgbk/catalog.py",
+        "src/pgbk/restore.py",
+        "src/pgbk/cli.py",
+        "charts/pgbk"
+      ],
+      "acceptanceTests": [
+        "T-059",
+        "T-060",
+        "T-061",
+        "T-066"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-054",
+      "implementationPaths": [],
+      "implementationStatus": "planned; specification only",
+      "acceptanceTests": [
+        "T-032",
+        "T-069"
+      ],
+      "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
+    },
+    {
+      "id": "REQ-055",
+      "implementationPaths": [
+        "src/pgbk/restore.py"
+      ],
+      "acceptanceTests": [
+        "T-058",
+        "T-067",
+        "T-068",
+        "T-069"
       ],
       "releaseCertification": "incomplete; inspect full-case gates and subcase evidence"
     }
@@ -747,6 +969,7 @@
       ],
       "fullAcceptanceStatus": "not-run",
       "subcaseEvidence": [
+        "tests/reports/kubernetes-spec13.json",
         "tests/reports/kubernetes.json"
       ]
     },
@@ -1259,6 +1482,59 @@
         "tests/reports/modes-18-staged-gzip.json"
       ]
     },
+    "T-046": {
+      "requirements": [
+        "REQ-043",
+        "REQ-045"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-047": {
+      "requirements": [
+        "REQ-043",
+        "REQ-044"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-048": {
+      "requirements": [
+        "REQ-039",
+        "REQ-041",
+        "REQ-044"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-049": {
+      "requirements": [
+        "REQ-006",
+        "REQ-044"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-050": {
+      "requirements": [
+        "REQ-028",
+        "REQ-030",
+        "REQ-042",
+        "REQ-045"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-051": {
+      "requirements": [
+        "REQ-018",
+        "REQ-019",
+        "REQ-044",
+        "REQ-045"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
     "T-019": {
       "requirements": [
         "REQ-009",
@@ -1267,6 +1543,7 @@
       ],
       "fullAcceptanceStatus": "not-run",
       "subcaseEvidence": [
+        "tests/reports/kubernetes-spec13.json",
         "tests/reports/kubernetes.json"
       ]
     },
@@ -1276,6 +1553,7 @@
       ],
       "fullAcceptanceStatus": "not-run",
       "subcaseEvidence": [
+        "tests/reports/kubernetes-spec13.json",
         "tests/reports/kubernetes.json"
       ]
     },
@@ -1286,6 +1564,7 @@
       ],
       "fullAcceptanceStatus": "not-run",
       "subcaseEvidence": [
+        "tests/reports/kubernetes-spec13.json",
         "tests/reports/kubernetes.json",
         "tests/reports/unit-02.json",
         "tests/reports/unit.json"
@@ -1298,6 +1577,7 @@
       ],
       "fullAcceptanceStatus": "not-run",
       "subcaseEvidence": [
+        "tests/reports/kubernetes-spec13.json",
         "tests/reports/kubernetes.json",
         "tests/reports/unit-02.json",
         "tests/reports/unit.json"
@@ -1315,6 +1595,7 @@
         "tests/reports/integration-16.json",
         "tests/reports/integration-17.json",
         "tests/reports/integration-18.json",
+        "tests/reports/kubernetes-spec13.json",
         "tests/reports/kubernetes.json",
         "tests/reports/modes-14-direct-gzip.json",
         "tests/reports/modes-14-direct-none.json",
@@ -1376,6 +1657,7 @@
       ],
       "fullAcceptanceStatus": "not-run",
       "subcaseEvidence": [
+        "tests/reports/kubernetes-spec13.json",
         "tests/reports/kubernetes.json"
       ]
     },
@@ -1386,6 +1668,7 @@
       ],
       "fullAcceptanceStatus": "not-run",
       "subcaseEvidence": [
+        "tests/reports/kubernetes-spec13.json",
         "tests/reports/kubernetes.json"
       ]
     },
@@ -1426,6 +1709,64 @@
         "tests/reports/unit-02.json",
         "tests/reports/unit.json"
       ]
+    },
+    "T-052": {
+      "requirements": [
+        "REQ-031",
+        "REQ-046",
+        "REQ-047"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-053": {
+      "requirements": [
+        "REQ-018",
+        "REQ-021",
+        "REQ-023",
+        "REQ-046"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-054": {
+      "requirements": [
+        "REQ-022",
+        "REQ-032",
+        "REQ-047"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-055": {
+      "requirements": [
+        "REQ-014",
+        "REQ-046",
+        "REQ-047"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-056": {
+      "requirements": [
+        "REQ-022",
+        "REQ-023",
+        "REQ-032",
+        "REQ-047"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-057": {
+      "requirements": [
+        "REQ-040",
+        "REQ-043",
+        "REQ-044",
+        "REQ-047",
+        "REQ-048"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
     },
     "T-030": {
       "requirements": [
@@ -1472,6 +1813,7 @@
         "tests/reports/integration-16.json",
         "tests/reports/integration-17.json",
         "tests/reports/integration-18.json",
+        "tests/reports/kubernetes-spec13.json",
         "tests/reports/kubernetes.json",
         "tests/reports/modes-14-direct-gzip.json",
         "tests/reports/modes-14-direct-none.json",
@@ -1500,7 +1842,9 @@
     },
     "T-032": {
       "requirements": [
-        "REQ-030"
+        "REQ-030",
+        "REQ-050",
+        "REQ-054"
       ],
       "fullAcceptanceStatus": "not-run",
       "subcaseEvidence": [
@@ -1598,12 +1942,158 @@
       ],
       "fullAcceptanceStatus": "not-run",
       "subcaseEvidence": [
+        "tests/reports/kubernetes-spec13.json",
         "tests/reports/kubernetes.json"
       ]
     },
     "T-037": {
       "requirements": [
         "REQ-037"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-058": {
+      "requirements": [
+        "REQ-001",
+        "REQ-007",
+        "REQ-010",
+        "REQ-055"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": []
+    },
+    "T-059": {
+      "requirements": [
+        "REQ-015",
+        "REQ-030",
+        "REQ-049",
+        "REQ-053"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/spec13-minikube18.json",
+        "tests/reports/unit-spec13.json"
+      ]
+    },
+    "T-060": {
+      "requirements": [
+        "REQ-022",
+        "REQ-024",
+        "REQ-050",
+        "REQ-053"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/spec13-minikube18.json",
+        "tests/reports/unit-spec13.json"
+      ]
+    },
+    "T-061": {
+      "requirements": [
+        "REQ-030",
+        "REQ-049",
+        "REQ-052",
+        "REQ-053"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/spec13-minikube18.json"
+      ]
+    },
+    "T-062": {
+      "requirements": [
+        "REQ-013",
+        "REQ-049",
+        "REQ-051"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/spec13-minikube18.json",
+        "tests/reports/unit-spec13.json"
+      ]
+    },
+    "T-063": {
+      "requirements": [
+        "REQ-021",
+        "REQ-051",
+        "REQ-052"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/spec13-minikube18.json",
+        "tests/reports/unit-spec13.json"
+      ]
+    },
+    "T-064": {
+      "requirements": [
+        "REQ-026",
+        "REQ-051",
+        "REQ-052"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/spec13-minikube18.json",
+        "tests/reports/unit-spec13.json"
+      ]
+    },
+    "T-065": {
+      "requirements": [
+        "REQ-026",
+        "REQ-050"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/spec13-minikube18.json",
+        "tests/reports/unit-spec13.json"
+      ]
+    },
+    "T-066": {
+      "requirements": [
+        "REQ-021",
+        "REQ-026",
+        "REQ-049",
+        "REQ-053"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/spec13-minikube18.json",
+        "tests/reports/unit-spec13.json"
+      ]
+    },
+    "T-067": {
+      "requirements": [
+        "REQ-032",
+        "REQ-034",
+        "REQ-050",
+        "REQ-055"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/spec13-minikube18.json",
+        "tests/reports/unit-spec13.json"
+      ]
+    },
+    "T-068": {
+      "requirements": [
+        "REQ-027",
+        "REQ-028",
+        "REQ-029",
+        "REQ-055"
+      ],
+      "fullAcceptanceStatus": "not-run",
+      "subcaseEvidence": [
+        "tests/reports/spec13-minikube18.json",
+        "tests/reports/spec13-offline18.json"
+      ]
+    },
+    "T-069": {
+      "requirements": [
+        "REQ-002",
+        "REQ-035",
+        "REQ-037",
+        "REQ-054",
+        "REQ-055"
       ],
       "fullAcceptanceStatus": "not-run",
       "subcaseEvidence": []
@@ -2067,6 +2557,43 @@
         "registryDigests": [
           "pgbk-worker@sha256:6fed4dca25620e9ce6ab1b58a4fbed1044e93ec8ce8e2e1ba86ede6dcb97bb7a"
         ]
+      }
+    },
+    {
+      "path": "tests/reports/kubernetes-spec13.json",
+      "kind": "kubernetes",
+      "summary": {
+        "schemaVersion": 1,
+        "pgbkVersion": "0.3.0",
+        "cases": [
+          {
+            "case": "real-lease-conflict-and-release",
+            "status": "passed"
+          },
+          {
+            "case": "chart-and-worker-repository-hash-match",
+            "status": "passed"
+          },
+          {
+            "case": "immutable-template-manual-job-cancellation",
+            "status": "passed"
+          },
+          {
+            "case": "chart-role-source-mutation-boundary",
+            "status": "passed"
+          },
+          {
+            "case": "actual-service-account-authorization-boundary",
+            "status": "passed"
+          },
+          {
+            "case": "existing-identities-leases-no-rbac-mutations-install",
+            "status": "passed"
+          }
+        ],
+        "kubernetesVersion": "v1.34.1",
+        "nodeArchitecture": "arm64",
+        "workerJobs": "not-run: amd64 required"
       }
     },
     {
@@ -3841,6 +4368,309 @@
       }
     },
     {
+      "path": "tests/reports/spec13-minikube18.json",
+      "kind": "spec13",
+      "summary": {
+        "schemaVersion": 1,
+        "pgbkVersion": "0.3.0",
+        "chart": "dist/0.3.0/pgbk-0.3.0.tgz",
+        "specificationVersion": "1.3",
+        "deliveryStage": "local PostgreSQL 18 subcases",
+        "status": "passed",
+        "context": "pgbk-local",
+        "namespaces": [
+          "pgbk13-4b75b7f3",
+          "pgbk13-4b75b7f3-verify"
+        ],
+        "workerImage": "localhost:5000/pgbk-worker@sha256:35c5e774a8816cbfb6b20049d57a69e247137d7b8ffc36024eff270b248fc108",
+        "sourceSha256": "45b59f7a62bc72bf2cb6c27ac5882c3a9466c8d56c0dcccfb4d6f6aa417f2c29",
+        "kubernetes": "v1.34.1",
+        "nodeArchitecture": "arm64",
+        "workerArchitecture": "amd64",
+        "emulation": true,
+        "s3": "local Moto; no Yandex Cloud",
+        "cases": [
+          {
+            "case": "chart-install-real-api-rbac-pvc-and-manual-only-verification",
+            "status": "passed"
+          },
+          {
+            "case": "running-image-matches-new-implementation-source-sha256",
+            "status": "passed"
+          },
+          {
+            "case": "logical-real-backup-s3-manual-restore-verification-immutable-publication",
+            "status": "passed"
+          },
+          {
+            "case": "direct-real-backup-s3-manual-restore-verification-immutable-publication",
+            "status": "passed"
+          },
+          {
+            "case": "directory-real-backup-s3-manual-restore-verification-immutable-publication",
+            "status": "passed"
+          },
+          {
+            "case": "filtered-real-backup-s3-manual-restore-verification-immutable-publication",
+            "status": "passed"
+          },
+          {
+            "case": "physical-real-backup-s3-manual-restore-verification-immutable-publication",
+            "status": "passed"
+          },
+          {
+            "case": "required-failure-active-retry-duplicate-busy-late-rehabilitation-history",
+            "status": "passed"
+          },
+          {
+            "case": "optional-failure-preserves-success-and-compliance",
+            "status": "passed"
+          },
+          {
+            "case": "read-time-overdue-service-job-reconciliation-and-late-pass",
+            "status": "passed"
+          },
+          {
+            "case": "dual-three-copy-minima-actual-s3-cleanup-and-operation-pin",
+            "status": "passed"
+          },
+          {
+            "case": "download-sha256-native-restore-instructions-source-independent-artifacts",
+            "status": "passed"
+          },
+          {
+            "case": "synthetic-secret-canaries-absent-from-worker-logs",
+            "status": "passed"
+          },
+          {
+            "case": "owned-verification-pvc-garbage-collection-after-job-removal",
+            "status": "passed"
+          }
+        ],
+        "jobs": [
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-logical-backup-828h2",
+            "jobUid": "e7665475-549f-4085-899f-26063d9f3fb4",
+            "namespace": "pgbk13-4b75b7f3"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-verify-d58c82a9a09544e7adfd45fc2fdedf01",
+            "jobUid": "d399a249-8eba-4d65-b070-f148611a89ab",
+            "namespace": "pgbk13-4b75b7f3-verify",
+            "verificationId": "d58c82a9a09544e7adfd45fc2fdedf01",
+            "runId": "run-e7665475-549f-4085-899f-26063d9f3fb4-f33c6dcd5c80408bbab00fe560e2b3ef",
+            "verificationProfile": "pg18"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-direct-backup-btnsn",
+            "jobUid": "fae2c426-8602-4f11-8122-734e7691dac2",
+            "namespace": "pgbk13-4b75b7f3"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-verify-a2cbfd5ba68142eba7c36ea39c26e50c",
+            "jobUid": "7f9fc99b-6ed1-436f-982c-28a337943f6d",
+            "namespace": "pgbk13-4b75b7f3-verify",
+            "verificationId": "a2cbfd5ba68142eba7c36ea39c26e50c",
+            "runId": "run-fae2c426-8602-4f11-8122-734e7691dac2-3c2d07331d194c3c9e14629aac43425a",
+            "verificationProfile": "pg18"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-directory-backup-j268t",
+            "jobUid": "be39732d-2ebe-41bb-b088-5992d4644a1b",
+            "namespace": "pgbk13-4b75b7f3"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-verify-f38f33ed800b4ed0a02d4e32f37d0666",
+            "jobUid": "acb57c56-2d72-4b28-9a4b-7bdab5043278",
+            "namespace": "pgbk13-4b75b7f3-verify",
+            "verificationId": "f38f33ed800b4ed0a02d4e32f37d0666",
+            "runId": "run-be39732d-2ebe-41bb-b088-5992d4644a1b-2e5b2e9b68c24e1ab04c55b048fe29a6",
+            "verificationProfile": "pg18"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-filtered-backup-fvjzf",
+            "jobUid": "5cdfc050-b0b0-42a5-8221-e18826717b68",
+            "namespace": "pgbk13-4b75b7f3"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-verify-7b07c00f4bf442dfbb7163bf79f4c24d",
+            "jobUid": "63f811e0-3783-47d9-b8d6-41b92ed27d3e",
+            "namespace": "pgbk13-4b75b7f3-verify",
+            "verificationId": "7b07c00f4bf442dfbb7163bf79f4c24d",
+            "runId": "run-5cdfc050-b0b0-42a5-8221-e18826717b68-fb74cff26df44a6eadec0951e13db018",
+            "verificationProfile": "pg18"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-physical-backup-g4s9g",
+            "jobUid": "c2206195-81ca-4f79-a9c7-dfba8265d04b",
+            "namespace": "pgbk13-4b75b7f3"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-verify-91b30d2117e04888bc8ba3e252f80653",
+            "jobUid": "8a8c897c-4515-4dc2-b598-e7f66e3da79a",
+            "namespace": "pgbk13-4b75b7f3-verify",
+            "verificationId": "91b30d2117e04888bc8ba3e252f80653",
+            "runId": "run-c2206195-81ca-4f79-a9c7-dfba8265d04b-a245876838ee49eb937fa616fa58ea49",
+            "verificationProfile": "physical"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-verify-bf848114c4774babb58320e2a50dbe1d",
+            "jobUid": "f4465089-bde9-40d1-9065-2b8d338078f9",
+            "namespace": "pgbk13-4b75b7f3-verify",
+            "verificationId": "bf848114c4774babb58320e2a50dbe1d",
+            "runId": "run-e7665475-549f-4085-899f-26063d9f3fb4-f33c6dcd5c80408bbab00fe560e2b3ef",
+            "verificationProfile": "fail"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-verify-6224bbd2aff44edcb5b11548d452bc83",
+            "jobUid": "338189a0-af13-4069-9b38-33134d08c7de",
+            "namespace": "pgbk13-4b75b7f3-verify",
+            "verificationId": "6224bbd2aff44edcb5b11548d452bc83",
+            "runId": "run-e7665475-549f-4085-899f-26063d9f3fb4-f33c6dcd5c80408bbab00fe560e2b3ef",
+            "verificationProfile": "slow"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-optional-backup-gbdvt",
+            "jobUid": "f258df68-611a-4bf0-a64d-06e4f365234b",
+            "namespace": "pgbk13-4b75b7f3"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-verify-7fd2203eb4fd4cf8998026f99cd76e44",
+            "jobUid": "febe5ce4-092b-4b0d-aea2-0c3aff2769bd",
+            "namespace": "pgbk13-4b75b7f3-verify",
+            "verificationId": "7fd2203eb4fd4cf8998026f99cd76e44",
+            "runId": "run-f258df68-611a-4bf0-a64d-06e4f365234b-50f6d79df46148828c02a2903fb83333",
+            "verificationProfile": "fail"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-overdue-backup-pscqv",
+            "jobUid": "4dd574c3-5f25-456e-a52c-f888c61c50b0",
+            "namespace": "pgbk13-4b75b7f3"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-overdue-reconcile-w2lwz",
+            "jobUid": "ea727ad8-bdea-480b-8863-69d8d3c0ed5b",
+            "namespace": "pgbk13-4b75b7f3"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-verify-07e7220ef2af44ccb95fbd6f5222d00e",
+            "jobUid": "cf957c5b-0845-423f-953a-dfb8618e2900",
+            "namespace": "pgbk13-4b75b7f3-verify",
+            "verificationId": "07e7220ef2af44ccb95fbd6f5222d00e",
+            "runId": "run-4dd574c3-5f25-456e-a52c-f888c61c50b0-c1a0c03980bc4b66abb0f0b19949b90c",
+            "verificationProfile": "pg18"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-retention-retention-6qdjw",
+            "jobUid": "062bdd03-c5c4-4ad1-97c4-7f4d48b4efd3",
+            "namespace": "pgbk13-4b75b7f3"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-retention-retention-tc4sq",
+            "jobUid": "8074d251-ec47-44cd-8186-d017f82bfdd7",
+            "namespace": "pgbk13-4b75b7f3"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-logical-download-z8z2z",
+            "jobUid": "6bacc5e3-6572-4556-b983-61a541bc0c39",
+            "namespace": "pgbk13-4b75b7f3"
+          },
+          {
+            "schemaVersion": 1,
+            "status": "Pending",
+            "job": "pgbk-physical-download-5z4cb",
+            "jobUid": "732e7bf9-da49-499f-ba9e-c56ab0ebe828",
+            "namespace": "pgbk13-4b75b7f3"
+          }
+        ],
+        "cloudCertification": "not-run (excluded by request)",
+        "fullAcceptance": "not-run; local subcases do not certify all procedures",
+        "offlineArtifacts": [
+          "logical",
+          "physical"
+        ],
+        "tools": {
+          "pg_basebackup": "pg_basebackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+          "pg_verifybackup": "pg_verifybackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+          "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+        },
+        "elapsedSeconds": 200.34145324999918,
+        "finishedAt": "2026-11-03T15:37:14.818212+00:00"
+      }
+    },
+    {
+      "path": "tests/reports/spec13-offline18.json",
+      "kind": "offline-spec13",
+      "summary": {
+        "schemaVersion": 1,
+        "pgbkVersion": "0.3.0",
+        "specificationVersion": "1.3",
+        "status": "passed",
+        "postgresMajor": 18,
+        "execution": "fresh isolated Docker native-restore destination; network none; read-only downloaded artifacts",
+        "originalExecutor": "minikube stopped by host before invocation",
+        "sourceSha256": "45b59f7a62bc72bf2cb6c27ac5882c3a9466c8d56c0dcccfb4d6f6aa417f2c29",
+        "s3KubernetesCredentials": "absent",
+        "cases": [
+          {
+            "case": "logical-native-recovery-with-original-executor-source-s3-unavailable",
+            "status": "passed",
+            "runId": "run-e7665475-549f-4085-899f-26063d9f3fb4-f33c6dcd5c80408bbab00fe560e2b3ef",
+            "rows": 1000,
+            "dataSequencePartitionConstraintsLargeObjects": "passed"
+          },
+          {
+            "case": "physical-native-recovery-with-original-executor-source-s3-unavailable",
+            "status": "passed",
+            "runId": "run-c2206195-81ca-4f79-a9c7-dfba8265d04b-a245876838ee49eb937fa616fa58ea49",
+            "rows": 1000,
+            "dataSequencePartitionConstraintsLargeObjects": "passed"
+          }
+        ],
+        "elapsedSeconds": 2.956717667999996
+      }
+    },
+    {
       "path": "tests/reports/unit-02.json",
       "kind": "unit",
       "summary": {
@@ -3851,6 +4681,25 @@
         "failures": 0,
         "errors": 0,
         "elapsedSeconds": 0.958
+      }
+    },
+    {
+      "path": "tests/reports/unit-spec13.json",
+      "kind": "unit-spec13",
+      "summary": {
+        "schemaVersion": 1,
+        "pgbkVersion": "0.3.0",
+        "specificationVersion": "1.3",
+        "status": "passed",
+        "tests": 136,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "elapsedSeconds": 0.963,
+        "python": "3.14.7",
+        "generatedAt": "2026-11-03T15:29:03.188629+00:00",
+        "junit": "tests/reports/unit-spec13.xml",
+        "note": "Current implementation unit cases; cloud/full release acceptance remains separate"
       }
     },
     {
@@ -3869,7 +4718,7 @@
   "openGates": [
     "Yandex live-provider tests are performed by the user",
     "Live managed and pinned Bitnami certification",
-    "Minimum Kubernetes and amd64 worker/PVC lifecycle tests",
+    "Minimum Kubernetes and native amd64 certification; local minikube arm64/emulated-amd64 subcases are separate",
     "Comprehensive TLS, source mutation audit, failover/concurrent writes/DDL, node-loss and S3 fault injection",
     "Globals, large objects and external filtered dependency acceptance",
     "Final license audit and bit-identical build reproducibility",

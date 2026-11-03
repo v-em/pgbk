@@ -6,6 +6,7 @@ import sys
 import tempfile
 import uuid
 from contextlib import ExitStack
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -15,6 +16,7 @@ from .errors import Error, require
 from .kube import lease_name
 from .postgres import logical_backup, physical_backup, preflight
 from .storage import S3
+from .verification import snapshot, state as copy_state
 
 
 def repository_key(catalog):
@@ -23,6 +25,24 @@ def repository_key(catalog):
 
 def repository_lease(kube, catalog, control):
     return kube.lease(lease_name("repository", repository_key(catalog)), control)
+
+
+@contextmanager
+def waiting_repository_lease(kube, catalog, control):
+    while True:
+        control.check()
+        lease = repository_lease(kube, catalog, control)
+        try:
+            lease.__enter__()
+            break
+        except Error as e:
+            if e.exit_code != 4:
+                raise
+            control.stop.wait(0.2)
+    try:
+        yield lease
+    finally:
+        lease.__exit__(None, None, None)
 
 
 def backup(config, profile_name, kube, control, scratch_root):
@@ -81,7 +101,14 @@ def backup(config, profile_name, kube, control, scratch_root):
                         "durationSeconds": (datetime.now(timezone.utc) - datetime.fromisoformat(started)).total_seconds(),
                         "bytes": sum(a["size"] for a in artifacts),
                         "workerImage": os.environ.get("PGBK_WORKER_IMAGE"),
+                        "configurationRef": os.environ.get("PGBK_CONFIG_MAP"),
+                        "coordinationNamespace": config.get("coordinationNamespace", kube.namespace),
+                        "storageSnapshot": storage,
+                        "backupPolicy": {key: p[key] for key in ["kind", "logical", "retention"] if key in p},
                         "restoreVerification": {"status": "not-run"}}
+            manifest["verificationPolicy"] = snapshot(config, profile_name, manifest["completedAt"])
+            if p["kind"] == "physical-full":
+                manifest.update(snapshotAt=started, snapshotTimeBasis="backup-start-lower-bound")
             source_lease.confirm()
             catalog.publish(manifest, repository)
             # Publication is authoritative. A later event/log failure cannot retract it.
@@ -89,7 +116,7 @@ def backup(config, profile_name, kube, control, scratch_root):
                 state("Completed", bytes=sum(a["size"] for a in artifacts))
             except Exception:
                 print(json.dumps({"phase": "Completed", "runId": run_id, "reasonCode": "POST_PUBLICATION_EVENT_FAILED"}), file=sys.stderr, flush=True)
-            return {"schemaVersion": 1, "status": "Completed", "runId": run_id, "manifest": manifest}
+            return {"schemaVersion": 1, **copy_state(manifest), "runId": run_id, "manifest": manifest}
     except Exception as error:
         e = error if isinstance(error, Error) else Error(
             "SCRATCH_IO_FAILED" if isinstance(error, OSError) else "BACKUP_EXECUTION_FAILED",

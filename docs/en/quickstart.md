@@ -2,7 +2,7 @@
 
 For a GitOps deployment with Argo CD, see the detailed [guide](argocd-deployment.md).
 
-Version: 0.2.0. Development build; release certification is incomplete. See [compatibility and evidence](compatibility.md), [configuration](configuration.md) and [operations](operations.md). The [specification](specification.md) remains the version-1 acceptance contract.
+Version: 0.3.0. Development build; release certification is incomplete. See [compatibility and evidence](compatibility.md), [configuration](configuration.md) and [operations](operations.md). The [specification](specification.md) remains the version-1 acceptance contract.
 
 Install the CLI in a Python 3.11+ virtual environment. Helm 3.19.0 is the tested renderer. Kubernetes must support CronJob time zones (declared minimum 1.27; minimum-version and amd64 Job certification remain pending). The initial worker architecture is Linux amd64.
 
@@ -27,7 +27,7 @@ kubectl -n backups logs job/example-manual
 
 Keep `coordinationNamespace` consistent with the existing namespace you use. Aliases and installations accessing the same source/repository must share the coordination namespace and keys. Independent cross-cluster writers are unsupported. Manual and scheduled Jobs use the same immutable configuration snapshot and process. A suspended backup schedule still supports manual Jobs.
 
-The local CLI reads projected credential files under `PGBK_SECRET_ROOT/<SecretName>/<key>` when accessing S3/PostgreSQL directly. Set `PGBK_SECRET_ROOT` to a private directory containing files supplied by your secret manager. `backup run` and `verify` create Jobs and do not require exporting those credentials locally. Use the download Job path in [operations](operations.md) to keep S3 access inside Kubernetes. Kubernetes credentials come from the selected context/KUBECONFIG, or the worker's projected service account.
+The local CLI reads projected credential files under `PGBK_SECRET_ROOT/<SecretName>/<key>` when accessing S3/PostgreSQL directly. Set `PGBK_SECRET_ROOT` to a private directory containing files supplied by your secret manager. `backup run` creates a Job without local S3 credentials. `verify` reads the captured copy policy from S3 and requires local projected catalog credentials before creating its isolated Job; see [manual verification](verification.md). Use the download Job path in [operations](operations.md) to keep S3 access inside Kubernetes. Kubernetes credentials come from the selected context/KUBECONFIG, or the worker's projected service account.
 
 ```sh
 pgbk --config values.local.yaml --namespace backups --scratch /tmp/pgbk preflight --profile example-logical

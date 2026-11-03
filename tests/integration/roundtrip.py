@@ -87,6 +87,16 @@ def main():
                        transfer={"mode":"direct" if mode=="direct" else "staged", "partSizeMiB":5},
                        compression={"method":os.environ.get("PGBK_TEST_COMPRESSION","gzip")})
         if logical["compression"]["method"] in ["gzip","zstd"]: logical["compression"]["level"]=3
+        values["coordinationNamespace"] = "verification"
+        values["verificationEnvironments"] = {"fixture": {
+            "namespace": "verification", "serviceAccountName": "fixture", "concurrencyKey": "fixture",
+            "image": "example/worker@sha256:" + "0" * 64,
+            "resources": values["profiles"]["logical"]["execution"]["resources"],
+            "scratch": {"type": "emptyDir", "size": "2Gi"}, "timeoutSeconds": 600,
+            "credentialsSecretRef": "postgres", "clientCredentialsSecretRef": "postgres",
+            "assertions": ["SELECT NOT pg_is_in_recovery()"]}}
+        values["profiles"]["logical"]["verification"] = {
+            "enabled": True, "environmentRef": "fixture", "required": True, "dueWithinSeconds": 3600}
         with server(pgdata, control, work):
             for _ in range(60):
                 try:
@@ -233,17 +243,9 @@ def main():
             bad_destination = {**destination, "port": 15499}
             expect_error(lambda: logical_restore(config, manifest, downloaded, manifest["artifacts"][0]["database"], bad_destination, control, work), "RESTORE_SOURCE_REFUSED")
         reports.append({"case": "product-logical-offline-restore-empty-and-source-guards", "status": "passed"})
-        verification = {"enabled": True, "schedule": {"enabled": False}, "namespace": "verification",
-                        "image": "example/worker@sha256:" + "0" * 64,
-                        "resources": values["profiles"]["logical"]["execution"]["resources"],
-                        "scratch": {"type": "emptyDir", "size": "2Gi"}, "timeoutSeconds": 600,
-                        "credentialsSecretRef": "postgres", "clientCredentialsSecretRef": "postgres",
-                        "assertions": ["SELECT NOT pg_is_in_recovery()"]}
-        config["profiles"]["logical"]["verification"] = verification
-        physical_config["profiles"]["physical"]["verification"] = verification
         assert drill(config, "logical", catalog, kube, Control(600), work, result["runId"])["status"] == "passed"
         assert drill(physical_config, "physical", physical_catalog, kube, Control(600), work, physical_result["runId"])["status"] == "passed"
-        reports.append({"case": "logical-and-physical-automated-offline-drills", "status": "passed"})
+        reports.append({"case": "logical-and-physical-manual-copy-id-offline-drills", "status": "passed"})
         print(json.dumps({"schemaVersion": 1, "postgresMajor": values["targets"]["fixture"]["serverMajor"], "logicalMode": mode, "compression": logical["compression"], "cases": reports,
                           "tools": physical_result["manifest"]["tools"], "fixture": "10000-items-two-databases-partitions-tablespace",
                           "runIds": {"logical": result["runId"], "filtered": selected["runId"], "physical": physical_result["runId"]},

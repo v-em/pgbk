@@ -1,0 +1,268 @@
+{
+  "schemaVersion": 1,
+  "pgbkVersion": "0.3.1",
+  "chart": "dist/0.3.1/pgbk-0.3.1.tgz",
+  "chartSha256": "30abcdd1e45e7596a531c3354c75e05e7ed95f324f386a12918845020cacdd02",
+  "specificationVersion": "1.3",
+  "deliveryStage": "local PostgreSQL 18 subcases",
+  "status": "passed",
+  "context": "pgbk-local",
+  "namespaces": [
+    "pgbk13-dfae0a3d",
+    "pgbk13-dfae0a3d-verify"
+  ],
+  "workerImage": "localhost:5000/pgbk-worker@sha256:a739eb405a8ba6f192e09204293542275a92d2b3f65d98a9a64fc0bdc2ac25fe",
+  "sourceSha256": "0e81e0c26f8756a093b97c73af807f91f3253e72831c06363dba47e13a435247",
+  "kubernetes": "v1.34.1",
+  "nodeArchitecture": "arm64",
+  "workerArchitecture": "amd64",
+  "emulation": true,
+  "s3": "local Moto; no Yandex Cloud",
+  "cases": [
+    {
+      "case": "chart-install-real-api-rbac-pvc-and-manual-only-verification",
+      "status": "passed"
+    },
+    {
+      "case": "running-image-matches-new-implementation-source-sha256",
+      "status": "passed"
+    },
+    {
+      "case": "logical-real-backup-s3-manual-restore-verification-immutable-publication",
+      "status": "passed"
+    },
+    {
+      "case": "direct-real-backup-s3-manual-restore-verification-immutable-publication",
+      "status": "passed"
+    },
+    {
+      "case": "directory-real-backup-s3-manual-restore-verification-immutable-publication",
+      "status": "passed"
+    },
+    {
+      "case": "filtered-real-backup-s3-manual-restore-verification-immutable-publication",
+      "status": "passed"
+    },
+    {
+      "case": "physical-real-backup-s3-manual-restore-verification-immutable-publication",
+      "status": "passed"
+    },
+    {
+      "case": "required-failure-active-retry-duplicate-busy-late-rehabilitation-history",
+      "status": "passed"
+    },
+    {
+      "case": "optional-failure-preserves-success-and-compliance",
+      "status": "passed"
+    },
+    {
+      "case": "read-time-overdue-service-job-reconciliation-and-late-pass",
+      "status": "passed"
+    },
+    {
+      "case": "dual-three-copy-minima-actual-s3-cleanup-and-operation-pin",
+      "status": "passed"
+    },
+    {
+      "case": "download-sha256-native-restore-instructions-source-independent-artifacts",
+      "status": "passed"
+    },
+    {
+      "case": "synthetic-secret-canaries-absent-from-worker-logs",
+      "status": "passed"
+    },
+    {
+      "case": "owned-verification-pvc-garbage-collection-after-job-removal",
+      "status": "passed"
+    }
+  ],
+  "jobs": [
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-logical-backup-25v97",
+      "jobUid": "cbd4b0e3-c056-4598-9b3d-d00252a734ae",
+      "namespace": "pgbk13-dfae0a3d"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-verify-6025e7df595447329d719e83db012428",
+      "jobUid": "ace75c80-860e-4ecf-8fdc-d349ee9d24bf",
+      "namespace": "pgbk13-dfae0a3d-verify",
+      "verificationId": "6025e7df595447329d719e83db012428",
+      "runId": "run-cbd4b0e3-c056-4598-9b3d-d00252a734ae-7702526703e944d1b733d5980fec88d7",
+      "verificationProfile": "pg18"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-direct-backup-k55vs",
+      "jobUid": "d565ed32-26ac-4e9a-a331-d0f7bf9d148f",
+      "namespace": "pgbk13-dfae0a3d"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-verify-2758e9a556654b8db5a786564366bd3b",
+      "jobUid": "bf768ef5-7d94-4979-8c1b-d138d42926ac",
+      "namespace": "pgbk13-dfae0a3d-verify",
+      "verificationId": "2758e9a556654b8db5a786564366bd3b",
+      "runId": "run-d565ed32-26ac-4e9a-a331-d0f7bf9d148f-ae987268c9da4118ba6bd19e762ae7a9",
+      "verificationProfile": "pg18"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-directory-backup-6kdlx",
+      "jobUid": "3d51f77f-af15-4764-9485-3fbd698b0d26",
+      "namespace": "pgbk13-dfae0a3d"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-verify-0cb59b64937f47dbab2b2d2b7e804bfb",
+      "jobUid": "7b5d9a5d-ef8d-4ed2-a172-08c3afc9ea32",
+      "namespace": "pgbk13-dfae0a3d-verify",
+      "verificationId": "0cb59b64937f47dbab2b2d2b7e804bfb",
+      "runId": "run-3d51f77f-af15-4764-9485-3fbd698b0d26-8579f3e6684d440fba7456e223acc469",
+      "verificationProfile": "pg18"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-filtered-backup-mlg8h",
+      "jobUid": "4a9a5945-f5f6-4141-b3e5-abbfc7bf9e49",
+      "namespace": "pgbk13-dfae0a3d"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-verify-b5666c956fae4b86bd6cfa17b6efe902",
+      "jobUid": "4276dab6-4f41-4537-a306-dc98867fb18d",
+      "namespace": "pgbk13-dfae0a3d-verify",
+      "verificationId": "b5666c956fae4b86bd6cfa17b6efe902",
+      "runId": "run-4a9a5945-f5f6-4141-b3e5-abbfc7bf9e49-5e7e14bf6270432da0033131e75c07eb",
+      "verificationProfile": "pg18"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-physical-backup-4tx2x",
+      "jobUid": "72814559-2295-4ebd-853d-1bb432000245",
+      "namespace": "pgbk13-dfae0a3d"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-verify-b0ea476896474b3eae207c40177a6c29",
+      "jobUid": "2d7846fa-f134-4b18-8a0f-af64580b3f18",
+      "namespace": "pgbk13-dfae0a3d-verify",
+      "verificationId": "b0ea476896474b3eae207c40177a6c29",
+      "runId": "run-72814559-2295-4ebd-853d-1bb432000245-4ed5fe6bc25d43b382befbc711958fc8",
+      "verificationProfile": "physical"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-verify-40f4571754aa4c62ab3786a84b7f3f16",
+      "jobUid": "4e00d128-91e6-4a97-9174-311decfe117a",
+      "namespace": "pgbk13-dfae0a3d-verify",
+      "verificationId": "40f4571754aa4c62ab3786a84b7f3f16",
+      "runId": "run-cbd4b0e3-c056-4598-9b3d-d00252a734ae-7702526703e944d1b733d5980fec88d7",
+      "verificationProfile": "fail"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-verify-79b446597eb34f908eab75c45a7c409b",
+      "jobUid": "8726fdd6-2bcc-4472-88c9-098e6301542b",
+      "namespace": "pgbk13-dfae0a3d-verify",
+      "verificationId": "79b446597eb34f908eab75c45a7c409b",
+      "runId": "run-cbd4b0e3-c056-4598-9b3d-d00252a734ae-7702526703e944d1b733d5980fec88d7",
+      "verificationProfile": "slow"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-optional-backup-ql2x5",
+      "jobUid": "efe1f4bf-a388-4a2b-a0fb-5d93e38351d7",
+      "namespace": "pgbk13-dfae0a3d"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-verify-95272a64793c4dabbdf11e686f597cb1",
+      "jobUid": "fee6301f-11ec-4d57-98a8-cf62336877f9",
+      "namespace": "pgbk13-dfae0a3d-verify",
+      "verificationId": "95272a64793c4dabbdf11e686f597cb1",
+      "runId": "run-efe1f4bf-a388-4a2b-a0fb-5d93e38351d7-b91abdeefd34482e8bb3ec1ad9d9fc0a",
+      "verificationProfile": "fail"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-overdue-backup-pp9gs",
+      "jobUid": "082596e3-61ae-45c7-b728-2b2e6a090613",
+      "namespace": "pgbk13-dfae0a3d"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-overdue-reconcile-5jbkf",
+      "jobUid": "743197fc-471a-4f16-aec1-4e8f97a236fc",
+      "namespace": "pgbk13-dfae0a3d"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-verify-99eb0790a9654e529f5b47ad749af275",
+      "jobUid": "8e6625e2-90ed-4c8e-a181-6f858fed11cd",
+      "namespace": "pgbk13-dfae0a3d-verify",
+      "verificationId": "99eb0790a9654e529f5b47ad749af275",
+      "runId": "run-082596e3-61ae-45c7-b728-2b2e6a090613-65ae97b54378417f867267f622a3654e",
+      "verificationProfile": "pg18"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-retention-retention-hkzxx",
+      "jobUid": "58d518e6-96e3-4647-9e6c-18d51b8991d4",
+      "namespace": "pgbk13-dfae0a3d"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-retention-retention-tsssc",
+      "jobUid": "d189dc57-d187-46ab-960c-cd621ae7c40c",
+      "namespace": "pgbk13-dfae0a3d"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-logical-download-gfqjr",
+      "jobUid": "d9356798-1291-4772-94a5-0f2ef63dc019",
+      "namespace": "pgbk13-dfae0a3d"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "Pending",
+      "job": "pgbk-physical-download-bx8w5",
+      "jobUid": "2a1257d6-1f4f-49c5-9dfd-21001d748698",
+      "namespace": "pgbk13-dfae0a3d"
+    }
+  ],
+  "cloudCertification": "not-run (excluded by request)",
+  "fullAcceptance": "not-run; local subcases do not certify all procedures",
+  "offlineArtifacts": [
+    "logical",
+    "physical"
+  ],
+  "tools": {
+    "pg_basebackup": "pg_basebackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+    "pg_verifybackup": "pg_verifybackup (PostgreSQL) 18.6 (Debian 18.6-1.pgdg12+2)",
+    "wal-g": "wal-g version v3.0.9\t3e49318\t2026.08.20_14:32:33\tPostgreSQL"
+  },
+  "elapsedSeconds": 205.02712200000133,
+  "finishedAt": "2026-11-05T16:48:29.374626+00:00"
+}

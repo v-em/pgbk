@@ -10,7 +10,7 @@ import psycopg
 
 from .credentials import pg_environment, pg_params
 from .errors import Error, require
-from .selection import resolve, validate_toc
+from .selection import resolve, schema_filtered, validate_toc
 from .storage import hash_file
 
 
@@ -87,6 +87,13 @@ def preflight(target, profile, control, scratch):
                         metadata[database][key] = rows[0][0] if key == "systemIdentifier" else rows
                 except psycopg.Error:
                     pass  # Optional metadata is unknown; never deny an otherwise valid dump.
+            rule = profile["logical"]["tableSelection"]["byDatabase"].get(database)
+            if rule or schema_filtered(profile["logical"]):
+                conn.rollback()
+                conn.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
+                _, selection = resolve(conn, rule or {"mode": "all"}, profile["logical"]["tableSelection"],
+                                       profile["logical"].get("schemaSelection"))
+                metadata[database]["selectionPreview"] = selection
     return {"status": "unverified", "reasonCodes": ["FULL_EXPORT_PRIVILEGES_UNVERIFIED"], "source": metadata, "tools": versions}
 
 
@@ -148,11 +155,12 @@ def logical_backup(target, profile, control, scratch, s3=None, artifact_prefix=N
             return control.run(["pg_restore", "--list", str(dump_path)], capture=True)
         rule = logical["tableSelection"]["byDatabase"].get(database)
         info = None
-        if rule:
+        filtered = bool(rule) or schema_filtered(logical)
+        if filtered:
             try:
                 with connection(target, database) as conn, control.connection(conn):
                     conn.execute("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
-                    args, info = resolve(conn, rule, logical["tableSelection"])
+                    args, info = resolve(conn, rule or {"mode": "all"}, logical["tableSelection"], logical.get("schemaSelection"))
                     toc = dump(args)
                     validate_toc(toc, info)
             except psycopg.Error:
@@ -175,7 +183,7 @@ def logical_backup(target, profile, control, scratch, s3=None, artifact_prefix=N
         item = ({"fileId": file_id, "filename": path.name, "format": "postgres-custom",
                  "sha256": streamed[0], "size": streamed[1]} if direct else
                 artifact(path, "postgres-directory-tar" if directory else "postgres-custom"))
-        item.update(database=database, scope="filtered-database" if rule else "full-database",
+        item.update(database=database, scope="filtered-database" if filtered else "full-database",
                     snapshotAt=snapshot_at, snapshotTimeBasis="backup-start-lower-bound",
                     selection=info, archiveInventory=inventory,
                     compression=logical.get("compression", {"method": "gzip", "level": 6}),

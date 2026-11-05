@@ -15,6 +15,7 @@ def mapping(value):
 
 text = {"type": "string", "minLength": 1}
 identifier = {"type": "string", "minLength": 1, "pattern": r"^[^\x00\r\n]+$"}
+schema_identifier = {"type": "string", "minLength": 1, "pattern": r"^[^\x00-\x1f\x7f-\x9f]+$"}
 name = {"type": "string", "pattern": r"^[a-z0-9][a-z0-9-]{0,47}$"}
 positive = {"type": "integer", "minimum": 1}
 boolean = {"type": "boolean"}
@@ -45,6 +46,9 @@ logical = obj({"databases": {"type": "array", "minItems": 1, "uniqueItems": True
                "compression": obj({"method": {"enum": ["none", "gzip", "lz4", "zstd"]},
                                    "level": {"type": "integer"}}, ["method"]),
                "globals": {"enum": ["disabled", "enabled"]},
+               "schemaSelection": obj({"include": {"type": "array", "items": schema_identifier},
+                                       "exclude": {"type": "array", "items": schema_identifier},
+                                       "largeObjects": {"enum": ["none", "all"]}}),
                "tableSelection": obj({"queryTimeoutSeconds": positive,
                                       "maxQueryRows": {"type": "integer", "minimum": 1, "maximum": 100000},
                                       "byDatabase": {"type": "object", "additionalProperties": selection}},

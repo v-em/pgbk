@@ -522,6 +522,35 @@
                     "enabled"
                   ]
                 },
+                "schemaSelection": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "include": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "^[^\\x00-\\x1f\\x7f-\\x9f]+$"
+                      }
+                    },
+                    "exclude": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "pattern": "^[^\\x00-\\x1f\\x7f-\\x9f]+$"
+                      }
+                    },
+                    "largeObjects": {
+                      "enum": [
+                        "none",
+                        "all"
+                      ]
+                    }
+                  },
+                  "required": []
+                },
                 "tableSelection": {
                   "type": "object",
                   "additionalProperties": false,

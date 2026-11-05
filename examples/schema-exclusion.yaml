@@ -1,0 +1,5 @@
+profiles:
+  example-logical:
+    logical:
+      schemaSelection:
+        exclude: [cron]

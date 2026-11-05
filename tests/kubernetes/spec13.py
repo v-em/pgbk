@@ -69,6 +69,7 @@ def main():
     cases, jobs = [], []
     started = time.monotonic()
     result = {"schemaVersion": 1, "pgbkVersion": __version__, "chart": args.chart,
+              "chartSha256": hashlib.sha256(Path(args.chart).read_bytes()).hexdigest() if Path(args.chart).is_file() else None,
               "specificationVersion": "1.3", "deliveryStage": "local PostgreSQL 18 subcases",
               "status": "failed", "context": args.context, "namespaces": [namespace, verification_namespace],
               "workerImage": args.worker_image, "sourceSha256": source_digest("src/pgbk"),

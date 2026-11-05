@@ -1,0 +1,80 @@
+{
+  "pgbkVersion": "0.3.1",
+  "status": "passed",
+  "workerImage": "localhost:5000/pgbk-worker@sha256:a739eb405a8ba6f192e09204293542275a92d2b3f65d98a9a64fc0bdc2ac25fe",
+  "chart": "dist/0.3.1/pgbk-0.3.1.tgz",
+  "chartSha256": "30abcdd1e45e7596a531c3354c75e05e7ed95f324f386a12918845020cacdd02",
+  "sourceSha256": "0e81e0c26f8756a093b97c73af807f91f3253e72831c06363dba47e13a435247",
+  "sourceImage": "pgbk-cron-fixture:18-pgcron16",
+  "kubernetes": "v1.34.1",
+  "nodeArchitecture": "arm64",
+  "workerArchitecture": "amd64",
+  "emulation": true,
+  "s3": "local Moto",
+  "requestedCases": null,
+  "cases": [
+    {
+      "case": "restore-rbac-document-boundaries-and-real-authorization",
+      "status": "passed"
+    },
+    {
+      "case": "preflight-per-database-schema-resolution-without-cron-read-privileges",
+      "status": "passed"
+    },
+    {
+      "case": "schema-direct-archive-and-native-restore",
+      "status": "passed",
+      "databases": 2,
+      "transfer": "direct"
+    },
+    {
+      "case": "schema-staged-archive-and-native-restore",
+      "status": "passed",
+      "databases": 1,
+      "transfer": "staged"
+    },
+    {
+      "case": "schema-directory-archive-and-native-restore",
+      "status": "passed",
+      "databases": 1,
+      "transfer": "directory"
+    },
+    {
+      "case": "table-manual-archive-and-native-restore",
+      "status": "passed",
+      "databases": 1,
+      "transfer": "direct"
+    },
+    {
+      "case": "table-query-archive-and-native-restore",
+      "status": "passed",
+      "databases": 1,
+      "transfer": "staged"
+    },
+    {
+      "case": "selected-archive-and-native-restore",
+      "status": "passed",
+      "databases": 1,
+      "transfer": "direct"
+    },
+    {
+      "case": "schema-include-archive-and-native-restore",
+      "status": "passed",
+      "databases": 1,
+      "transfer": "staged"
+    },
+    {
+      "case": "literal-archive-and-native-restore",
+      "status": "passed",
+      "databases": 1,
+      "transfer": "direct"
+    },
+    {
+      "case": "missing-included-schema-in-second-database-fails-without-success-publication",
+      "status": "passed"
+    }
+  ],
+  "postgres": "18.1",
+  "pgCron": "1.6",
+  "sourceExtconfigRows": 1
+}

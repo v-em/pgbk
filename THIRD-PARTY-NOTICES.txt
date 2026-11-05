@@ -1,4 +1,4 @@
-pgbk 0.3.0 — third-party component inventory
+pgbk 0.3.1 — third-party component inventory
 Original code: AGPL-3.0-only; see LICENSE and NOTICE.
 PostgreSQL: PostgreSQL License; WAL-G: Apache-2.0; Python: PSF license.
 OS/Python/embedded Go components have separate licenses listed below.
@@ -290,8 +290,8 @@ passwd 1:4.13+dfsg1-1+deb12u2 — BSD-3-Clause, GPL-1.0-only, GPL-2.0-only, GPL-
 perl 5.36.0-7+deb12u4 — Artistic-2.0, Artistic-dist, BSD-3-Clause, GPL-1.0-only, GPL-1.0-or-later, GPL-2.0-only, GPL-2.0-or-later, LGPL-2.1-only, Zlib, Artistic, BSD-3-clause-GENERIC, BSD-3-clause-with-weird-numbering, BSD-4-clause-POWERDOG, BZIP, DONT-CHANGE-THE-GPL, Expat, GPL-3+-WITH-BISON-EXCEPTION, HSIEH-BSD, HSIEH-DERIVATIVE, REGCOMP, REGCOMP,, RRA-KEEP-THIS-NOTICE, SDBM-PUBLIC-DOMAIN, TEXT-TABS, Unicode
 perl-base 5.36.0-7+deb12u4 — Artistic-2.0, Artistic-dist, BSD-3-Clause, GPL-1.0-only, GPL-1.0-or-later, GPL-2.0-only, GPL-2.0-or-later, LGPL-2.1-only, Zlib, Artistic, BSD-3-clause-GENERIC, BSD-3-clause-with-weird-numbering, BSD-4-clause-POWERDOG, BZIP, DONT-CHANGE-THE-GPL, Expat, GPL-3+-WITH-BISON-EXCEPTION, HSIEH-BSD, HSIEH-DERIVATIVE, REGCOMP, REGCOMP,, RRA-KEEP-THIS-NOTICE, SDBM-PUBLIC-DOMAIN, TEXT-TABS, Unicode
 perl-modules-5.36 5.36.0-7+deb12u4 — Artistic-2.0, Artistic-dist, BSD-3-Clause, GPL-1.0-only, GPL-1.0-or-later, GPL-2.0-only, GPL-2.0-or-later, LGPL-2.1-only, Zlib, Artistic, BSD-3-clause-GENERIC, BSD-3-clause-with-weird-numbering, BSD-4-clause-POWERDOG, BZIP, DONT-CHANGE-THE-GPL, Expat, GPL-3+-WITH-BISON-EXCEPTION, HSIEH-BSD, HSIEH-DERIVATIVE, REGCOMP, REGCOMP,, RRA-KEEP-THIS-NOTICE, SDBM-PUBLIC-DOMAIN, TEXT-TABS, Unicode
-pgbk 0.3.0 — AGPL-3.0-only
-pgbk 0.3.0 — AGPL-3.0-only
+pgbk 0.3.1 — AGPL-3.0-only
+pgbk 0.3.1 — AGPL-3.0-only
 pglast 8.5 — GPL-3.0-or-later
 pinentry-curses 1.2.1-1 — GPL-2.0-only, GPL-2.0-or-later, LGPL-3.0-only, LGPL-3.0-or-later, X11
 postgresql-18 18.6-1.pgdg12+2 — BSD-2-Clause, BSD-3-Clause, GPL-1.0-only, PostgreSQL, TCL, Artistic, Custom-Unicode, Custom-pg_dump, Custom-regex, double-metaphone, nagaysau-ishii

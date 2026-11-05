@@ -1,6 +1,6 @@
 # Manual copy verification and retention
 
-Specification 1.3 implementation. Local PostgreSQL 18 evidence is recorded separately from live-provider and full-release acceptance in [compatibility](compatibility.md). Schema filters/log replay (REQ-043–REQ-048) and verification automation (REQ-054) remain deferred.
+Specification 1.3 implementation. Local PostgreSQL 18 evidence is recorded separately from live-provider and full-release acceptance in [compatibility](compatibility.md). Schema filters (REQ-043–REQ-045) are implemented in 0.3.1. Execution log access (REQ-046–REQ-048) and verification automation (REQ-054) remain deferred.
 
 Configure named environments at the root of values. The following is an overlay: retain the target, storage, logical, execution and scratch settings of the existing profile. Replace the image digest and provide existing namespaces, ServiceAccounts, RBAC, Leases and referenced Secrets, or explicitly opt into chart bootstrap. The image must contain pgbk and matching PostgreSQL server/client/extension binaries. The configured positive maxConcurrent uses shared pre-created Lease slots; exhausted capacity returns busy instead of queuing.
 

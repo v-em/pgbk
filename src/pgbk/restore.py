@@ -22,7 +22,7 @@ from .credentials import pg_credential_keys, pg_environment, pg_params, secret
 from .errors import Error, require
 from .postgres import archive_inventory, check_tool, extract_physical, sanitize_physical
 from .runner import repository_lease, waiting_repository_lease
-from .selection import validate_query
+from .selection import dump_args, validate_query
 
 
 @contextmanager
@@ -98,6 +98,21 @@ def addresses(host):
         return set()  # Restoring a downloaded archive must not require a reachable source.
 
 
+def existing_schema_args(item, toc, existing_schemas, work):
+    """Reuse prepared schema containers while restoring every contained object."""
+    resolved = (item.get("selection") or {}).get("schemaSelection", {}).get("resolved", [])
+    existing_oids = {row["oid"] for row in resolved if row["name"] in existing_schemas}
+    if not existing_oids:
+        return []
+    lines = []
+    for line in toc.splitlines():
+        entry = re.match(r"^\d+; 2615 (\d+) SCHEMA ", line)
+        lines.append("; " + line if entry and int(entry[1]) in existing_oids else line)
+    path = work / "restore-list.txt"
+    path.write_text("\n".join(lines) + "\n")
+    return ["--use-list=" + str(path)]
+
+
 def logical_restore(config, manifest, archives, database, destination, control, scratch):
     require(manifest["kind"] == "logical", "WRONG_BACKUP_KIND", "Logical restore requires a logical backup")
     item = next((a for a in manifest["artifacts"] if a.get("database") == database), None)
@@ -123,6 +138,7 @@ def logical_restore(config, manifest, archives, database, destination, control, 
             user_objects = conn.execute("""SELECT n.nspname,c.relname FROM pg_class c
                 JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname NOT LIKE 'pg\\_%'
                 AND n.nspname <> 'information_schema' AND c.relkind IN ('r','p','v','m','S','f')""").fetchall()
+            existing_schemas = {r[0] for r in conn.execute("SELECT nspname FROM pg_namespace").fetchall()}
             policy = destination.get("destinationPolicy", "empty")
             if (item.get("selection") or {}).get("mode") == "selected":
                 known_prerequisites = item["selection"].get("knownPrerequisites", {})
@@ -156,7 +172,9 @@ def logical_restore(config, manifest, archives, database, destination, control, 
         argv += ["--no-owner", "--no-acl", "--no-tablespaces"]
     try:
         with logical_archive(item, archives, work, control) as archive:
-            control.run(argv + [str(archive)], env=env)
+            toc = control.run(["pg_restore", "--list", str(archive)], capture=True)
+            schema_args = [] if destination.get("preserveOwnership") else existing_schema_args(item, toc, existing_schemas, work)
+            control.run(argv + schema_args + [str(archive)], env=env)
     except Error as e:
         raise Error("RESTORE_PARTIAL", "Restore failed; destination may contain partial objects and must be re-emptied", e.exit_code,
                     cause=e.code) from None
@@ -291,12 +309,18 @@ def drill(config, profile_name, catalog, kube, control, scratch_root, run_id=Non
                             for schema in {r["schema"] for r in item["selection"]["effective"]} - {"public"}:
                                 dest.execute(sql.SQL("CREATE SCHEMA {}").format(sql.Identifier(schema)))
                     env = {"PATH": os.environ["PATH"], "PGHOST": str(work), "PGPORT": "15499", "PGUSER": username, "PGDATABASE": database}
+                    with psycopg.connect(host=str(work), port=15499, user=username, dbname=database) as dest:
+                        schemas = {row[0] for row in dest.execute("SELECT nspname FROM pg_namespace").fetchall()}
                     with logical_archive(item, archives, work, control) as archive:
+                        toc = control.run(["pg_restore", "--list", str(archive)], capture=True)
+                        schema_args = existing_schema_args(item, toc, schemas, work)
                         control.run(["pg_restore", "--exit-on-error", "--no-owner", "--no-acl", "--no-tablespaces",
-                                     "--dbname=" + psycopg.conninfo.make_conninfo(dbname=database), str(archive)], env=env)
+                                     "--dbname=" + psycopg.conninfo.make_conninfo(dbname=database), *schema_args, str(archive)], env=env)
                     inventory_path = work / "restored-schema.dump"
+                    selection = item.get("selection")
+                    inventory_args = dump_args(selection) if selection and "largeObjects" in selection else []
                     control.run(["pg_dump", "--schema-only", "--format=custom", "--no-password",
-                                 "--file=" + str(inventory_path)], env=env)
+                                 "--file=" + str(inventory_path), *inventory_args], env=env)
                     actual_inventory = archive_inventory(control.run(["pg_restore", "--list", str(inventory_path)], capture=True))
                     for key, expected in item.get("archiveInventory", {}).items():
                         # Schema prerequisites are created explicitly for selected-table archives.
@@ -322,7 +346,9 @@ def drill(config, profile_name, catalog, kube, control, scratch_root, run_id=Non
                     if manifest["kind"] == "logical" and item.get("selection"):
                         actual_names = set(tables)
                         selected_names = {(r["schema"], r["table"]) for r in item["selection"]["effective"]}
-                        excluded_names = {(r["schema"], r["table"]) for r in item["selection"]["excluded"]}
+                        excluded_names = {(r["schema"], r["table"]) for r in
+                                          [*item["selection"]["excluded"], *item["selection"].get("filteredBySchema", [])]
+                                          if not r.get("extensionOwned")}
                         require(selected_names <= actual_names and not actual_names & excluded_names,
                                 "VERIFICATION_SCOPE_MISMATCH", "Restored table scope differs from the selected archive", 6)
                     for assertion in verification.get("assertions", []):

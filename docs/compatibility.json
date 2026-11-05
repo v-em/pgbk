@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.3.0",
-  "date": "2026-11-03",
+  "version": "0.3.1",
+  "date": "2026-11-05",
   "platform": "linux/amd64",
   "runtime": "Python 3.11.2 (Debian bookworm), host tests Python 3.14",
   "helm": "3.19.0",
@@ -92,5 +92,33 @@
     "pgbkVersion": "0.3.0",
     "chart": "dist/0.3.0/pgbk-0.3.0.tgz",
     "kubernetesApiSubcases": 6
+  },
+  "schemaSelectionLocal": {
+    "date": "2026-11-05",
+    "pgbkVersion": "0.3.1",
+    "pgCronSourcePostgres": "18.1",
+    "pgCron": "1.6",
+    "workerPostgres": "18.6",
+    "regressionSourcePostgres": "18.6",
+    "kubernetes": "v1.34.1",
+    "nodeArchitecture": "arm64",
+    "workerArchitecture": "amd64 (emulated)",
+    "s3": "local Moto",
+    "workerImage": "localhost:5000/pgbk-worker@sha256:a739eb405a8ba6f192e09204293542275a92d2b3f65d98a9a64fc0bdc2ac25fe",
+    "sourceSha256": "0e81e0c26f8756a093b97c73af807f91f3253e72831c06363dba47e13a435247",
+    "chart": "dist/0.3.1/pgbk-0.3.1.tgz",
+    "chartSha256": "30abcdd1e45e7596a531c3354c75e05e7ed95f324f386a12918845020cacdd02",
+    "unitTests": 155,
+    "schemaSubcases": 11,
+    "regressionSubcases": 14,
+    "apiSubcases": 6,
+    "offlineRecoveries": 2,
+    "report": "tests/reports/schema-selection-minikube18.json",
+    "regressionReport": "tests/reports/spec13-minikube18-031.json",
+    "unitReport": "tests/reports/schema-unit.json",
+    "offlineReport": "tests/reports/spec13-offline18-031.json",
+    "cloudTests": "excluded by request",
+    "fullReleaseCertified": false,
+    "executorAfterTests": "stopped"
   }
 }

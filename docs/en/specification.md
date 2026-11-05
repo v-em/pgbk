@@ -232,7 +232,7 @@ logical:
               table: cache_entries
 ```
 
-Example excluding extension-owned tables in database `ia` (normative contract; requires implementation changes):
+Example excluding extension-owned tables in database `ia` (implemented in 0.3.1):
 
 ```yaml
 logical:
@@ -249,7 +249,7 @@ logical:
               table: job_run_details
 ```
 
-### 5.2. Schema selection for logical backups (planned)
+### 5.2. Schema selection for logical backups
 
 **REQ-043 — Per-profile schema lists.** Add `profiles.<id>.logical.schemaSelection.include` and `.exclude` as lists of exact schema names. Both default to `[]`; absent/empty include means all schemas normally considered by pg_dump, whereas a nonempty include list limits the dump to those schemas. Exclude always wins. Lists belong to each profile independently and apply to every database in that profile's `logical.databases`; targets and other profiles are unaffected. Resolve names separately in each database, without assuming identically named schemas have a common identity. A name absent in one database contributes no objects there; report unmatched names. If a nonempty include list has no effective schema left in any individual database, fail that database/run before dumping, without falling back to a full dump. Reject nulls, empty names, control characters, unknown fields and filters on physical profiles. Deduplicate names and treat case, dots, spaces, quotes, Unicode and wildcard characters literally, not as input patterns or command fragments.
 
@@ -354,7 +354,7 @@ Opaque file IDs prevent unsafe database names becoming filesystem paths. The man
 
 **REQ-054 — Later verification automation.** Keep later automatic every-copy verification and periodic selective checks distinct. Every-copy mode queues every completed copy and affects mandatory compliance; selective mode chooses the latest completed non-deleting copy at start, records/pins its ID, reports separately, and never silently substitutes it. Automation needs its own schedule/trigger, bounded concurrency/resources and queue wait/deadline controls; exceeding the mandatory deadline fails with a distinct reason. Neither mode is implemented or certified merely by documenting it. The first delivery must not require their configuration to run a manual check.
 
-**REQ-055 — Recovery boundary and delivery gates.** Acceptance must demonstrate recovery after loss of both source and original executor Kubernetes cluster, using surviving S3 artifacts/catalog, access credentials and any required decryption keys plus a newly prepared compatible destination/executor. Do not promise survival of cloud-account loss or cross-cloud disaster without separately configured independent storage/credentials. Logical transfer is required from Yandex Managed PostgreSQL to an operator-prepared ordinary PostgreSQL 18 (VM/bare metal or Kubernetes), and between supported prepared managed/self-hosted destinations subject to extensions/roles/version prerequisites. Restoring a logical archive onto a physical server does not make it a physical backup. The first limited delivery requires real Yandex PostgreSQL 18 managed and Kubernetes-source backup/download/restore/retention and manual verification, plus self-hosted physical recovery; its evidence is separately labelled. Full release additionally requires the PostgreSQL 14–18 matrix, declared deployment integrations and later automated verification gates. Preserve planned schema filters/logs as explicitly pending gates; do not claim them shipped from this amendment or old evidence. RPO/RTO are operator objectives, not mandatory configuration fields or universal guarantees: document schedule/failure effects and measured restore durations, including operator provisioning and application cutover outside pgbk.
+**REQ-055 — Recovery boundary and delivery gates.** Acceptance must demonstrate recovery after loss of both source and original executor Kubernetes cluster, using surviving S3 artifacts/catalog, access credentials and any required decryption keys plus a newly prepared compatible destination/executor. Do not promise survival of cloud-account loss or cross-cloud disaster without separately configured independent storage/credentials. Logical transfer is required from Yandex Managed PostgreSQL to an operator-prepared ordinary PostgreSQL 18 (VM/bare metal or Kubernetes), and between supported prepared managed/self-hosted destinations subject to extensions/roles/version prerequisites. Restoring a logical archive onto a physical server does not make it a physical backup. The first limited delivery requires real Yandex PostgreSQL 18 managed and Kubernetes-source backup/download/restore/retention and manual verification, plus self-hosted physical recovery; its evidence is separately labelled. Full release additionally requires the PostgreSQL 14–18 matrix, declared deployment integrations and later automated verification gates. Evaluate schema filters and execution logs against their own implementation and test evidence; do not claim them shipped from this amendment or old evidence. RPO/RTO are operator objectives, not mandatory configuration fields or universal guarantees: document schedule/failure effects and measured restore durations, including operator provisioning and application cutover outside pgbk.
 
 ## 9. CLI, operations, and deployment
 

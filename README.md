@@ -1,12 +1,12 @@
 # pgbk — PostgreSQL backups for Kubernetes
 
-Development implementation 0.3.0: Python CLI/worker, Helm chart and matching-major Linux amd64 images for PostgreSQL 14–18. Logical custom/directory archives and self-contained physical copies are stored in an immutable S3 catalog; direct logical streams use the S3 SDK and staged files use WAL-G raw transfer, with SHA-256 verification, renewable coordination, scoped retention, download, isolated restore and restore drills.
+Development implementation 0.3.1: Python CLI/worker, Helm chart and matching-major Linux amd64 images for PostgreSQL 14–18. Logical custom/directory archives and self-contained physical copies are stored in an immutable S3 catalog; direct logical streams use the S3 SDK and staged files use WAL-G raw transfer, with SHA-256 verification, renewable coordination, scoped retention, download, isolated restore and restore drills.
 
 The normal deployment uses existing namespaces, ServiceAccounts, RBAC permissions, Leases, sources, Secrets and buckets. It creates no source workload and changes no source settings. Start with the [quickstart](docs/en/quickstart.md), [configuration](docs/en/configuration.md) and [operations/RBAC](docs/en/operations.md). [Russian documentation](README.ru.md) is maintained alongside English.
 
 The PostgreSQL 14–18 local real-tool matrix and Kubernetes API/RBAC smoke reports are in [tests/reports](tests/reports). [Compatibility and release gates](docs/en/compatibility.md) distinguish completed local subcases from full certification. Live Yandex testing is performed separately by the operator; amd64 Kubernetes/PVC and TLS/fault-injection release gates remain open. This distribution is not labeled production-ready.
 
-The new [specification 1.3 implementation](docs/en/verification.md) adds captured manual verification policies, immutable attempts, effective copy status, deadline reconciliation and dual-minimum retention. New PostgreSQL 18/minikube evidence is retained separately from historical 0.2 tests. Live Yandex is excluded from this local validation; schema/log extensions and automatic verification remain deferred.
+The new [specification 1.3 implementation](docs/en/verification.md) adds captured manual verification policies, immutable attempts, effective copy status, deadline reconciliation and dual-minimum retention. New PostgreSQL 18/minikube evidence is retained separately from historical 0.2 tests. Live Yandex is excluded from this local validation. Schema filters are implemented in 0.3.1. Execution logs and automatic verification remain deferred.
 
 - [Specification v1.3](docs/en/specification.md) and [acceptance plan](docs/en/test-plan.md).
 - [Architecture decision](docs/en/architecture.md), [image pins](docs/compatibility.json), [acceptance ledger](tests/reports/acceptance.json).

@@ -201,13 +201,21 @@ def normalize(raw):
                     (method == "zstd" and 1 <= level <= 22),
                     "COMPRESSION_LEVEL_INVALID", "gzip accepts levels 1..9; zstd 1..22; none/lz4 have no level")
             logical.setdefault("globals", "disabled")
+            schemas = logical.setdefault("schemaSelection", {})
+            for role in ["include", "exclude"]:
+                schemas[role] = list(dict.fromkeys(schemas.get(role, [])))
+                require(all(not any(ord(ch) < 32 or 127 <= ord(ch) <= 159 for ch in name) for name in schemas[role]),
+                        "INVALID_SCHEMA_SELECTION", "Schema names cannot contain control characters")
             selection = logical.setdefault("tableSelection", {"byDatabase": {}})
             selection.setdefault("queryTimeoutSeconds", 30)
             selection.setdefault("maxQueryRows", 10000)
             for db, rule in selection["byDatabase"].items():
                 require(db in logical["databases"], "INVALID_REFERENCE", "Table selection references an unconfigured database")
                 rule.setdefault("mode", "all")
-                rule.setdefault("largeObjects", "none" if rule["mode"] == "selected" else "all")
+                require(not ("largeObjects" in rule and "largeObjects" in schemas) or
+                        rule["largeObjects"] == schemas["largeObjects"],
+                        "CONFLICTING_LARGE_OBJECT_POLICY", "Schema and table large object policies must agree")
+                rule.setdefault("largeObjects", schemas.get("largeObjects", "none" if rule["mode"] == "selected" or schemas["include"] else "all"))
                 include = rule.get("include", {})
                 require(rule["mode"] != "all" or not (include.get("tables") or include.get("query")),
                         "INVALID_SELECTION", "All mode cannot have an include source")

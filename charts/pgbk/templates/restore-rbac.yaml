@@ -4,7 +4,7 @@
 {{- range $name, $profile := .Values.profiles }}
 {{- $profile = include "pgbk.profile" (dict "root" $root "profile" $profile) | fromYaml -}}
 {{- if and $profile.restore $profile.restore.enabled }}
-{{- $sa := printf "%s-%s-restore" $root.Release.Name $name -}}
+{{- $sa := printf "%s-%s-restore" $root.Release.Name $name }}
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1

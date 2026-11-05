@@ -1,6 +1,6 @@
 # Configuration reference
 
-Version: 0.3.0. [Quickstart](quickstart.md). The strict schema is [values.schema.json](../../charts/pgbk/values.schema.json); unknown keys, duplicate YAML keys and embedded credentials are rejected. IDs and Secret/namespace references use lowercase letters, digits and hyphens, at most 48 characters. Release/profile combinations must fit the 52-character CronJob name limit. [Full example](../../examples/values.yaml).
+Version: 0.3.1. [Quickstart](quickstart.md). The strict schema is [values.schema.json](../../charts/pgbk/values.schema.json); unknown keys, duplicate YAML keys and embedded credentials are rejected. IDs and Secret/namespace references use lowercase letters, digits and hyphens, at most 48 characters. Release/profile combinations must fit the 52-character CronJob name limit. [Full example](../../examples/values.yaml).
 
 | Key | Meaning |
 |---|---|
@@ -82,9 +82,9 @@ exclude:
       table: temporary_totals
 ```
 
-Names are literal, including dots, quotes, Unicode and wildcard characters. Only ordinary/partitioned user tables are selectable; views, foreign/materialized tables, system objects and extension-owned relations fail. Selecting a parent expands descendants, including inheritance; excluding a child removes that child's definition/data. Choosing a leaf does not add its parent or siblings.
+Names are literal, including dots, quotes, Unicode and wildcard characters. Only ordinary/partitioned user tables are selectable; views, foreign/materialized tables, and system objects fail. Extension-owned ordinary tables are supported in exclusions; explicit inclusion remains unsupported. Selecting a parent expands descendants, including inheritance; excluding a child removes that child's definition/data. Choosing a leaf does not add its parent or siblings.
 
-A query must be exactly one SELECT returning exactly `schema_name` and `table_name`, both PostgreSQL text, without NULL/empty/newline names. Writing CTEs, SELECT INTO, locking clauses and multi-statements are rejected using the PostgreSQL parser. Execution uses read-only repeatable-read, a server cursor, timeout and a raw-row limit before deduplication. Queries are trusted administrator configuration: read-only SQL does not sandbox side-effecting functions. Query text is not logged; manifests contain digests/provenance. Each database has its own exported snapshot held through pg_dump. Access-share locks freeze selected/excluded definitions, and archive OIDs are checked against the frozen set; this is not a cluster-wide snapshot.
+A query must be exactly one SELECT returning exactly `schema_name` and `table_name`, both PostgreSQL text, without NULL/empty/newline names. Writing CTEs, SELECT INTO, locking clauses and multi-statements are rejected using the PostgreSQL parser. Execution uses read-only repeatable-read, a server cursor, timeout and a raw-row limit before deduplication. Queries are trusted administrator configuration: read-only SQL does not sandbox side-effecting functions. Query text is not logged; manifests contain digests/provenance. Each database has its own exported snapshot held through pg_dump. Access-share locks freeze selected definitions, and archive OIDs are checked against the frozen set; this is not a cluster-wide snapshot.
 
 Any configured rule is labeled `filtered-database`. Table-owned objects follow pg_dump. Outside schemas, types, functions, extensions, partition parents and foreign-key targets may be required for restore. Known schemas, direct column types, FK targets and parents are recorded; recursive dependency discovery is explicitly incomplete. Selected mode defaults `largeObjects: none`; explicit `all` includes ALL database large objects, beyond the table set. All mode preserves pg_dump large-object behavior; excluding a table does not infer large-object ownership.
 
@@ -106,6 +106,28 @@ profiles:
 
 See [operations](operations.md) for permissions, restore destinations and source prerequisites. Schema validation checks shape and references; endpoint privileges, storage capacity and real restore compatibility require preflight and acceptance tests.
 
-## Logical mode options (0.3.0)
+## Schema selection
+
+Version 0.3.1 supports `logical.schemaSelection` per profile. The following overlay excludes the entire `cron` schema used by `pg_cron`.
+
+```yaml
+profiles:
+  example-logical:
+    logical:
+      schemaSelection:
+        exclude: [cron]
+```
+
+Apply the setting under your existing profile ID, for example `ia-dev-backup`. Remove the two-table `cron.job` / `cron.job_run_details` exclusion when excluding the whole schema. Use matching 0.3.1 chart and worker artifacts. The 0.3.0 schema rejects this key.
+
+`include` and `exclude` default to empty lists and contain exact schema names. An empty include keeps the ordinary dump scope. Exclude wins over include. Each database resolves names independently and records unmatched names. A nonempty include with no remaining schema fails that database/run. Quoted names, Unicode, dots and wildcard characters are literal. Empty lists preserve the existing dump behavior.
+
+Schema filters apply after partition/inheritance expansion, before table exclusions. Selected-table mode receives only the permitted exact tables. Other modes use PostgreSQL schema flags. Filtered manifests record configured/resolved schemas, table candidates removed by schema selection and large-object policy. Preflight uses the same resolver, with a fresh snapshot for each operation.
+
+`largeObjects: none | all` is optional. Include-only filters and selected-table mode default to `none`; exclusion-only filters retain ordinary `all` behavior. Explicit schema/table policies must agree. `all` includes every large object in the database. Globals are a separate artifact and retain their own configured scope.
+
+Extension tables can be excluded explicitly or by query. Entire extension schemas can also be excluded. Archive validation checks both separate definitions and table-data entries, including extension configuration data. `CREATE EXTENSION` can recreate excluded objects with their installation defaults on restore. Its presence and destination extension binaries remain restore prerequisites. Referenced objects outside the selected scope can also remain prerequisites. The local pg_cron test verifies that original scheduled jobs and run history are absent after restore while application data survives.
+
+## Logical mode options (0.3.1)
 
 See [logical modes](logical-modes.md) for `logical.transfer.mode`, `logical.transfer.partSizeMiB`, `logical.format`, `logical.jobs` and `logical.compression.method/level`, defaults, compatibility and the two-source example.

@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "pgbkVersion": "0.3.1",
+  "specificationVersion": "1.3",
+  "status": "passed",
+  "postgresMajor": 18,
+  "execution": "fresh isolated Docker native-restore destination; network none; read-only downloaded artifacts",
+  "originalExecutor": "minikube stopped by host before invocation",
+  "sourceSha256": "0e81e0c26f8756a093b97c73af807f91f3253e72831c06363dba47e13a435247",
+  "s3KubernetesCredentials": "absent",
+  "cases": [
+    {
+      "case": "logical-native-recovery-with-original-executor-source-s3-unavailable",
+      "status": "passed",
+      "runId": "run-cbd4b0e3-c056-4598-9b3d-d00252a734ae-7702526703e944d1b733d5980fec88d7",
+      "rows": 1000,
+      "dataSequencePartitionConstraintsLargeObjects": "passed"
+    },
+    {
+      "case": "physical-native-recovery-with-original-executor-source-s3-unavailable",
+      "status": "passed",
+      "runId": "run-72814559-2295-4ebd-853d-1bb432000245-4ed5fe6bc25d43b382befbc711958fc8",
+      "rows": 1000,
+      "dataSequencePartitionConstraintsLargeObjects": "passed"
+    }
+  ],
+  "elapsedSeconds": 2.9758464179994917
+}

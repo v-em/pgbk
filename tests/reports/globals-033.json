@@ -1,0 +1,13 @@
+{
+  "pgbkVersion": "0.3.3",
+  "status": "passed",
+  "postgresMajor": 18,
+  "environment": "isolated temporary PostgreSQL; network none; synthetic credentials",
+  "cases": [
+    "PGDATABASE alone reproduces failed default-database connection",
+    "direct: restricted non-superuser exports globals using literal maintenance database",
+    "direct: denied globals fail before database dump; native diagnostics remain redacted",
+    "staged: restricted non-superuser exports globals using literal maintenance database",
+    "staged: denied globals fail before database dump; native diagnostics remain redacted"
+  ]
+}

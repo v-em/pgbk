@@ -1,6 +1,6 @@
 # Operations, prerequisites and recovery
 
-Version: 0.3.2. Start with [quickstart](quickstart.md) and [configuration](configuration.md). Acceptance evidence and untested gates are in [compatibility](compatibility.md).
+Version: 0.3.3. Start with [quickstart](quickstart.md) and [configuration](configuration.md). Acceptance evidence and untested gates are in [compatibility](compatibility.md).
 
 ## Existing source prerequisites
 
@@ -111,6 +111,22 @@ The verification Job uses only repository/destination credentials, restores into
 Retention protects both the newest integrity-confirmed and the newest profile-compliant N copies, plus pending required copies before their due time and active operation pins. Copy status, immutable attempts, deadlines, reconciliation, cleanup and separate data-age monitoring are defined in [manual verification](verification.md). Partial deletions resume; incomplete runs still require grace and confirmed writer termination. Helm uninstall preserves remote data, existing Secrets/PVCs, kept ConfigMaps and Leases.
 
 ## Capacity and troubleshooting
+
+### Globals export failures
+
+With `logical.globals: enabled`, pgbk exports roles/global objects using `pg_dumpall --globals-only --no-role-passwords`. PostgreSQL's pg_dumpall does not select its initial database from `PGDATABASE`: it needs `--database` (`-l`), otherwise it tries `postgres` and may fall back to `template1`. Starting with 0.3.3, pgbk explicitly passes `targets.<id>.maintenanceDatabase`, preserving literal names, and exports globals before database archives so failure does not waste a database dump.
+
+Set `maintenanceDatabase` to an existing database the backup role can connect to, for example `ia`. The default remains `postgres`. Check CONNECT to that database and access to the catalogs used for role/membership/tablespace export. `--no-role-passwords` avoids reading password hashes through pg_authid; a globals failure alone does not establish that SUPERUSER is required. Managed providers can impose additional restrictions.
+
+For Yandex Managed Service for PostgreSQL, `postgres` is a system database and connections to it are prohibited ([provider documentation](https://yandex.cloud/en/docs/managed-postgresql/qa/connection)). Set the application's database explicitly on the target referenced by the profile; choosing it does not turn globals into a database-only role export:
+
+```yaml
+targets:
+  managed:
+    maintenanceDatabase: ia
+```
+
+In 0.3.2 and earlier, streaming subprocess stderr was discarded, so `TOOL_FAILED` with `tool: pg_dumpall` / exit code 1 does not identify the underlying PostgreSQL error. In 0.3.3 both streaming and staged execution classify recognizable permission/authentication failures as `ACCESS_DENIED` with the tool and exit code. Raw stderr/SQL/credentials remain redacted; native messages must not be inferred from the generic old log. An unsuccessful globals export prevents publication of a complete backup even if some database files were uploaded.
 
 Size logical scratch for all custom archives plus tool temporary space. Physical backup needs tar artifacts AND an extraction for verification, including WAL/tablespaces; drill/restore needs downloaded archives AND expanded PGDATA/tablespaces. Reserve headroom for WAL activity and filesystem metadata. EmptyDir sizeLimit eviction depends on kubelet monitoring; enforce node ephemeral-storage budgets operationally. Per-profile CPU/memory limits, deadlines and staggered schedules bound work but do not promise throughput/RPO/RTO. The local 1/20-GiB exercises and their limits are documented in [compatibility](compatibility.md); also measure usage and duration on your own source and storage.
 

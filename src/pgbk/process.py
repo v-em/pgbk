@@ -47,25 +47,34 @@ class Control:
         self.check()
         try:
             child = subprocess.Popen(argv, env=env, stdin=subprocess.DEVNULL,
-                                     stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, start_new_session=True)
+                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
         except OSError:
             raise Error("TOOL_UNAVAILABLE", "Required executable is unavailable", 3) from None
         def chunks():
+            diagnostic = bytearray()
             with selectors.DefaultSelector() as ready:
-                ready.register(child.stdout, selectors.EVENT_READ)
-                while True:
+                ready.register(child.stdout, selectors.EVENT_READ, "stdout")
+                ready.register(child.stderr, selectors.EVENT_READ, "stderr")
+                while ready.get_map():
                     self.check()
-                    if not ready.select(.2):
-                        continue
-                    block = os.read(child.stdout.fileno(), 1024 * 1024)
-                    if not block:
-                        break
-                    yield block
+                    for key, _ in ready.select(.2):
+                        block = os.read(key.fd, 65536)
+                        if not block:
+                            ready.unregister(key.fileobj)
+                        elif key.data == "stderr":
+                            # Drain all stderr, retaining only a bounded private
+                            # prefix for classification; never mix it into data.
+                            diagnostic.extend(block[:max(0, 65536 - len(diagnostic))])
+                        else:
+                            yield block
             while child.poll() is None:
                 self.check()
                 self.stop.wait(.2)
             self.check()
             if child.returncode:
+                if self.access_denied(diagnostic):
+                    raise Error("ACCESS_DENIED", "Upstream tool denied access (native output redacted)", 8,
+                                tool=os.path.basename(argv[0]), toolExitCode=child.returncode)
                 raise Error("TOOL_FAILED", "Streaming tool failed (native output redacted)", 5,
                             tool=os.path.basename(argv[0]), toolExitCode=child.returncode)
         stream = chunks()
@@ -75,6 +84,12 @@ class Control:
             stream.close()
             self.terminate(child)
             child.stdout.close()
+            child.stderr.close()
+
+    @staticmethod
+    def access_denied(diagnostic):
+        return any(marker in diagnostic.lower() for marker in
+                   [b"password authentication failed", b"accessdenied", b"permission denied", b"not permitted"])
 
     def inspect_input(self, argv, chunks):
         """Inspect an archive via stdin; allow the inspector to stop after its TOC."""
@@ -171,9 +186,10 @@ class Control:
                 # PostgreSQL stderr can include SQL, connection strings, names and passwords.
                 # Expose a safe classified error rather than risk echoing tool output.
                 stderr.seek(0)
-                diagnostic = stderr.read(65536).lower()
-                if any(x in diagnostic for x in [b"password authentication failed", b"accessdenied", b"permission denied", b"not permitted"]):
-                    raise Error("ACCESS_DENIED", "Upstream tool denied access (native output redacted)", 8)
+                diagnostic = stderr.read(65536)
+                if self.access_denied(diagnostic):
+                    raise Error("ACCESS_DENIED", "Upstream tool denied access (native output redacted)", 8,
+                                tool=os.path.basename(argv[0]), toolExitCode=child.returncode)
                 raise Error("TOOL_FAILED", "Upstream tool failed (native output redacted)", 5,
                             tool=os.path.basename(argv[0]), toolExitCode=child.returncode)
             if capture:

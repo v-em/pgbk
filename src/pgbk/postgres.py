@@ -129,6 +129,27 @@ def logical_backup(target, profile, control, scratch, s3=None, artifact_prefix=N
     direct = logical.get("transfer", {}).get("mode") == "direct"
     directory = logical.get("format") == "directory"
     require(not direct or (s3 is not None and artifact_prefix), "STREAM_STORAGE_REQUIRED", "Direct backup requires S3")
+    # Fail an unavailable globals export before spending time dumping databases.
+    # pg_dumpall ignores PGDATABASE for its initial connection; -l is required.
+    if logical["globals"] == "enabled":
+        work = scratch / uuid.uuid4().hex
+        work.mkdir(mode=0o700)
+        try:
+            env = pg_environment(target, target["maintenanceDatabase"], work)
+            path = scratch / "globals.sql"
+            argv = ["pg_dumpall", "--globals-only", "--no-role-passwords", "--no-password",
+                    "--database=" + psycopg.conninfo.make_conninfo(dbname=target["maintenanceDatabase"])]
+            if direct:
+                file_id = uuid.uuid4().hex
+                with control.output(argv, env=env) as chunks:
+                    sha, size = s3.upload_stream(artifact_prefix + file_id, chunks, logical["transfer"]["partSizeMiB"] * 1024**2)
+                result.append({"fileId": file_id, "filename": path.name, "format": "postgres-globals-sql",
+                               "scope": "globals", "sha256": sha, "size": size})
+            else:
+                control.run(argv + ["--file=" + str(path)], env=env)
+                result.append(artifact(path, "postgres-globals-sql", scope="globals"))
+        finally:
+            shutil.rmtree(work)
     for database in logical["databases"]:
         control.check()
         from .catalog import now
@@ -191,22 +212,6 @@ def logical_backup(target, profile, control, scratch, s3=None, artifact_prefix=N
                     compression=logical.get("compression", {"method": "gzip", "level": 6}),
                     dumpJobs=logical.get("jobs", 1), transferMode="direct" if direct else "staged")
         result.append(item)
-        shutil.rmtree(work)
-    if logical["globals"] == "enabled":
-        work = scratch / uuid.uuid4().hex
-        work.mkdir(mode=0o700)
-        env = pg_environment(target, target["maintenanceDatabase"], work)
-        path = scratch / "globals.sql"
-        argv = ["pg_dumpall", "--globals-only", "--no-role-passwords", "--no-password"]
-        if direct:
-            file_id = uuid.uuid4().hex
-            with control.output(argv, env=env) as chunks:
-                sha, size = s3.upload_stream(artifact_prefix + file_id, chunks, logical["transfer"]["partSizeMiB"] * 1024**2)
-            result.append({"fileId": file_id, "filename": path.name, "format": "postgres-globals-sql",
-                           "scope": "globals", "sha256": sha, "size": size})
-        else:
-            control.run(argv + ["--file=" + str(path)], env=env)
-            result.append(artifact(path, "postgres-globals-sql", scope="globals"))
         shutil.rmtree(work)
     return result
 

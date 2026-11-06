@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "version": "0.3.2",
+  "version": "0.3.3",
   "date": "2026-11-06",
   "platform": "linux/amd64",
   "runtime": "Python 3.11.2 (Debian bookworm), host tests Python 3.14",
@@ -142,6 +142,21 @@
     "registryPublished": false,
     "freshIntegrationMatrix": "not-run",
     "cloudTests": "not-run",
+    "fullReleaseCertified": false
+  },
+  "globalsMaintenanceLocal": {
+    "date": "2026-11-06",
+    "pgbkVersion": "0.3.3",
+    "unitTests": 194,
+    "postgresMajor": 18,
+    "workerImage": "pgbk-worker:18-0.3.3",
+    "platform": "linux/amd64",
+    "localOciDigest": "sha256:2bf0c535ac21f900da448f65e060c7d57c49181ccf0d38e65d3a10c10ccac3b7",
+    "globalsRegressionCases": 5,
+    "report": "tests/reports/globals-033.json",
+    "network": "none",
+    "registryPublished": false,
+    "liveManagedRecovery": "not-run",
     "fullReleaseCertified": false
   }
 }

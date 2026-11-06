@@ -1,6 +1,6 @@
 # pgbk — PostgreSQL backups for Kubernetes
 
-Development implementation 0.3.2: Python CLI/worker, Helm chart and matching-major Linux amd64 images for PostgreSQL 14–18. Logical custom/directory archives and self-contained physical copies are stored in an immutable S3 catalog; direct logical streams use the S3 SDK and staged files use WAL-G raw transfer, with SHA-256 verification, renewable coordination, scoped retention, download, isolated restore and restore drills.
+Development implementation 0.3.3: Python CLI/worker, Helm chart and matching-major Linux amd64 images for PostgreSQL 14–18. Logical custom/directory archives and self-contained physical copies are stored in an immutable S3 catalog; direct logical streams use the S3 SDK and staged files use WAL-G raw transfer, with SHA-256 verification, renewable coordination, scoped retention, download, isolated restore and restore drills.
 
 The normal deployment uses existing namespaces, ServiceAccounts, RBAC permissions, Leases, sources, Secrets and buckets. It creates no source workload and changes no source settings. Start with the [quickstart](docs/en/quickstart.md), [configuration](docs/en/configuration.md) and [operations/RBAC](docs/en/operations.md). [Russian documentation](README.ru.md) is maintained alongside English.
 

@@ -1,8 +1,10 @@
 # pgbk — PostgreSQL backups for Kubernetes
 
+The optional [pgbk-ui console](docs/en/ui-operations.md) provides Backups, Schedules and Jobs, Vault administrator sessions and durable one-off launch requests. Deploy its separate image and chart alongside pgbk 0.3.3. The [UI v1 specification](docs/en/ui-v1.md) defines the integration and acceptance contract.
+
 Development implementation 0.3.3: Python CLI/worker, Helm chart and matching-major Linux amd64 images for PostgreSQL 14–18. Logical custom/directory archives and self-contained physical copies are stored in an immutable S3 catalog; direct logical streams use the S3 SDK and staged files use WAL-G raw transfer, with SHA-256 verification, renewable coordination, scoped retention, download, isolated restore and restore drills.
 
-The normal deployment uses existing namespaces, ServiceAccounts, RBAC permissions, Leases, sources, Secrets and buckets. It creates no source workload and changes no source settings. Start with the [quickstart](docs/en/quickstart.md), [configuration](docs/en/configuration.md) and [operations/RBAC](docs/en/operations.md). [Russian documentation](README.ru.md) is maintained alongside English.
+The normal deployment uses existing namespaces, ServiceAccounts, RBAC permissions, Leases, sources, Secrets and buckets. It creates no source workload and changes no source settings. Start with the [quickstart](docs/en/quickstart.md), [configuration](docs/en/configuration.md) and [operations/RBAC](docs/en/operations.md). Write and review product documentation in English first. English documents govern development and acceptance. Maintain [Russian translations](README.ru.md) for reference.
 
 The PostgreSQL 14–18 local real-tool matrix and Kubernetes API/RBAC smoke reports are in [tests/reports](tests/reports). [Compatibility and release gates](docs/en/compatibility.md) distinguish completed local subcases from full certification. Live Yandex testing is performed separately by the operator; amd64 Kubernetes/PVC and TLS/fault-injection release gates remain open. This distribution is not labeled production-ready.
 

@@ -16,12 +16,14 @@ dependencies = [
 
 [project.scripts]
 pgbk = "pgbk.cli:main"
+pgbk-ui = "pgbk.ui.server:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
 pgbk = ["values.schema.json", "native-restore*.txt"]
+"pgbk.ui" = ["static/*.html", "static/*.css", "static/*.js"]
 
 [tool.setuptools.data-files]
 "share/doc/pgbk/en" = ["docs/en/restore.md"]

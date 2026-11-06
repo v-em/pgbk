@@ -1,0 +1,117 @@
+{
+  "status": "passed",
+  "cases": [
+    {
+      "case": "scheduled publication before UI installation",
+      "status": "passed"
+    },
+    {
+      "case": "independent UI Helm install and HTTPS readiness",
+      "status": "passed"
+    },
+    {
+      "case": "real Vault Kubernetes login and KV-backed session",
+      "status": "passed"
+    },
+    {
+      "case": "paused manual launch, admission acceptance, four simultaneous POSTs, schedule preserved",
+      "status": "passed"
+    },
+    {
+      "case": "real worker Job, bidirectional UID correlation and exact stored en/ru recovery notes",
+      "status": "passed"
+    },
+    {
+      "case": "S3 request tracing: no archive GET or HEAD during page views",
+      "status": "passed"
+    },
+    {
+      "case": "S3 outage preserves the last index and healthy Kubernetes Jobs",
+      "status": "passed"
+    },
+    {
+      "case": "Kubernetes access failure preserves S3 and never counterfeits Job removal",
+      "status": "passed"
+    },
+    {
+      "case": "Vault outage fails closed for both sessions and protected reads",
+      "status": "passed"
+    },
+    {
+      "case": "admission rejects injected Job; no Secret, log or Lease RBAC",
+      "status": "passed"
+    },
+    {
+      "case": "Pod restart preserves journal and original Job identity",
+      "status": "passed"
+    },
+    {
+      "case": "Vault rotation rejects old session and accepts new credentials",
+      "status": "passed"
+    },
+    {
+      "case": "scheduled publication alongside UI",
+      "status": "passed"
+    },
+    {
+      "case": "UI uninstall preserves scheduled publication and journal PVC",
+      "status": "passed"
+    },
+    {
+      "case": "reinstall recovers journal replay",
+      "status": "passed"
+    }
+  ],
+  "dependencies": "real Kubernetes, PostgreSQL 18, Vault 1.18.0; TLS Moto S3",
+  "browser": {
+    "status": "passed",
+    "mode": "synthetic read-only fixture on loopback HTTP",
+    "views": [
+      "Backups list",
+      "Backup summary",
+      "Recovery order en/ru",
+      "Artifact drawer alongside recovery note",
+      "Metadata key search",
+      "Schedules",
+      "Jobs list and Job details"
+    ],
+    "consoleErrors": 0,
+    "realHttpsBrowserSession": "not-run: browser did not trust temporary CA; real HTTPS/Vault API sessions tested separately"
+  },
+  "workerImage": "localhost:19050/pgbk-worker@sha256:94c9854f430922e785a50cd01327ecbb8bb18eb9fa908d88907a39b7acbc61de",
+  "uiImage": "localhost:19050/pgbk-ui@sha256:98e9a8dfc261479d1a5a20b708680815e6dcfe58cac1270b59c16229574a0bc6",
+  "workerEmulation": "amd64 worker on arm64 node; test-only nodeSelector patch",
+  "archiveBodyReadsOnPageViews": 0,
+  "limitations": [
+    "Moto does not certify provider IAM",
+    "local Vault dev mode behind a TLS fixture proxy",
+    "cloud and ingress-controller tests not run",
+    "UI tested locally on arm64; worker used explicit test-only amd64 emulation",
+    "No cloud deployment, GHCR publication or full production certification",
+    "Built pgbk 0.3.3 package is a development verification artifact including the new UI; existing v0.3.3 release artifacts were not republished"
+  ],
+  "schemaVersion": 1,
+  "uiVersion": "0.1.0",
+  "pgbkBaseline": "0.3.3",
+  "validatedAt": "2026-11-06T21:15:33.804973+03:00",
+  "unitTests": {
+    "tests": 239,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "build": {
+    "docker": "passed; Linux arm64 UI image, frozen dependencies",
+    "helmLint": "both charts passed",
+    "wheelAndSdist": "built; wheel entry point and static bytes verified",
+    "uiChartPackage": "pgbk-ui-0.1.0.tgz",
+    "documentation": "bilingual examples and local links passed",
+    "registryPublication": "not requested; images remain local"
+  },
+  "implementationSha256": "07c4fd0acfeb0abbd292bb6af094cf28b60fc5311667c17dbfe5e5536cd28529",
+  "artifacts": {
+    "dist/pgbk-ui-0.1.0.tgz": "ac06771bc69695d0f7f20f4a3d6baf63d7f52a7d05fc2139db6c9bec85cd979c",
+    "dist/pgbk-0.3.3-py3-none-any.whl": "173d1c56491fa0b29e56365f0c0c993d685098d947eaf43c6b29c99759372963",
+    "dist/pgbk-0.3.3.tar.gz": "7c8de4ec5f5b8c72e780a973b674334b799ad26e0897fa08b038a080a976d4bf"
+  }
+}

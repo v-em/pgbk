@@ -4,5 +4,6 @@ recursive-include docs *.md *.json
 recursive-include examples *.yaml *.json
 recursive-include scripts *.py
 recursive-include images Dockerfile *.txt *.md *LICENSE*
+recursive-include src/pgbk/ui/static *.html *.css *.js
 recursive-include tests *.py *.sh *.yaml *.json *.txt
 exclude tests/reports/*.log

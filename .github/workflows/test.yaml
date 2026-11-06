@@ -27,6 +27,8 @@ jobs:
           tar -xzf /tmp/helm.tgz -C /tmp
           /tmp/linux-amd64/helm lint charts/pgbk -f examples/values.yaml
           /tmp/linux-amd64/helm template pgbk charts/pgbk -f examples/values.yaml > /tmp/chart.yaml
+          /tmp/linux-amd64/helm lint charts/pgbk-ui -f examples/ui-values.yaml
+          /tmp/linux-amd64/helm template pgbk-ui charts/pgbk-ui -n backup-console -f examples/ui-values.yaml > /tmp/ui-chart.yaml
           uv build
   real-tools:
     runs-on: ubuntu-24.04

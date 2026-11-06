@@ -1,5 +1,7 @@
 # Test evidence
 
+[ui-v1.json](ui-v1.json) records the standalone UI 0.1.0 validation against pgbk 0.3.3: 239 unit/API tests and 15 real local Kubernetes/PostgreSQL/Vault/TLS-S3 integration scenarios, including install/uninstall schedule independence and zero archive body reads on page views. Browser views were checked using a separate synthetic read-only fixture; the real browser did not trust the temporary HTTPS CA. The report identifies tested image digests, implementation and artifact hashes, and remaining cloud/ingress/platform limits. This is local validation, not production certification.
+
 Reports dated 2026-10-11 describe pgbk 0.1. Reports named `modes-<major>-<mode>-<compression>.json` describe 0.2 and identify the tested image. The real-tool fixture uses local PostgreSQL, a synthetic S3 emulator and a stubbed Kubernetes coordinator. It exercises direct multipart, staged archives, native/product offline restore, filtered selection and physical regression. Helm rendering validates PVC/emptyDir templates; these tests do not certify real CSI/PVC lifecycle or Yandex services. Detailed logs live outside the public repository.
 
 

@@ -1,8 +1,10 @@
 # pgbk — PostgreSQL backups for Kubernetes
 
+Дополнительная [консоль pgbk-ui](docs/ru/ui-operations.md) предоставляет Backups, Schedules и Jobs, сессии администратора через Vault и надёжный журнал разовых запусков. Отдельные image и chart устанавливаются рядом с pgbk 0.3.3. Контракты интеграции и приёмки определены в [спецификации UI v1](docs/en/ui-v1.md).
+
 Реализация разработки 0.3.3: CLI/worker на Python, Helm chart и образы Linux amd64 соответствующих версий PostgreSQL 14–18. Logical custom/directory-архивы и самодостаточные физические копии сохраняются в неизменяемый S3-каталог; прямой logical-поток использует S3 SDK, staged-файлы — raw-передачу WAL-G с проверкой SHA-256, обновляемой координацией, ограниченным retention, скачиванием, изолированным восстановлением и restore drill.
 
-Обычное развертывание использует существующие namespace, ServiceAccount, права RBAC, Lease, источники, Secret и bucket. Оно не создаёт workload источника и не меняет его настройки. Начните с [быстрого старта](docs/ru/quickstart.md), [конфигурации](docs/ru/configuration.md) и [эксплуатации/RBAC](docs/ru/operations.md). [Английская документация](README.md) поддерживается синхронно.
+Обычное развертывание использует существующие namespace, ServiceAccount, права RBAC, Lease, источники, Secret и bucket. Оно не создаёт workload источника и не меняет его настройки. Начните с [быстрого старта](docs/ru/quickstart.md), [конфигурации](docs/ru/configuration.md) и [эксплуатации/RBAC](docs/ru/operations.md). Документация продукта пишется и рецензируется сначала на английском. Основой разработки и приёмки служит [английская документация](README.md). Русские переводы предназначены для ознакомления.
 
 Отчёты локальной реальной матрицы PostgreSQL 14–18 и Kubernetes API/RBAC находятся в [tests/reports](tests/reports). [Совместимость и условия выпуска](docs/ru/compatibility.md) отделяют выполненные локальные части от полной сертификации. Живые тесты Yandex оператор проводит отдельно; проверки Kubernetes/PVC amd64 и TLS/сбоев остаются открытыми. Сборка не обозначена production-ready.
 

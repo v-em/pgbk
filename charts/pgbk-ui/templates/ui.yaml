@@ -1,0 +1,194 @@
+{{- $name := .Release.Name -}}
+{{- $cfg := deepCopy .Values.config -}}
+{{- if and $cfg.manualLaunch (not .Values.admission.enabled) }}{{ fail "manualLaunch requires admission.enabled" }}{{ end -}}
+{{- $_ := required "config.installationId is required" $cfg.installationId -}}
+{{- $_ := required "config.origin is required" $cfg.origin -}}
+{{- $_ := required "config.vault.address is required" $cfg.vault.address -}}
+{{- $_ := required "config.vault.role is required" $cfg.vault.role -}}
+{{- $_ := required "config.vault.secretPath is required" $cfg.vault.secretPath -}}
+{{- if or (not $cfg.profiles) (not $cfg.configMapNames) }}{{ fail "Allowlisted profiles and configMapNames are required" }}{{ end -}}
+{{- $_ := set $cfg "uiNamespace" .Release.Namespace -}}
+{{- $_ := set $cfg "serviceAccount" $name -}}
+{{- $_ := set $cfg "admission" (dict "enabled" .Values.admission.enabled) -}}
+{{- $_ := set $cfg "journal" "/data/ui.sqlite" -}}
+{{- $_ := set $cfg "tls" (dict "certificate" "/tls/tls.crt" "key" "/tls/tls.key") -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $name }}
+data:
+  ui.json: {{ $cfg | toJson | quote }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $name }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $name }}-journal
+  annotations:
+    helm.sh/resource-policy: keep
+spec:
+  accessModes: [ReadWriteOnce]
+  {{- if ne .Values.persistence.storageClassName nil }}
+  storageClassName: {{ .Values.persistence.storageClassName | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.size }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels: {app.kubernetes.io/name: pgbk-ui, app.kubernetes.io/instance: {{ $name }}}
+  template:
+    metadata:
+      labels: {app.kubernetes.io/name: pgbk-ui, app.kubernetes.io/instance: {{ $name }}}
+      annotations:
+        checksum/config: {{ $cfg | toJson | sha256sum }}
+    spec:
+      serviceAccountName: {{ $name }}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: ui
+          image: {{ required "image is required" .Values.image | quote }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports: [{name: https, containerPort: 8443}]
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources: {{ .Values.resources | toJson }}
+          readinessProbe:
+            httpGet: {path: /healthz, port: https, scheme: HTTPS}
+          livenessProbe:
+            httpGet: {path: /healthz, port: https, scheme: HTTPS}
+            initialDelaySeconds: 10
+          volumeMounts:
+            - {name: config, mountPath: /config, readOnly: true}
+            - {name: tls, mountPath: /tls, readOnly: true}
+            - {name: journal, mountPath: /data}
+            {{- range .Values.s3Secrets }}
+            - {name: "s3-{{ . }}", mountPath: "/s3/{{ . }}", readOnly: true}
+            {{- end }}
+      volumes:
+        - name: config
+          configMap: {name: {{ $name }}}
+        - name: tls
+          secret: {secretName: {{ required "tls.existingSecret is required" .Values.tls.existingSecret }}, defaultMode: 0440}
+        - name: journal
+          persistentVolumeClaim: {claimName: "{{ $name }}-journal"}
+        {{- range .Values.s3Secrets }}
+        - name: s3-{{ . }}
+          secret: {secretName: {{ . }}, defaultMode: 0440}
+        {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+spec:
+  selector: {app.kubernetes.io/name: pgbk-ui, app.kubernetes.io/instance: {{ $name }}}
+  ports: [{name: https, port: 443, targetPort: https}]
+{{- $root := . -}}
+{{- $namespaces := uniq (concat (list $cfg.namespace) $cfg.jobNamespaces) -}}
+{{- range $namespaces }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ $name }}-read
+  namespace: {{ . }}
+rules:
+  - apiGroups: [batch]
+    resources: [jobs]
+    verbs: [get, list]
+  {{- if eq . $cfg.namespace }}
+  - apiGroups: [batch]
+    resources: [cronjobs]
+    resourceNames:
+      {{- range $profile, $_ := $cfg.profiles }}
+      - {{ printf "%s-%s-backup" $cfg.release $profile }}
+      {{- end }}
+    verbs: [get]
+  - apiGroups: ['']
+    resources: [configmaps]
+    resourceNames: {{ $cfg.configMapNames | toJson }}
+    verbs: [get]
+  {{- if $cfg.manualLaunch }}
+  - apiGroups: [batch]
+    resources: [jobs]
+    verbs: [create]
+  {{- end }}
+  {{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ $name }}-read
+  namespace: {{ . }}
+subjects:
+  - {kind: ServiceAccount, name: {{ $name }}, namespace: {{ $root.Release.Namespace }}}
+roleRef: {apiGroup: rbac.authorization.k8s.io, kind: Role, name: "{{ $name }}-read"}
+{{- end }}
+{{- if .Values.admission.enabled }}
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: {{ printf "%s-%s-pgbk-ui" .Release.Namespace $name }}
+webhooks:
+  - name: jobs.ui.pgbk.io
+    admissionReviewVersions: [v1]
+    sideEffects: None
+    failurePolicy: Fail
+    timeoutSeconds: 10
+    matchPolicy: Equivalent
+    matchConditions:
+      - name: ui-identity
+        expression: {{ printf "request.userInfo.username == 'system:serviceaccount:%s:%s'" .Release.Namespace $name | quote }}
+    clientConfig:
+      service: {name: {{ $name }}, namespace: {{ .Release.Namespace }}, path: /admission/jobs, port: 443}
+      caBundle: {{ required "admission.caBundle is required" .Values.admission.caBundle | quote }}
+    rules:
+      - operations: [CREATE]
+        apiGroups: [batch]
+        apiVersions: [v1]
+        resources: [jobs]
+        scope: Namespaced
+{{- end }}
+{{- if .Values.ingress.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $name }}
+  annotations: {{ .Values.ingress.annotations | toJson }}
+spec:
+  {{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  tls:
+    - hosts: [{{ .Values.ingress.host | quote }}]
+      secretName: {{ .Values.ingress.tlsSecret }}
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend: {service: {name: {{ $name }}, port: {name: https}}}
+{{- end }}

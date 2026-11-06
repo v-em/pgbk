@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["image", "tls", "config", "admission", "persistence", "resources", "s3Secrets", "ingress", "imagePullPolicy"],
+  "properties": {
+    "image": {"type": "string", "minLength": 1},
+    "imagePullPolicy": {"enum": ["Always", "IfNotPresent", "Never"]},
+    "tls": {"type": "object", "additionalProperties": false, "required": ["existingSecret"], "properties": {"existingSecret": {"$ref": "#/definitions/name"}}},
+    "persistence": {"type": "object", "additionalProperties": false, "properties": {"size": {"type": "string"}, "storageClassName": {"type": ["string", "null"]}}},
+    "resources": {"type": "object"},
+    "s3Secrets": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/definitions/name"}},
+    "admission": {"type": "object", "additionalProperties": false, "required": ["enabled"], "properties": {"enabled": {"type": "boolean"}, "caBundle": {"type": "string"}}},
+    "ingress": {"type": "object", "additionalProperties": false, "properties": {"enabled": {"type": "boolean"}, "className": {"type": "string"}, "host": {"type": "string"}, "annotations": {"type": "object", "additionalProperties": {"type": "string"}}, "tlsSecret": {"type": "string"}}},
+    "config": {
+      "type": "object", "additionalProperties": false,
+      "required": ["installationId", "release", "namespace", "origin", "manualLaunch", "configMapNames", "jobNamespaces", "profiles", "storage", "vault"],
+      "properties": {
+        "installationId": {"$ref": "#/definitions/id"},
+        "release": {"$ref": "#/definitions/name"},
+        "namespace": {"$ref": "#/definitions/name"},
+        "origin": {"type": "string", "pattern": "^https://[^/@?#]+$"},
+        "manualLaunch": {"type": "boolean"},
+        "refreshSeconds": {"type": "integer", "minimum": 2, "maximum": 3600},
+        "sessionSeconds": {"type": "integer", "minimum": 60, "maximum": 86400},
+        "configMapNames": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/definitions/name"}},
+        "jobNamespaces": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/definitions/name"}},
+        "profiles": {"type": "object", "minProperties": 1, "propertyNames": {"$ref": "#/definitions/id"}, "additionalProperties": {"type": "object", "additionalProperties": false, "required": ["sourceId", "kind", "storage"], "properties": {"sourceId": {"$ref": "#/definitions/id"}, "kind": {"enum": ["logical", "physical-full"]}, "storage": {"$ref": "#/definitions/id"}}}},
+        "storage": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "object", "additionalProperties": false, "required": ["endpoint", "region", "bucket", "prefix", "accessKeyFile", "secretKeyFile"], "properties": {
+          "endpoint": {"type": "string", "pattern": "^https://"}, "region": {"type": "string"}, "bucket": {"type": "string"}, "prefix": {"type": "string", "minLength": 1},
+          "accessKeyFile": {"$ref": "#/definitions/file"}, "secretKeyFile": {"$ref": "#/definitions/file"}, "caFile": {"$ref": "#/definitions/file"}, "addressingStyle": {"enum": ["path", "virtual"]}
+        }}},
+        "vault": {"type": "object", "additionalProperties": false, "required": ["address", "role", "secretPath"], "properties": {
+          "address": {"type": "string", "pattern": "^https://"}, "role": {"type": "string", "minLength": 1}, "secretPath": {"type": "string", "pattern": "^[a-zA-Z0-9_-]+/data/[a-zA-Z0-9_/-]+$"},
+          "authMount": {"type": "string", "pattern": "^[a-zA-Z0-9_/-]+$"}, "caFile": {"$ref": "#/definitions/file"}, "tokenFile": {"$ref": "#/definitions/file"}
+        }}
+      }
+    }
+  },
+  "definitions": {
+    "name": {"type": "string", "pattern": "^[a-z0-9][a-z0-9.-]{0,62}$"},
+    "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{0,127}$"},
+    "file": {"type": "string", "pattern": "^/[a-zA-Z0-9_./-]+$"}
+  }
+}

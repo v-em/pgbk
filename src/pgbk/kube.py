@@ -63,14 +63,21 @@ class Kubernetes:
         except ApiException:
             return {**event, "phase": "Unknown", "reasonCode": "JOB_STATE_UNAVAILABLE"}
 
-    def launch(self, profile, operation, release="pgbk", parameters=None, destination_pvc=None):
+    def launch(self, profile, operation, release="pgbk", parameters=None, destination_pvc=None,
+               request_identity=None, trusted_cron=None):
         cron_name = f"{release}-{profile}-{operation}"
         try:
-            cron = self.batch.read_namespaced_cron_job(cron_name, self.namespace, _request_timeout=15)
+            require(not request_identity or (operation == "backup" and not parameters and not destination_pvc),
+                    "INVALID_LAUNCH", "Stable UI launches must use the exact backup template")
+            cron = trusted_cron or self.batch.read_namespaced_cron_job(cron_name, self.namespace, _request_timeout=15)
             template = cron.spec.job_template
-            metadata = client.V1ObjectMeta(generate_name=cron_name[:48] + "-", labels=template.metadata.labels)
-            metadata.annotations = {"pgbk.io/trigger": "manual"}
-            spec = template.spec
+            metadata = client.V1ObjectMeta(generate_name=None if request_identity else cron_name[:48] + "-",
+                name=request_identity["name"] if request_identity else None, labels=copy.deepcopy(template.metadata.labels))
+            metadata.annotations = {**(template.metadata.annotations or {}), "pgbk.io/trigger": "manual"}
+            if request_identity:
+                metadata.labels = {**(metadata.labels or {}), "pgbk.io/request": request_identity["requestId"][:63]}
+                metadata.annotations["pgbk.io/template-version"] = request_identity["templateVersion"]
+            spec = copy.deepcopy(template.spec)
             if parameters:
                 spec.template.spec.containers[0].args.extend(parameters)
             if destination_pvc:

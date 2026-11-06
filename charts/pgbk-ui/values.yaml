@@ -1,0 +1,36 @@
+image: "" # Set the separately built pgbk-ui image, preferably by digest.
+imagePullPolicy: IfNotPresent
+tls:
+  existingSecret: "" # tls.crt and tls.key; SAN includes <release>.<namespace>.svc and public hostname.
+persistence:
+  size: 1Gi
+  storageClassName: null
+resources:
+  requests: {cpu: 100m, memory: 128Mi}
+  limits: {cpu: '1', memory: 512Mi}
+config:
+  installationId: ""
+  release: pgbk
+  namespace: backups
+  origin: ""
+  manualLaunch: false
+  configMapNames: [] # Explicit names of immutable pgbk configuration ConfigMaps.
+  jobNamespaces: [] # Additional authorized verify/restore namespaces.
+  profiles: {} # profile-id: {sourceId: source-id, kind: logical, storage: catalog}
+  storage: {} # Read-only S3 configuration; see examples/ui-values.yaml.
+  vault:
+    address: ""
+    role: ""
+    secretPath: "" # KV v2 API path: secret/data/pgbk/<installation>/administrator
+  refreshSeconds: 30
+  sessionSeconds: 3600
+admission:
+  enabled: false # Required for manualLaunch. Installs a fail-closed validating webhook.
+  caBundle: "" # Base64 PEM CA for tls.existingSecret.
+s3Secrets: [] # Existing Secrets, with ONLY read-only UI S3 keys, mounted under /s3/<name>.
+ingress:
+  enabled: false
+  className: ""
+  host: ""
+  annotations: {} # Configure the ingress controller to use HTTPS to this Service.
+  tlsSecret: ""

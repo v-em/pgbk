@@ -1,0 +1,7 @@
+apiVersion: v2
+name: pgbk-ui
+description: Standalone administrator console for pgbk 0.3.3 metadata contracts
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+kubeVersion: '>=1.30.0-0'

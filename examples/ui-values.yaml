@@ -1,0 +1,26 @@
+# Synthetic deployment example. Never put credential values in this file.
+image: pgbk-ui:0.1.0
+tls:
+  existingSecret: pgbk-ui-tls
+s3Secrets: [pgbk-ui-catalog-reader]
+config:
+  installationId: example
+  release: pgbk
+  namespace: backups
+  origin: https://backups.example.invalid
+  configMapNames: [pgbk-config-replace-with-current-digest]
+  profiles:
+    example-logical: {sourceId: example-postgres, kind: logical, storage: catalog}
+    example-physical: {sourceId: example-postgres, kind: physical-full, storage: catalog}
+  storage:
+    catalog:
+      endpoint: https://storage.example.invalid
+      region: ru-central1
+      bucket: example-backups
+      prefix: postgres
+      accessKeyFile: /s3/pgbk-ui-catalog-reader/accessKeyId
+      secretKeyFile: /s3/pgbk-ui-catalog-reader/secretAccessKey
+  vault:
+    address: https://vault.example.invalid
+    role: pgbk-ui-example
+    secretPath: secret/data/pgbk/example/administrator

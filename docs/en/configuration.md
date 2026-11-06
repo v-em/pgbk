@@ -9,10 +9,10 @@ Version: 0.3.1. [Quickstart](quickstart.md). The strict schema is [values.schema
 | `rbac.create / coordination.createLeases` | Both default false: use pre-existing permissions and named Leases; opt-in administrator bootstrap only. |
 | `images.<14..18>` | Matching-major Linux amd64 worker reference with sha256 digest. Required by Helm. |
 | `targets.<id>.sourceId / concurrencyKey` | Stable source identity / shared serialization key. Aliases must share the key. |
-| `targets.<id>.host / port` | TCP endpoint; port defaults to 5432. |
+| `targets.<id>.host / port` | Inline TCP endpoint; port defaults to 5432. Omit both when mapping the endpoint from a Secret. |
 | `targets.<id>.serverMajor / maintenanceDatabase` | 14–18; maintenance database defaults to postgres. |
 | `targets.<id>.credentialsSecretRef` | Existing PostgreSQL Secret. |
-| `targets.<id>.credentialsSecretKeys` | Optional username/password key mapping within that Secret; each omitted key defaults to username/password. |
+| `targets.<id>.credentialsSecretKeys` | Shared-Secret host/port/username/password key mappings. Host/port must be selected together; username/password retain their default key names. |
 | `targets.<id>.tls.mode` | verify-full default; disable/allow/prefer/require/verify-ca also explicit options. |
 | `targets.<id>.tls.caSecretRef / clientSecretRef` | Optional CA and client certificate Secret projections. |
 | `targets.<id>.physicalEndpoint / expectedSystemIdentifier` | For physical-full: direct-primary and an acknowledged numeric system identifier are required. |
@@ -40,6 +40,32 @@ Version: 0.3.1. [Quickstart](quickstart.md). The strict schema is [values.schema
 
 ## Shared PostgreSQL credentials Secret
 
+One Secret can contain host, port, username and password for every target. Values retain references and key names only. Configure BOTH `host` and `port` mappings inside `credentialsSecretKeys` and completely omit inline `host`/`port` target fields. Retain the other required target settings (sourceId, concurrencyKey, serverMajor, TLS):
+
+```yaml
+targets:
+  managed:
+    credentialsSecretRef: database-credentials
+    credentialsSecretKeys:
+      host: managed-host
+      port: managed-port
+      username: managed-username
+      password: managed-password
+  kubernetes:
+    credentialsSecretRef: database-credentials
+    credentialsSecretKeys:
+      host: kubernetes-host
+      port: kubernetes-port
+      username: kubernetes-username
+      password: kubernetes-password
+```
+
+See the [two-target connection Secret](../../examples/shared-db-credentials-secret.yaml). Store `port` as a string in stringData, for example `"6432"`; at execution pgbk validates an integer in 1–65535 and a TCP hostname. Partial or mixed endpoint configuration is refused: explicitly selected Secret keys never fall back to an inline endpoint or port 5432. `config validate` and Helm validate structure without reading Secrets; backup/preflight reads projected files at execution without API Secret reads. Errors do not disclose values.
+
+For Helm, apply the [complete connection overlay](../../examples/yandex/shared-db-connection-override.yaml) over two-sources.yaml. Overlay `null` values clear inherited inline host/port; nulls are accepted only with Secret mappings for both fields and are removed during pgbk normalization. A complete config can simply omit these fields. Key names are not endpoints. Aliases of the same physical source must share concurrencyKey even when endpoints are hidden in different Secrets; configuration remains responsible for that. Matching sourceId/Secret-key identities are checked during validation; endpoint matches within the shared mounted Secret are checked before backup.
+
+Backup/preflight Jobs mount the shared Secret once; restore/download/retention do not automatically receive source Secrets. Restore refuses the frozen `sourceEndpoint` recorded in the selected backup: this endpoint remains in the restricted S3 catalog for source protection. Other hidden endpoints cannot be resolved/checked without their Secrets; administrative destination isolation remains required. Passwords never enter manifests, ConfigMaps, argv or logs.
+
 Multiple targets can use the same Secret with different key mappings:
 
 ```yaml
@@ -56,7 +82,7 @@ targets:
       password: kubernetes-password
 ```
 
-Omitting the entire `credentialsSecretKeys` object or an individual field preserves the default `username` or `password` key. An explicitly configured missing key fails the operation; it never falls back to another credential pair. Keys must be valid Secret projection filenames (letters, digits, dots, underscores and hyphens, up to 253 characters; no `.` or `..` prefix).
+Omitting the entire `credentialsSecretKeys` object or its username/password fields preserves the default `username` or `password` key. An explicitly configured missing key fails the operation; it never falls back to another credential pair. Keys must be valid Secret projection filenames (letters, digits, dots, underscores and hyphens, up to 253 characters; no `.` or `..` prefix).
 
 See the [two-source overlay](../../examples/yandex/shared-db-credentials-override.yaml), applied over [two-sources.yaml](../../examples/yandex/two-sources.yaml), and the [Secret template](../../examples/shared-db-credentials-secret.yaml). Values contain only key names; real credentials stay in the Secret. Each Job mounts the entire referenced Secret and can read all credential pairs in it. The Secret must exist in the Job namespace. PostgreSQL restore destination JSON also accepts `credentialsSecretKeys` with the same defaults; allowlist its Secret in `restore.credentialsSecretRefs` for restore Jobs. S3 and verification credential key names are unchanged.
 

@@ -12,6 +12,7 @@ from pathlib import Path
 
 from .catalog import Catalog, now
 from .config import digest, profile
+from .credentials import resolve_target
 from .errors import Error, require
 from .kube import lease_name
 from .postgres import logical_backup, physical_backup, preflight
@@ -74,6 +75,13 @@ def backup(config, profile_name, kube, control, scratch_root):
             source_lease = stack.enter_context(kube.lease(lease_name("source", target["concurrencyKey"]), control))
             repository = stack.enter_context(repository_lease(kube, catalog, control))
             state("Preflight")
+            target = resolve_target(target)
+            for other in config["targets"].values():
+                if other["credentialsSecretRef"] == target["credentialsSecretRef"]:
+                    other = resolve_target(other)
+                if other.get("host") and (other["host"].lower(), other["port"]) == (target["host"].lower(), target["port"]):
+                    require(other["concurrencyKey"] == target["concurrencyKey"], "CONCURRENCY_KEY_MISMATCH",
+                            "Aliases for one source must share concurrencyKey")
             info = preflight(target, p, control, scratch)
             # Validate storage permissions with a unique per-run event, not bucket mutation.
             state("BackingUp")

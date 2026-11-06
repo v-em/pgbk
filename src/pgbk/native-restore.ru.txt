@@ -1,5 +1,9 @@
 Формат артефактов pgbk v1
 
+Краткий порядок именно для этой копии: BACKUP-RESTORE.ru.md рядом с этим файлом.
+Полное руководство pgbk: docs/ru/restore.md в исходном пакете или
+share/doc/pgbk/ru/restore.md относительно префикса установки wheel.
+
 Логические артефакты — custom-архивы PostgreSQL. Восстановите в отдельную заранее
 созданную пустую базу с помощью pg_restore той же major-версии:
   pg_restore --exit-on-error --no-owner --no-acl --no-tablespaces --dbname=DESTINATION archive.dump

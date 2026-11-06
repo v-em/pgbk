@@ -3,7 +3,7 @@
 {{- range $name, $profile := .Values.profiles }}
 {{- $profile = include "pgbk.profile" (dict "root" $root "profile" $profile) | fromYaml -}}
 {{- $target := index $root.Values.targets $profile.target | default dict -}}
-{{- if and (eq $profile.kind "physical-full") (or (eq ($target.provider | default "generic") "yandex-managed-postgresql") (hasSuffix ".mdb.yandexcloud.net" (lower $target.host))) }}{{ fail "YANDEX_PHYSICAL_UNSUPPORTED: Yandex Managed PostgreSQL supports logical backups only" }}{{ end }}
+{{- if and (eq $profile.kind "physical-full") (or (eq ($target.provider | default "generic") "yandex-managed-postgresql") (hasSuffix ".mdb.yandexcloud.net" (lower ($target.host | default "")))) }}{{ fail "YANDEX_PHYSICAL_UNSUPPORTED: Yandex Managed PostgreSQL supports logical backups only" }}{{ end }}
 {{- $storage := index $root.Values.storage $profile.storage | default dict -}}
 {{- if or (not $target) (not $storage) }}{{ fail "Profile must reference configured target and storage" }}{{ end }}
 {{- if and (eq $profile.kind "physical-full") (or (not $target.expectedSystemIdentifier) (ne ($target.physicalEndpoint | default "") "direct-primary")) }}{{ fail "Physical target requires expectedSystemIdentifier and physicalEndpoint: direct-primary" }}{{ end }}

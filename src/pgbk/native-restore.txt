@@ -1,5 +1,9 @@
 pgbk artifact format v1
 
+For this copy's recovery steps, open BACKUP-RESTORE.md beside this file.
+The complete pgbk guide is docs/en/restore.md in the source distribution, or
+share/doc/pgbk/en/restore.md relative to the wheel installation prefix.
+
 Logical artifacts are PostgreSQL custom archives. Restore to a separately provisioned
 empty destination with matching-major pg_restore:
   pg_restore --exit-on-error --no-owner --no-acl --no-tablespaces --dbname=DESTINATION archive.dump

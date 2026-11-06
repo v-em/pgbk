@@ -47,6 +47,8 @@ For an orphan Lease, first establish termination of the worker, all children and
 
 ## Download and offline restore
 
+See the [complete recovery procedure](restore.md) for logical/physical recovery, local/managed destinations, roles/ownership/ACLs, provisioning, validation and retries. It ships in the source distribution and wheel (`share/doc/pgbk/en/restore.md` relative to the installation prefix). Related documentation files are available in the source distribution.
+
 ```sh
 pgbk --config values.local.yaml --namespace backups backup download --profile example-logical --run-id RUN_ID --destination /tmp/isolated-download --database application
 kubectl -n backups label pvc download-output pgbk.io/installation=example-cluster pgbk.io/purpose=download
@@ -56,6 +58,8 @@ pgbk --config values.local.yaml --namespace backups backup download --profile ex
 Use a dedicated empty destination; local downloads must have no symlink parents. A download PVC must be unused and labelled for this installation/purpose, never source PGDATA. Download includes manifest.json, DOWNLOAD.json and English/Russian RESTORE instructions; a single database download lists only downloaded IDs. Validate SHA-256 and use matching-major native pg_restore or safe physical extraction/pg_verifybackup without the original cluster or catalog service. The native instructions ship in the package and each download. Direct pgbk catalog operations require Kubernetes repository coordination; native restore of downloaded bytes does not. The optional scripts/restore_download.py helper verifies downloaded hashes and prepares/restores them without S3/Kubernetes access; it still requires separate destination credentials and isolation acknowledgement.
 
 ## Logical and physical restore
+
+New backups include separate S3 companion files `recovery/BACKUP-RESTORE.md` and `recovery/BACKUP-RESTORE.ru.md`. They are rendered from frozen backup metadata, verified before the completion marker and recorded in `recoveryInstructions` with size/SHA-256, separately from PostgreSQL `artifacts`. Downloads place them at the destination root; older copies and single-database downloads receive notes rendered for downloaded IDs without changing the original backup. `DOWNLOAD.json` records origin/hashes and distinguishes absent globals from downloaded globals.
 
 ```sh
 pgbk --config values.local.yaml --namespace backups restore logical --profile example-logical --run-id RUN_ID --database application --destination-config examples/destination.json

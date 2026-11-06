@@ -6,6 +6,7 @@ from pathlib import Path
 
 from .config import canonical
 from .errors import Error, require
+from .recovery import NOTE_FILENAMES, recovery_notes
 from .storage import hash_file
 
 
@@ -73,6 +74,15 @@ class Catalog:
         run_id = manifest["runId"]
         prefix = self.run_prefix(run_id)
         require(self.s3.get(prefix + "complete.json") is None, "RUN_ALREADY_COMPLETED", "Completed runs are immutable", 6)
+        notes = recovery_notes(manifest)
+        manifest["recoveryInstructions"] = []
+        for filename, content in notes.items():
+            require(len(content) <= 8 * 1024 * 1024, "CATALOG_SIZE_LIMIT", "Recovery instructions exceed size limit", 6)
+            self.s3.put(prefix + "recovery/" + filename, content)
+            checksum = hashlib.sha256(content).hexdigest()
+            require(self.s3.remote_hash(prefix + "recovery/" + filename) == (checksum, len(content)),
+                    "ARTIFACT_HASH_MISMATCH", "Recovery instructions differ from original bytes", 6)
+            manifest["recoveryInstructions"].append({"filename": filename, "sha256": checksum, "size": len(content)})
         data = canonical(manifest)
         self.s3.put(prefix + "manifest.json", data)
         require(self.s3.get(prefix + "manifest.json") == data, "MANIFEST_MISMATCH", "Stored manifest differs from local bytes", 6)
@@ -138,7 +148,8 @@ class Catalog:
             filename = item.get("filename")
             require(isinstance(filename, str) and re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9_.-]{0,127}", filename) and
                     filename.casefold() not in filenames and filename.casefold() not in
-                    ["manifest.json", "download.json", "restore.txt", "restore.ru.txt"],
+                    ["manifest.json", "download.json", "restore.txt", "restore.ru.txt",
+                     *[name.casefold() for name in NOTE_FILENAMES]],
                     "UNSAFE_FILENAME", "Artifact filename is unsafe or repeated", 6)
             filenames.add(filename.casefold())
             if manifest["kind"] == "logical":
@@ -167,6 +178,24 @@ class Catalog:
         if manifest["kind"] == "physical-full":
             require(filenames == {"base.tar", "pg_wal.tar", "backup_manifest", *[oid + ".tar" for oid in manifest["source"]["tablespaceOids"]]},
                     "PHYSICAL_SET_INCOMPLETE", "Physical manifest must contain the entire declared artifact set", 6)
+        if "recoveryInstructions" in manifest:
+            notes = manifest["recoveryInstructions"]
+            require(isinstance(notes, list) and len(notes) == len(NOTE_FILENAMES) and
+                    all(isinstance(item, dict) and isinstance(item.get("filename"), str) for item in notes) and
+                    {item["filename"] for item in notes} == set(NOTE_FILENAMES),
+                    "CATALOG_INVALID", "Invalid recovery instruction set", 6)
+            for item in notes:
+                require(type(item.get("size")) is int and 0 <= item["size"] <= 8 * 1024 * 1024 and
+                        isinstance(item.get("sha256"), str) and re.fullmatch(r"[0-9a-f]{64}", item["sha256"]),
+                        "CATALOG_INVALID", "Invalid recovery instruction size/hash", 6)
+                key = prefix + "recovery/" + item["filename"]
+                if check_objects:
+                    head = self.s3.call("head_object", Key=key)
+                    require(head is not None and head["ContentLength"] == item["size"],
+                            "ARTIFACT_SIZE_MISMATCH", "Stored recovery instructions have wrong size", 6)
+                if verify and check_objects:
+                    require(self.s3.remote_hash(key) == (item["sha256"], item["size"]),
+                            "ARTIFACT_HASH_MISMATCH", "Stored recovery instruction SHA-256 differs", 6)
         return manifest
 
     def list(self, clock=None):
@@ -304,8 +333,25 @@ class Catalog:
             self.s3.transfer("get", self.run_prefix(run_id) + "artifacts/" + item["fileId"], path)
             require(hash_file(path) == (item["sha256"], item["size"]), "ARTIFACT_HASH_MISMATCH", "Downloaded SHA-256 differs", 6)
         (destination / "manifest.json").write_bytes(canonical(manifest))
+        # Preserve the frozen backup note for full downloads. For subsets (and old
+        # backups) render from the manifest so missing globals are never promised.
+        notes = recovery_notes(manifest, [a["fileId"] for a in items])
+        frozen = database is None and "recoveryInstructions" in manifest
+        if frozen:
+            notes = {}
+            for item in manifest["recoveryInstructions"]:
+                content = self.s3.get(self.run_prefix(run_id) + "recovery/" + item["filename"])
+                require(content is not None and (hashlib.sha256(content).hexdigest(), len(content)) ==
+                        (item["sha256"], item["size"]), "ARTIFACT_HASH_MISMATCH", "Recovery instructions changed during download", 6)
+                notes[item["filename"]] = content
+        for filename, content in notes.items():
+            (destination / filename).write_bytes(content)
         (destination / "DOWNLOAD.json").write_bytes(canonical({"schemaVersion": 1, "runId": run_id,
-                                                               "downloadedFileIds": [a["fileId"] for a in items]}))
+                                                               "downloadedFileIds": [a["fileId"] for a in items],
+                                                               "recoveryInstructionsOrigin": "backup" if frozen else "download",
+                                                               "recoveryInstructions": [{"filename": name,
+                                                                   "sha256": hashlib.sha256(content).hexdigest(), "size": len(content)}
+                                                                   for name, content in notes.items()]}))
         from importlib.resources import files
         (destination / "RESTORE.txt").write_text(files("pgbk").joinpath("native-restore.txt").read_text())
         (destination / "RESTORE.ru.txt").write_text(files("pgbk").joinpath("native-restore.ru.txt").read_text())

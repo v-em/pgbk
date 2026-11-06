@@ -9,10 +9,10 @@
 | `rbac.create / coordination.createLeases` | Оба по умолчанию false: используйте существующие права и именованные Lease; создание включается только для подготовки администратором. |
 | `images.<14..18>` | Worker Linux amd64 соответствующей основной версии, с digest sha256. Обязателен для Helm. |
 | `targets.<id>.sourceId / concurrencyKey` | Стабильный идентификатор источника / общий ключ сериализации. Для псевдонимов нужен одинаковый ключ. |
-| `targets.<id>.host / port` | TCP-адрес; порт по умолчанию 5432. |
+| `targets.<id>.host / port` | Inline TCP-адрес; порт по умолчанию 5432. При Secret-отображении обоих полей не задаются. |
 | `targets.<id>.serverMajor / maintenanceDatabase` | 14–18; служебная база по умолчанию postgres. |
 | `targets.<id>.credentialsSecretRef` | Существующий Secret PostgreSQL. |
-| `targets.<id>.credentialsSecretKeys` | Необязательное соответствие ключей username/password внутри Secret; пропущенные поля используют username/password по умолчанию. |
+| `targets.<id>.credentialsSecretKeys` | Соответствие ключей host/port/username/password общего Secret. Host и port выбираются только вместе; для username/password остаются стандартные имена по умолчанию. |
 | `targets.<id>.tls.mode` | По умолчанию verify-full; явно доступны disable/allow/prefer/require/verify-ca. |
 | `targets.<id>.tls.caSecretRef / clientSecretRef` | Необязательные Secret с CA и клиентским сертификатом. |
 | `targets.<id>.physicalEndpoint / expectedSystemIdentifier` | Для physical-full обязательны direct-primary и подтверждённый числовой идентификатор системы. |
@@ -40,6 +40,32 @@
 
 ## Общий Secret PostgreSQL
 
+Один Secret может содержать host, port, username и password для каждого target. В values остаются только ссылки и имена ключей. Для этого задайте ОБА отображения `host` и `port` внутри `credentialsSecretKeys` и полностью уберите inline-поля `host`/`port` из target. Остальные обязательные параметры target (sourceId, concurrencyKey, serverMajor, TLS) сохраняются:
+
+```yaml
+targets:
+  managed:
+    credentialsSecretRef: database-credentials
+    credentialsSecretKeys:
+      host: managed-host
+      port: managed-port
+      username: managed-username
+      password: managed-password
+  kubernetes:
+    credentialsSecretRef: database-credentials
+    credentialsSecretKeys:
+      host: kubernetes-host
+      port: kubernetes-port
+      username: kubernetes-username
+      password: kubernetes-password
+```
+
+Пример содержимого — [Secret с подключениями двух targets](../../examples/shared-db-credentials-secret.yaml). `port` в stringData хранится строкой, например `"6432"`; при выполнении pgbk проверяет целое значение 1–65535 и TCP-hostname. Частичная или смешанная конфигурация endpoint запрещена: нет fallback на inline-адрес или порт 5432, если явно выбраны Secret-ключи. `config validate` и Helm проверяют структуру без чтения Secret; значения читаются из файлов проекции только при выполнении backup/preflight, без API-чтения Secret. Ошибки не раскрывают значения.
+
+Для Helm используйте [overlay всех полей подключения](../../examples/yandex/shared-db-connection-override.yaml) поверх two-sources.yaml. Значения `null` в overlay очищают унаследованные inline host/port; они допускаются только при Secret-отображении обоих полей и удаляются нормализацией pgbk. В полном конфиге их можно просто не указывать. Имена ключей не являются адресами. Разные псевдонимы одного физического источника должны иметь один concurrencyKey, даже если endpoint скрыт в разных Secret; это остаётся обязанностью конфигурации. Одинаковые sourceId/Secret-ключи проверяются при валидации, совпадения endpoint в общем смонтированном Secret — до бэкапа.
+
+Backup/preflight Job монтирует общий Secret один раз; restore/download/retention не получают Secret источника автоматически. При восстановлении адрес исходного сервера берётся из зафиксированного `sourceEndpoint` манифеста: он сохраняется в ограниченном S3-каталоге для отказа восстановления на источник. Другие скрытые endpoints без их Secret разрешить/проверить невозможно; реальная изоляция назначения обязательна. Пароли не помещаются в манифест, ConfigMap, argv или логи.
+
 Несколько targets могут использовать один Secret с разными именами ключей:
 
 ```yaml
@@ -56,7 +82,7 @@ targets:
       password: kubernetes-password
 ```
 
-Если весь объект `credentialsSecretKeys` или отдельное поле пропущены, используются стандартные ключи `username` или `password`. Отсутствие явно указанного ключа завершает операцию ошибкой; переключения на другую пару credentials нет. Ключи должны быть допустимыми именами файлов проекции Secret: буквы, цифры, точки, подчёркивания и дефисы, до 253 символов; имя `.` и префикс `..` запрещены.
+Если весь объект `credentialsSecretKeys` или его поля username/password пропущены, используются стандартные ключи `username` или `password`. Отсутствие явно указанного ключа завершает операцию ошибкой; переключения на другую пару credentials нет. Ключи должны быть допустимыми именами файлов проекции Secret: буквы, цифры, точки, подчёркивания и дефисы, до 253 символов; имя `.` и префикс `..` запрещены.
 
 См. [overlay двух источников](../../examples/yandex/shared-db-credentials-override.yaml), применяемый поверх [two-sources.yaml](../../examples/yandex/two-sources.yaml), и [шаблон Secret](../../examples/shared-db-credentials-secret.yaml). Values содержат только имена ключей, настоящие credentials остаются в Secret. Каждый Job монтирует Secret целиком и может прочитать все пары credentials в нём. Secret должен существовать в namespace Job. JSON назначения PostgreSQL для восстановления также принимает `credentialsSecretKeys` с теми же defaults; для restore Job добавьте Secret в `restore.credentialsSecretRefs`. Названия ключей S3 и verification не меняются.
 

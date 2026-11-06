@@ -9,6 +9,7 @@ The PostgreSQL 14–18 local real-tool matrix and Kubernetes API/RBAC smoke repo
 The new [specification 1.3 implementation](docs/en/verification.md) adds captured manual verification policies, immutable attempts, effective copy status, deadline reconciliation and dual-minimum retention. New PostgreSQL 18/minikube evidence is retained separately from historical 0.2 tests. Live Yandex is excluded from this local validation. Schema filters are implemented in 0.3.1. Execution logs and automatic verification remain deferred.
 
 - [Specification v1.3](docs/en/specification.md) and [acceptance plan](docs/en/test-plan.md).
+- [Complete recovery procedure](docs/en/restore.md): logical/physical, local and managed PostgreSQL, roles/ACLs, validation and retries. Every new backup includes short `BACKUP-RESTORE*.md` notes identifying its files and parameters.
 - [Architecture decision](docs/en/architecture.md), [image pins](docs/compatibility.json), [acceptance ledger](tests/reports/acceptance.json).
 - [Example values](examples/values.yaml), [existing accounts](examples/existing-service-accounts.yaml), [deployer rights](examples/deployer-rbac.yaml).
 - [CLI source](src/pgbk), [Helm chart](charts/pgbk), [worker build](images/Dockerfile), [CI](.github/workflows/test.yaml).

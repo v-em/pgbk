@@ -47,6 +47,8 @@ pgbk --config values.local.yaml --namespace backups retention run --profile exam
 
 ## Скачивание и автономное восстановление
 
+Подробный порядок всех сценариев — в [руководстве полного цикла восстановления](restore.md): logical и physical, локальный сервер и managed, роли/владельцы/ACL, подготовка назначения, проверки и повтор после ошибки. Оно включено в исходный пакет и wheel (`share/doc/pgbk/ru/restore.md` относительно префикса установки). Связанные файлы документации доступны в исходном пакете.
+
 ```sh
 pgbk --config values.local.yaml --namespace backups backup download --profile example-logical --run-id RUN_ID --destination /tmp/isolated-download --database application
 kubectl -n backups label pvc download-output pgbk.io/installation=example-cluster pgbk.io/purpose=download
@@ -56,6 +58,8 @@ pgbk --config values.local.yaml --namespace backups backup download --profile ex
 Используйте выделенное пустое назначение; у локального пути не должно быть родительских symlink. PVC скачивания должен быть свободным и помеченным для установки/назначения, никогда исходным PGDATA. Скачивание содержит manifest.json, DOWNLOAD.json и инструкции RESTORE на двух языках; при скачивании одной базы перечислены только скачанные ID. Проверьте SHA-256 и используйте pg_restore соответствующей версии либо безопасную физическую распаковку/pg_verifybackup без исходного кластера и сервиса каталога. Нативные инструкции входят в пакет и каждое скачивание. Прямые операции pgbk с каталогом требуют координации Kubernetes; нативное восстановление скачанных байтов — нет. Необязательный scripts/restore_download.py проверяет хеши скачанных файлов и восстанавливает/подготавливает их без доступа к S3/Kubernetes; по-прежнему нужны отдельные учётные данные назначения и подтверждённая изоляция.
 
 ## Logical и physical восстановление
+
+Новые копии содержат отдельные сопроводительные `recovery/BACKUP-RESTORE.md` и `recovery/BACKUP-RESTORE.ru.md` в S3. Они формируются по зафиксированному манифесту, проверяются до маркера завершения и учитываются в `recoveryInstructions` с размером и SHA-256, отдельно от файлов PostgreSQL в `artifacts`. При скачивании инструкции попадают в корень назначения; для старых копий и скачивания одной базы формируется актуальная версия по скачанным ID, без изменения исходного бэкапа. `DOWNLOAD.json` фиксирует происхождение/хеши и помогает отличить недоступный globals от скачанного.
 
 ```sh
 pgbk --config values.local.yaml --namespace backups restore logical --profile example-logical --run-id RUN_ID --database application --destination-config examples/destination.json

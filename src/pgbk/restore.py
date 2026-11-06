@@ -71,6 +71,8 @@ def load_destination_json(data):
     require(isinstance(value["credentialsSecretRef"], str) and re.fullmatch(r"[a-z0-9][a-z0-9-]{0,47}", value["credentialsSecretRef"]),
             "INVALID_DESTINATION", "Destination Secret reference is invalid")
     value["credentialsSecretKeys"] = pg_credential_keys(value)
+    require(set(value["credentialsSecretKeys"]) <= {"username", "password"},
+            "INVALID_DESTINATION", "Restore destination endpoints must be explicit")
     require(tcp_host(value["host"]) and
             isinstance(value["database"], str) and not any(c in value["database"] for c in "\x00\r\n"),
             "INVALID_DESTINATION", "Destination must use a TCP host and literal database name")
@@ -118,7 +120,9 @@ def logical_restore(config, manifest, archives, database, destination, control, 
     item = next((a for a in manifest["artifacts"] if a.get("database") == database), None)
     require(item is not None, "DATABASE_NOT_FOUND", "Selected database is absent from backup")
     require(destination["serverMajor"] == manifest["serverMajor"], "RESTORE_MAJOR_MISMATCH", "Destination major must match backup", 3)
-    source_endpoints = [manifest["sourceEndpoint"], *config["targets"].values()]
+    # Restore-only Jobs deliberately do not mount source Secrets. The frozen
+    # endpoint in the selected backup remains available for source refusal.
+    source_endpoints = [manifest["sourceEndpoint"], *[t for t in config["targets"].values() if "host" in t]]
     for source in source_endpoints:
         require(not (source["port"] == destination["port"] and
                      (source["host"] == destination["host"] or addresses(source["host"]) & addresses(destination["host"]))),

@@ -9,6 +9,7 @@
 Новая [реализация спецификации 1.3](docs/ru/verification.md) добавляет зафиксированную политику ручной проверки, неизменяемые попытки, вычисляемый статус копии, reconciliation сроков и два минимума retention. Новые результаты PostgreSQL 18/minikube отделены от исторических тестов 0.2. Живой Yandex исключён из этой локальной проверки. Фильтры схем реализованы в 0.3.1. Доступ к логам и автоматизация проверок отложены.
 
 - [Спецификация v1.3](docs/ru/specification.md) и [план приёмки](docs/ru/test-plan.md).
+- [Полный цикл восстановления](docs/ru/restore.md): logical/physical, локальный PostgreSQL и managed, роли/ACL, проверки и повтор после ошибки. Каждая новая копия получает краткие инструкции `BACKUP-RESTORE*.md` с её файлами и параметрами.
 - [Архитектурное решение](docs/ru/architecture.md), [версии образов](docs/compatibility.json), [реестр приёмки](tests/reports/acceptance.json).
 - [Пример values](examples/values.yaml), [существующие аккаунты](examples/existing-service-accounts.yaml), [права deployer](examples/deployer-rbac.yaml).
 - [Исходный код CLI](src/pgbk), [Helm chart](charts/pgbk), [сборка worker](images/Dockerfile), [CI](.github/workflows/test.yaml).

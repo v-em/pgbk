@@ -91,6 +91,23 @@ profile["allOf"] = [
     {"if": {"properties": {"kind": {"const": "logical"}}}, "then": {"required": ["logical"]}},
     {"if": {"properties": {"kind": {"const": "physical-full"}}},
      "then": {"not": {"required": ["logical"]}}}]
+target = obj({"sourceId": name, "concurrencyKey": name, "host": {"type": ["string", "null"], "minLength": 1},
+              "provider": {"enum": ["generic", "yandex-managed-postgresql"]},
+              "port": {"type": ["integer", "null"], "minimum": 1, "maximum": 65535},
+              "serverMajor": {"enum": [14, 15, 16, 17, 18]}, "maintenanceDatabase": identifier,
+              "credentialsSecretRef": name,
+              "credentialsSecretKeys": obj({key: text for key in ["host", "port", "username", "password"]}),
+              "expectedSystemIdentifier": {"type": "string", "pattern": "^[0-9]+$"},
+              "physicalEndpoint": {"enum": ["direct-primary"]},
+              "tls": obj({"mode": {"enum": ["disable", "allow", "prefer", "require", "verify-ca", "verify-full"]},
+                          "caSecretRef": name, "clientSecretRef": name})},
+             ["sourceId", "concurrencyKey", "serverMajor", "credentialsSecretRef"])
+target["oneOf"] = [
+    {"required": ["host"], "properties": {"host": text, "port": {"type": "integer"}, "credentialsSecretKeys": {
+        "not": {"anyOf": [{"required": ["host"]}, {"required": ["port"]}]}}}},
+    {"required": ["credentialsSecretKeys"],
+     "properties": {"credentialsSecretKeys": {"required": ["host", "port"]},
+                    "host": {"type": "null"}, "port": {"type": "null"}}}]
 schema = obj({
     "installationId": name,
     "coordinationNamespace": name,
@@ -106,17 +123,7 @@ schema = obj({
                             "credentialsSecretRef": name,
                             "tls": obj({"verify": {"const": True}, "caSecretRef": name})},
                            ["bucket", "prefix", "endpoint", "region", "credentialsSecretRef"])),
-    "targets": mapping(obj({"sourceId": name, "concurrencyKey": name, "host": text,
-                            "provider": {"enum": ["generic", "yandex-managed-postgresql"]},
-                            "port": {"type": "integer", "minimum": 1, "maximum": 65535},
-                            "serverMajor": {"enum": [14, 15, 16, 17, 18]}, "maintenanceDatabase": identifier,
-                            "credentialsSecretRef": name,
-                            "credentialsSecretKeys": obj({"username": text, "password": text}),
-                            "expectedSystemIdentifier": {"type": "string", "pattern": "^[0-9]+$"},
-                            "physicalEndpoint": {"enum": ["direct-primary"]},
-                            "tls": obj({"mode": {"enum": ["disable", "allow", "prefer", "require", "verify-ca", "verify-full"]},
-                                        "caSecretRef": name, "clientSecretRef": name})},
-                           ["sourceId", "concurrencyKey", "host", "serverMajor", "credentialsSecretRef"])),
+    "targets": mapping(target),
     "profiles": mapping(profile)
 }, ["installationId", "targets", "storage", "profiles"])
 schema["$schema"] = "http://json-schema.org/draft-07/schema#"

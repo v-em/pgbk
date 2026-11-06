@@ -1,0 +1,22 @@
+# Helm overlay on two-sources.yaml. null clears inherited inline endpoints.
+# Do not pass this partial overlay alone to `pgbk --config`; use effective values.
+# Provide database-credentials in every backup/preflight Job namespace.
+targets:
+  managed:
+    host: null
+    port: null
+    credentialsSecretRef: database-credentials
+    credentialsSecretKeys:
+      host: managed-host
+      port: managed-port
+      username: managed-username
+      password: managed-password
+  kubernetes:
+    host: null
+    port: null
+    credentialsSecretRef: database-credentials
+    credentialsSecretKeys:
+      host: kubernetes-host
+      port: kubernetes-port
+      username: kubernetes-username
+      password: kubernetes-password

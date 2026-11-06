@@ -78,15 +78,25 @@ def normalize(raw):
         for assertion in environment.get("assertions", []):
             validate_query(assertion)
     for t in c["targets"].values():
-        require(tcp_host(t["host"]),
-                "INVALID_ENDPOINT", "Source must be a TCP hostname")
-        t.setdefault("port", 5432)
         t.setdefault("maintenanceDatabase", "postgres")
         t["credentialsSecretKeys"] = pg_credential_keys(t)
+        endpoint_keys = {"host", "port"} & set(t["credentialsSecretKeys"])
+        if endpoint_keys:
+            for key in ["host", "port"]:
+                if t.get(key) is None:
+                    t.pop(key, None)
+            require(endpoint_keys == {"host", "port"} and "host" not in t and "port" not in t,
+                    "INVALID_ENDPOINT", "Use either an inline endpoint or both Secret endpoint keys")
+        else:
+            require(tcp_host(t.get("host")), "INVALID_ENDPOINT", "Source must be a TCP hostname")
+            t.setdefault("port", 5432)
         t.setdefault("tls", {})["mode"] = t.get("tls", {}).get("mode", "verify-full")
     aliases = {}
     for t in c["targets"].values():
-        for alias in [("source", t["sourceId"]), ("endpoint", t["host"].lower(), t["port"])]:
+        endpoint_alias = (("endpoint", t["host"].lower(), t["port"]) if "host" in t else
+                          ("secret-endpoint", t["credentialsSecretRef"], t["credentialsSecretKeys"]["host"],
+                           t["credentialsSecretKeys"]["port"]))
+        for alias in [("source", t["sourceId"]), endpoint_alias]:
             require(alias not in aliases or aliases[alias] == t["concurrencyKey"],
                     "CONCURRENCY_KEY_MISMATCH", "Aliases for one source must share concurrencyKey")
             aliases[alias] = t["concurrencyKey"]
@@ -104,7 +114,7 @@ def normalize(raw):
         t = c["targets"][p["target"]]
         if p["kind"] == "physical-full":
             require(t.get("provider") != "yandex-managed-postgresql" and
-                    not t["host"].lower().rstrip(".").endswith(".mdb.yandexcloud.net"),
+                    not t.get("host", "").lower().rstrip(".").endswith(".mdb.yandexcloud.net"),
                     "YANDEX_PHYSICAL_UNSUPPORTED", "Yandex Managed PostgreSQL supports logical backups only", 3)
             require(t.get("physicalEndpoint") == "direct-primary" and t.get("expectedSystemIdentifier"),
                     "PHYSICAL_PREREQUISITE", "Physical targets require direct-primary and expectedSystemIdentifier")

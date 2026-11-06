@@ -90,7 +90,8 @@ class S3:
         return self.read_object(key, limit)
 
     def put(self, key, data):
-        self.call("put_object", Key=key, Body=data, ContentType="application/json")
+        content_type = "text/markdown; charset=utf-8" if key.endswith(".md") else "application/json"
+        self.call("put_object", Key=key, Body=data, ContentType=content_type)
 
     def delete(self, key):
         self.call("delete_object", Key=key)

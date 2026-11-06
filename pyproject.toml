@@ -23,6 +23,10 @@ where = ["src"]
 [tool.setuptools.package-data]
 pgbk = ["values.schema.json", "native-restore*.txt"]
 
+[tool.setuptools.data-files]
+"share/doc/pgbk/en" = ["docs/en/restore.md"]
+"share/doc/pgbk/ru" = ["docs/ru/restore.md"]
+
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests/unit"]

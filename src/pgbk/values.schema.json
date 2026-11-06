@@ -339,7 +339,10 @@
               "pattern": "^[a-z0-9][a-z0-9-]{0,47}$"
             },
             "host": {
-              "type": "string",
+              "type": [
+                "string",
+                "null"
+              ],
               "minLength": 1
             },
             "provider": {
@@ -349,7 +352,10 @@
               ]
             },
             "port": {
-              "type": "integer",
+              "type": [
+                "integer",
+                "null"
+              ],
               "minimum": 1,
               "maximum": 65535
             },
@@ -375,6 +381,14 @@
               "type": "object",
               "additionalProperties": false,
               "properties": {
+                "host": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "port": {
+                  "type": "string",
+                  "minLength": 1
+                },
                 "username": {
                   "type": "string",
                   "minLength": 1
@@ -424,9 +438,59 @@
           "required": [
             "sourceId",
             "concurrencyKey",
-            "host",
             "serverMajor",
             "credentialsSecretRef"
+          ],
+          "oneOf": [
+            {
+              "required": [
+                "host"
+              ],
+              "properties": {
+                "host": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "port": {
+                  "type": "integer"
+                },
+                "credentialsSecretKeys": {
+                  "not": {
+                    "anyOf": [
+                      {
+                        "required": [
+                          "host"
+                        ]
+                      },
+                      {
+                        "required": [
+                          "port"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "required": [
+                "credentialsSecretKeys"
+              ],
+              "properties": {
+                "credentialsSecretKeys": {
+                  "required": [
+                    "host",
+                    "port"
+                  ]
+                },
+                "host": {
+                  "type": "null"
+                },
+                "port": {
+                  "type": "null"
+                }
+              }
+            }
           ]
         }
       },

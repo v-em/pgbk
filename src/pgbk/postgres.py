@@ -47,6 +47,8 @@ def check_tool(control, tool, expected):
 
 
 def preflight(target, profile, control, scratch):
+    from .credentials import resolve_target
+    target = resolve_target(target)
     if profile["kind"] == "physical-full":
         require(target.get("provider") != "yandex-managed-postgresql" and
                 not target["host"].lower().rstrip(".").endswith(".mdb.yandexcloud.net"),

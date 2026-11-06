@@ -7,14 +7,33 @@ from .errors import Error, require
 
 def pg_credential_keys(target):
     keys = target.get("credentialsSecretKeys", {})
-    require(isinstance(keys, dict) and not set(keys) - {"username", "password"},
-            "INVALID_CREDENTIAL_KEYS", "PostgreSQL credential keys must map username and password")
+    require(isinstance(keys, dict) and not set(keys) - {"host", "port", "username", "password"},
+            "INVALID_CREDENTIAL_KEYS", "PostgreSQL Secret keys must map connection fields")
     result = {"username": "username", "password": "password", **keys}
     require(all(isinstance(key, str) and len(key) <= 253 and
                 re.fullmatch(r"[A-Za-z0-9._-]+", key) and key != "." and not key.startswith("..")
                 for key in result.values()),
             "INVALID_CREDENTIAL_KEYS", "PostgreSQL credential keys must be valid Secret projection filenames")
     return result
+
+
+def resolve_target(target):
+    """Read a projected endpoint without mutating or exposing it in configuration."""
+    keys = pg_credential_keys(target)
+    endpoint_keys = {"host", "port"} & set(keys)
+    if not endpoint_keys:
+        return target
+    require(endpoint_keys == {"host", "port"} and target.get("host") is None and target.get("port") is None,
+            "INVALID_ENDPOINT", "Use either an inline endpoint or both Secret endpoint keys")
+    host = secret(target["credentialsSecretRef"], keys["host"])
+    port = secret(target["credentialsSecretRef"], keys["port"])
+    from .config import tcp_host
+    require(tcp_host(host) and re.fullmatch(r"[0-9]{1,5}", port) and 1 <= int(port) <= 65535,
+            "INVALID_ENDPOINT", "Projected PostgreSQL endpoint must be a TCP host and valid port", 3)
+    # The copy is used only during execution. Drop endpoint mappings to freeze
+    # this operation's endpoint even if the projected Secret rotates meanwhile.
+    return {**target, "host": host, "port": int(port),
+            "credentialsSecretKeys": {k: v for k, v in keys.items() if k not in {"host", "port"}}}
 
 
 def secret(ref, key, optional=False):
@@ -35,6 +54,7 @@ def secret_path(ref, key):
 
 
 def pg_params(target, database):
+    target = resolve_target(target)
     tls = target["tls"]
     keys = pg_credential_keys(target)
     params = {"host": target["host"], "port": target["port"], "dbname": database,

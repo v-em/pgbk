@@ -1,6 +1,6 @@
 # Operations, prerequisites and recovery
 
-Version: 0.3.1. Start with [quickstart](quickstart.md) and [configuration](configuration.md). Acceptance evidence and untested gates are in [compatibility](compatibility.md).
+Version: 0.3.2. Start with [quickstart](quickstart.md) and [configuration](configuration.md). Acceptance evidence and untested gates are in [compatibility](compatibility.md).
 
 ## Existing source prerequisites
 

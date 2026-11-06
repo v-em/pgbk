@@ -1,6 +1,6 @@
 # Complete pgbk recovery procedure
 
-This guide covers pgbk 0.3.1 and artifact format v1, from choosing a backup through application validation. Commands are examples for a separate destination; replace paths, database names, users and versions. They are not intended for the live source.
+This guide covers pgbk 0.3.2 and artifact format v1, from choosing a backup through application validation. Commands are examples for a separate destination; replace paths, database names, users and versions. They are not intended for the live source.
 
 ## 1. Choose a recovery scenario and understand its scope
 

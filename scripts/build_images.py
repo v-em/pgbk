@@ -6,7 +6,7 @@ import subprocess
 parser = argparse.ArgumentParser()
 parser.add_argument("--major", type=int, choices=range(14, 19), action="append")
 parser.add_argument("--repository", default="pgbk-worker")
-parser.add_argument("--tag", default="test", help="Tag suffix; release example: 18-0.3.0")
+parser.add_argument("--tag", default="test", help="Tag suffix; --major 18 --tag VERSION produces 18-VERSION")
 parser.add_argument("--engine", choices=("docker", "podman"), default="docker")
 args = parser.parse_args()
 matrix = json.load(open("docs/compatibility.json"))

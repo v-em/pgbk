@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "0.3.1",
-  "date": "2026-11-05",
+  "version": "0.3.2",
+  "date": "2026-11-06",
   "platform": "linux/amd64",
   "runtime": "Python 3.11.2 (Debian bookworm), host tests Python 3.14",
   "helm": "3.19.0",
@@ -120,5 +120,28 @@
     "cloudTests": "excluded by request",
     "fullReleaseCertified": false,
     "executorAfterTests": "stopped"
+  },
+  "recoveryConnectionsLocal": {
+    "date": "2026-11-06",
+    "pgbkVersion": "0.3.2",
+    "unitTests": 191,
+    "documentationAndVersionChecks": "passed",
+    "sharedConnectionHelmLintRender": "passed",
+    "workerImage": "pgbk-worker:18-0.3.2",
+    "platform": "linux/amd64",
+    "localOciDigest": "sha256:2b19ec6c595fe170778316a94a8a00009ba9ca3de9b67ee6474b35133531af12",
+    "workerPostgres": "18.6",
+    "workerSmokeNetwork": "none",
+    "workerSmokeChecks": [
+      "CLI version 0.3.2",
+      "English/Russian packaged recovery guides",
+      "shared Secret host/port/username/password",
+      "per-backup recovery notes",
+      "UID 999"
+    ],
+    "registryPublished": false,
+    "freshIntegrationMatrix": "not-run",
+    "cloudTests": "not-run",
+    "fullReleaseCertified": false
   }
 }

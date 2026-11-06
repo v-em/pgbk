@@ -2,7 +2,7 @@
 
 For a GitOps deployment with Argo CD, see the detailed [guide](argocd-deployment.md).
 
-Version: 0.3.1. Development build; release certification is incomplete. See [compatibility and evidence](compatibility.md), [configuration](configuration.md) and [operations](operations.md). The [specification](specification.md) remains the version-1 acceptance contract.
+Version: 0.3.2. Development build; release certification is incomplete. See [compatibility and evidence](compatibility.md), [configuration](configuration.md) and [operations](operations.md). The [specification](specification.md) remains the version-1 acceptance contract.
 
 Install the CLI in a Python 3.11+ virtual environment. Helm 3.19.0 is the tested renderer. Kubernetes must support CronJob time zones (declared minimum 1.27; minimum-version and amd64 Job certification remain pending). The initial worker architecture is Linux amd64.
 

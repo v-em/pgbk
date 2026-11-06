@@ -9,6 +9,8 @@ RUN python3 -c 'import urllib.request; urllib.request.urlretrieve("https://githu
     && echo 'd6795c663894d836ba20840bffe8970aed81bbe25d3151bd4951f6f9c362def9  /usr/local/bin/wal-g' | sha256sum --check --strict \
     && chmod 0755 /usr/local/bin/wal-g
 COPY pyproject.toml uv.lock LICENSE NOTICE THIRD-PARTY-NOTICES.txt /build/
+COPY docs/en/restore.md /build/docs/en/restore.md
+COPY docs/ru/restore.md /build/docs/ru/restore.md
 COPY images/licenses /usr/local/share/pgbk/licenses
 COPY src /build/src
 ENV UV_PROJECT_ENVIRONMENT=/opt/pgbk UV_PYTHON_DOWNLOADS=never

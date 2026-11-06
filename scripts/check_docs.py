@@ -1,6 +1,22 @@
 """Check translation pairs, requirement/test IDs, examples and local links."""
 import re
+import json
+import tomllib
 from pathlib import Path
+
+import yaml
+
+project = tomllib.loads(Path("pyproject.toml").read_text())
+lock = tomllib.loads(Path("uv.lock").read_text())
+versions = {
+    "project": project["project"]["version"],
+    "runtime": re.search(r'__version__ = "([^"]+)"', Path("src/pgbk/__init__.py").read_text())[1],
+    "chart": yaml.safe_load(Path("charts/pgbk/Chart.yaml").read_text())["version"],
+    "appVersion": yaml.safe_load(Path("charts/pgbk/Chart.yaml").read_text())["appVersion"],
+    "lock": next(p["version"] for p in lock["package"] if p["name"] == "pgbk"),
+    "compatibility": json.loads(Path("docs/compatibility.json").read_text())["version"],
+}
+assert len(set(versions.values())) == 1, f"Inconsistent release versions: {versions}"
 
 for en in Path("docs/en").glob("*.md"):
     ru = Path("docs/ru") / en.name

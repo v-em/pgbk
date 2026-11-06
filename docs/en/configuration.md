@@ -1,6 +1,6 @@
 # Configuration reference
 
-Version: 0.3.1. [Quickstart](quickstart.md). The strict schema is [values.schema.json](../../charts/pgbk/values.schema.json); unknown keys, duplicate YAML keys and embedded credentials are rejected. IDs and Secret/namespace references use lowercase letters, digits and hyphens, at most 48 characters. Release/profile combinations must fit the 52-character CronJob name limit. [Full example](../../examples/values.yaml).
+Version: 0.3.2. [Quickstart](quickstart.md). The strict schema is [values.schema.json](../../charts/pgbk/values.schema.json); unknown keys, duplicate YAML keys and embedded credentials are rejected. IDs and Secret/namespace references use lowercase letters, digits and hyphens, at most 48 characters. Release/profile combinations must fit the 52-character CronJob name limit. [Full example](../../examples/values.yaml).
 
 | Key | Meaning |
 |---|---|

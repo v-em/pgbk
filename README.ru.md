@@ -1,6 +1,6 @@
 # pgbk — PostgreSQL backups for Kubernetes
 
-Реализация разработки 0.3.1: CLI/worker на Python, Helm chart и образы Linux amd64 соответствующих версий PostgreSQL 14–18. Logical custom/directory-архивы и самодостаточные физические копии сохраняются в неизменяемый S3-каталог; прямой logical-поток использует S3 SDK, staged-файлы — raw-передачу WAL-G с проверкой SHA-256, обновляемой координацией, ограниченным retention, скачиванием, изолированным восстановлением и restore drill.
+Реализация разработки 0.3.2: CLI/worker на Python, Helm chart и образы Linux amd64 соответствующих версий PostgreSQL 14–18. Logical custom/directory-архивы и самодостаточные физические копии сохраняются в неизменяемый S3-каталог; прямой logical-поток использует S3 SDK, staged-файлы — raw-передачу WAL-G с проверкой SHA-256, обновляемой координацией, ограниченным retention, скачиванием, изолированным восстановлением и restore drill.
 
 Обычное развертывание использует существующие namespace, ServiceAccount, права RBAC, Lease, источники, Secret и bucket. Оно не создаёт workload источника и не меняет его настройки. Начните с [быстрого старта](docs/ru/quickstart.md), [конфигурации](docs/ru/configuration.md) и [эксплуатации/RBAC](docs/ru/operations.md). [Английская документация](README.md) поддерживается синхронно.
 
